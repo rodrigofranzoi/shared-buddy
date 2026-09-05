@@ -16,6 +16,8 @@ Status: `planned` | `wip` | `done`
 | Favorite shortcut model | done | Name + payload |
 | Clipboard item model | done | Text/image + tags |
 | Screenshot item model | done | Image + redactions |
+| AES-GCM seal (`BuddySeal`) | done | Keychain-backed 256-bit key |
+| SQLite sealed store (`BuddyDatabase`) | done | Application Support; migrates UserDefaults |
 
 ## BuddyUI
 
