@@ -30,6 +30,29 @@ Every app must support:
 
 See [ACCESSIBILITY.md](ACCESSIBILITY.md).
 
+## Design system & atomic components
+
+Every Buddy app **must** consume the shared design system from `BuddyUI` — do not invent one-off colors, radii, or spacing in app targets.
+
+### Ownership
+
+| Layer | Location | Responsibility |
+|-------|----------|----------------|
+| Tokens | `BuddyUI` (`BuddyTheme`) | Color, typography, spacing, radius, elevation, motion |
+| Atoms | `BuddyUI` | Smallest UI units: text, icon, button, chip, field, divider, badge |
+| Molecules | `BuddyUI` | Composed atoms: search field, menu-bar row, tag row, blur reveal |
+| Organisms | App targets | Feature screens assembled from shared molecules |
+
+### Requirements
+
+- Generate and maintain **design tokens** (semantic colors for light/dark + increase contrast).
+- Ship **atomic components** with VoiceOver labels and Dynamic Type.
+- Apps compose screens from atoms/molecules; raw SwiftUI primitives only when no shared atom exists — then upstream to `shared-buddy`.
+- Document tokens and atoms in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md); track status in [FEATURES.md](FEATURES.md).
+- Screenshot banners and marketing chrome should follow the same token palette.
+
+See [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
+
 ## Firebase
 
 - Apple SDK on macOS (Analytics + Crashlytics)
@@ -60,4 +83,5 @@ GitHub Actions on `macos-latest`: build + unit tests (+ UI tests when scheme exi
 
 - **Name:** shared-buddy
 - **Bundle / module:** BuddyCore, BuddyUI, BuddyFirebase, BuddyLocalization, BuddyTesting
-- **Purpose:** Cross-app models, tagging, OTP parsing, UI primitives, Firebase wrapper
+- **Purpose:** Cross-app models, tagging, OTP parsing, design system (tokens + atoms), Firebase wrapper
+- **Design system:** Required — see [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)

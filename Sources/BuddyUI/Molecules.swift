@@ -2,6 +2,8 @@ import SwiftUI
 import BuddyCore
 import BuddyLocalization
 
+// MARK: - Molecules (compose atoms / tokens)
+
 public struct TagChip: View {
     public let tag: ContentTag
 
@@ -11,20 +13,20 @@ public struct TagChip: View {
 
     public var body: some View {
         Text(tag.rawValue)
-            .font(.caption.weight(.semibold))
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
+            .font(BuddyTheme.Typography.label)
+            .padding(.horizontal, BuddyTheme.Spacing.sm)
+            .padding(.vertical, BuddyTheme.Spacing.xs)
             .background(chipBackground)
-            .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: BuddyTheme.Radius.md, style: .continuous))
             .accessibilityLabel(Text("Tag: \(tag.rawValue)"))
     }
 
     private var chipBackground: some View {
-        RoundedRectangle(cornerRadius: 6, style: .continuous)
-            .fill(Color.secondary.opacity(0.15))
+        RoundedRectangle(cornerRadius: BuddyTheme.Radius.md, style: .continuous)
+            .fill(BuddyTheme.BuddyColor.chipFill)
             .overlay(
-                RoundedRectangle(cornerRadius: 6, style: .continuous)
-                    .strokeBorder(Color.primary.opacity(0.25), lineWidth: 1)
+                RoundedRectangle(cornerRadius: BuddyTheme.Radius.md, style: .continuous)
+                    .strokeBorder(BuddyTheme.BuddyColor.chipBorder, lineWidth: 1)
             )
     }
 }
@@ -46,14 +48,12 @@ public struct SensitiveBlurView<Content: View>: View {
                 .blur(radius: isHidden ? 10 : 0)
                 .allowsHitTesting(!isHidden)
             if isHidden {
-                Button(action: onReveal) {
-                    Label("Reveal", systemImage: "eye.slash")
-                }
-                .buttonStyle(.bordered)
-                .accessibilityLabel("Hidden sensitive content")
-                .accessibilityHint("Double tap to reveal")
+                BuddyButton("Reveal", systemImage: "eye.slash", kind: .secondary, action: onReveal)
+                    .accessibilityLabel("Hidden sensitive content")
+                    .accessibilityHint("Double tap to reveal")
             }
         }
+        .animation(.easeInOut(duration: BuddyTheme.Duration.value(BuddyTheme.Duration.quick)), value: isHidden)
     }
 }
 
@@ -69,6 +69,7 @@ public struct BuddySearchField: View {
     public var body: some View {
         TextField(placeholder, text: $text)
             .textFieldStyle(.roundedBorder)
+            .font(BuddyTheme.Typography.body)
             .accessibilityLabel(placeholder)
     }
 }
@@ -86,13 +87,10 @@ public struct MenuBarRow: View {
 
     public var body: some View {
         Button(action: action) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.buddyBody)
+            VStack(alignment: .leading, spacing: BuddyTheme.Spacing.xxs) {
+                BuddyText(title, style: .body)
                     .lineLimit(1)
-                Text(subtitle)
-                    .font(.buddyCaption)
-                    .foregroundStyle(.secondary)
+                BuddyText(subtitle, style: .caption, secondary: true)
                     .lineLimit(1)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -102,11 +100,6 @@ public struct MenuBarRow: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title), \(subtitle)")
     }
-}
-
-public extension Font {
-    static var buddyBody: Font { .body }
-    static var buddyCaption: Font { .caption }
 }
 
 public struct BuddyListChrome<Content: View>: View {
@@ -119,11 +112,18 @@ public struct BuddyListChrome<Content: View>: View {
     }
 
     public var body: some View {
-        VStack(spacing: 12) {
+        BuddyVStack(spacing: BuddyTheme.Spacing.md) {
             BuddySearchField(text: $query)
             content
         }
-        .padding()
+        .padding(BuddyTheme.Spacing.lg)
+        .background(BuddyTheme.BuddyColor.background)
         .environment(\.layoutDirection, BuddyLocaleRuntime.isRTL ? .rightToLeft : .leftToRight)
     }
+}
+
+// Back-compat font aliases used by apps
+public extension Font {
+    static var buddyBody: Font { BuddyTheme.Typography.body }
+    static var buddyCaption: Font { BuddyTheme.Typography.caption }
 }

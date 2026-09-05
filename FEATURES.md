@@ -18,11 +18,14 @@ Status: `planned` | `wip` | `done`
 
 | Feature | Status | Notes |
 |---------|--------|-------|
+| Design tokens (`BuddyTheme`) | done | Color, type, spacing, radius, motion |
+| Atomic components | done | Text, icon, button, badge, divider |
 | Tag chip view | done | Accessibility labeled |
 | Blur / redact overlay primitives | done | For sensitive content |
 | Searchable list chrome | done | |
 | Menu-bar row helpers | done | |
-| Dynamic Type / contrast helpers | done | |
+| Dynamic Type / contrast helpers | done | Semantic system colors |
+| DESIGN_SYSTEM.md contract | done | Manifest-required |
 
 ## BuddyFirebase
 
