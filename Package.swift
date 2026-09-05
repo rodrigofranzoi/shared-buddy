@@ -13,6 +13,9 @@ let package = Package(
         .library(name: "BuddyLocalization", targets: ["BuddyLocalization"]),
         .library(name: "BuddyTesting", targets: ["BuddyTesting"])
     ],
+    dependencies: [
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "12.18.0")
+    ],
     targets: [
         .target(
             name: "BuddyCore",
@@ -25,6 +28,12 @@ let package = Package(
         ),
         .target(
             name: "BuddyFirebase",
+            dependencies: [
+                "BuddyCore",
+                .product(name: "FirebaseCore", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseAnalytics", package: "firebase-ios-sdk"),
+                .product(name: "FirebaseCrashlytics", package: "firebase-ios-sdk")
+            ],
             path: "Sources/BuddyFirebase"
         ),
         .target(

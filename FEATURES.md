@@ -31,9 +31,12 @@ Status: `planned` | `wip` | `done`
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Configure wrapper | done | No-op when plist missing (dev) |
+| Configure wrapper | done | Real FirebaseCore on macOS |
+| Analytics (opt-in) | done | Spark free tier; gated by settings |
+| Crashlytics | done | NSApplicationCrashOnExceptions |
 | Analytics event names (no PII) | done | |
 | Crashlytics breadcrumb helpers | done | |
+| Project buddy-suite-macos | done | 3 Apple apps registered |
 
 ## BuddyLocalization
 

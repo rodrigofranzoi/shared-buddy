@@ -1,28 +1,59 @@
 import Foundation
+import BuddyCore
+import FirebaseCore
+import FirebaseAnalytics
+import FirebaseCrashlytics
 
-/// Lightweight Firebase façade. Apps call `configure()` at launch.
-/// When GoogleService-Info.plist is absent (local/CI), methods no-op so builds stay green.
+/// Firebase façade for *-buddy macOS apps (Spark / free tier: Analytics + Crashlytics).
+/// Never logs clipboard contents, email bodies, or OTP codes.
 public enum BuddyFirebase {
     public private(set) static var isConfigured = false
 
+    /// Anonymous Analytics is off until the user opts in. Crashlytics stays on after configure.
+    public static var analyticsOptIn: Bool {
+        get { UserDefaults.standard.bool(forKey: BuddySettingsKey.analyticsOptIn) }
+        set { UserDefaults.standard.set(newValue, forKey: BuddySettingsKey.analyticsOptIn) }
+    }
+
     public static func configure() {
-        // Real FirebaseApp.configure() is linked by host apps that add the Firebase SPM products.
-        // This wrapper stays dependency-free so `swift test` works without Firebase binaries.
+        guard FirebaseApp.app() == nil else {
+            isConfigured = true
+            return
+        }
+        // Requires GoogleService-Info.plist in the app bundle.
+        FirebaseApp.configure()
         isConfigured = true
-        log(event: "firebase_configure", parameters: [:])
+        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+        Analytics.setAnalyticsCollectionEnabled(analyticsOptIn)
+        if analyticsOptIn {
+            Analytics.logEvent(Event.appLaunch, parameters: nil)
+        }
     }
 
     public static func log(event: String, parameters: [String: String] = [:]) {
+        let safe = parameters.filter {
+            let k = $0.key.lowercased()
+            return !k.contains("content") && !k.contains("code") && !k.contains("password")
+                && !k.contains("email") && !k.contains("token")
+        }
         #if DEBUG
-        let safe = parameters.filter { !$0.key.lowercased().contains("content") && !$0.key.lowercased().contains("code") }
         print("[BuddyFirebase] \(event) \(safe)")
         #endif
+        guard isConfigured, analyticsOptIn else { return }
+        var params: [String: Any] = [:]
+        for (k, v) in safe { params[k] = v }
+        Analytics.logEvent(event, parameters: params.isEmpty ? nil : params)
     }
 
     public static func recordBreadcrumb(_ message: String) {
-        #if DEBUG
-        print("[BuddyFirebase:breadcrumb] \(message)")
-        #endif
+        guard isConfigured else { return }
+        let safe = String(message.prefix(100))
+        Crashlytics.crashlytics().log(safe)
+    }
+
+    public static func refreshAnalyticsCollection() {
+        guard isConfigured else { return }
+        Analytics.setAnalyticsCollectionEnabled(analyticsOptIn)
     }
 
     public enum Event {
