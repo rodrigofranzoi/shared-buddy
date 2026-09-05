@@ -1,0 +1,34 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Buddy.Search" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Search" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Zoeken" } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "Pesquisar" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Buscar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Rechercher" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Cerca" } },
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "بحث" } },
+        "zh" : { "stringUnit" : { "state" : "translated", "value" : "搜索" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Поиск" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "検索" } }
+      }
+    },
+    "Buddy.Reveal" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reveal" } },
+        "nl" : { "stringUnit" : { "state" : "translated", "value" : "Tonen" } },
+        "pt" : { "stringUnit" : { "state" : "translated", "value" : "Revelar" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Revelar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Révéler" } },
+        "it" : { "stringUnit" : { "state" : "translated", "value" : "Mostra" } },
+        "ar" : { "stringUnit" : { "state" : "translated", "value" : "إظهار" } },
+        "zh" : { "stringUnit" : { "state" : "translated", "value" : "显示" } },
+        "ru" : { "stringUnit" : { "state" : "translated", "value" : "Показать" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "表示" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}
