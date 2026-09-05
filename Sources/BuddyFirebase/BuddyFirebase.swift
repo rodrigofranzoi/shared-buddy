@@ -62,5 +62,6 @@ public enum BuddyFirebase {
         public static let otpDetected = "otp_detected"
         public static let screenshotExported = "screenshot_exported"
         public static let sensitiveRevealed = "sensitive_revealed"
+        public static let contentBlocked = "content_blocked"
     }
 }

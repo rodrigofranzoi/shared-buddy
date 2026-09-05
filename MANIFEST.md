@@ -53,6 +53,10 @@ Every Buddy app **must** consume the shared design system from `BuddyUI` — do 
 
 See [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
 
+## Encryption at rest
+
+Clipboard and screenshot payloads use AES-GCM in SQLite. See [ENCRYPTION.md](ENCRYPTION.md) for App Store answers.
+
 ## Firebase
 
 - Apple SDK on macOS (Analytics + Crashlytics)

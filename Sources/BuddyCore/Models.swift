@@ -104,4 +104,10 @@ public enum BuddySettingsKey {
     public static let autoCopyOTP = "buddy.otp.autoCopy"
     public static let clipboardRetentionDays = "buddy.clipboard.retentionDays"
     public static let launchAtLogin = "buddy.launchAtLogin"
+    /// Marks that launch-at-login was configured (first install defaults to on).
+    public static let launchAtLoginConfigured = "buddy.launchAtLoginConfigured"
+    /// Persisted timed pause end (`timeIntervalSince1970`). Absent / 0 = not paused.
+    public static let pauseUntil = "buddy.pauseUntil"
+    /// When true, adult-content block still applies but the toolbar warning is suppressed.
+    public static let contentWarningNeverShow = "buddy.content.warningNeverShow"
 }

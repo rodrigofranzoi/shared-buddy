@@ -122,6 +122,72 @@ public struct BuddyListChrome<Content: View>: View {
     }
 }
 
+/// Toolbar popover shown when sexual / pornographic content is blocked from copy/import.
+public struct ContentBlockedAlert: View {
+    public var autoDismissSeconds: TimeInterval
+    public var onDismiss: (_ neverShowAgain: Bool) -> Void
+
+    @State private var neverShowAgain = false
+    @State private var didDismiss = false
+
+    public init(
+        autoDismissSeconds: TimeInterval = 5,
+        onDismiss: @escaping (_ neverShowAgain: Bool) -> Void
+    ) {
+        self.autoDismissSeconds = autoDismissSeconds
+        self.onDismiss = onDismiss
+    }
+
+    public var body: some View {
+        BuddyVStack(spacing: BuddyTheme.Spacing.md) {
+            HStack(alignment: .top, spacing: BuddyTheme.Spacing.sm) {
+                BuddyIcon(systemName: "exclamationmark.shield.fill", accessibilityLabel: "Blocked content")
+                BuddyVStack(spacing: BuddyTheme.Spacing.xs) {
+                    BuddyText("Content blocked", style: .title)
+                    BuddyText(
+                        "We can’t copy this kind of content. Pornography and sexual material aren’t allowed.",
+                        style: .body,
+                        secondary: true
+                    )
+                }
+            }
+
+            Toggle("Never show again", isOn: $neverShowAgain)
+                .toggleStyle(.checkbox)
+                .font(BuddyTheme.Typography.caption)
+                .accessibilityIdentifier("content-blocked-never-show")
+
+            HStack {
+                Spacer(minLength: 0)
+                BuddyButton("Dismiss", kind: .secondary) {
+                    finish(neverShowAgain: neverShowAgain)
+                }
+                .accessibilityIdentifier("content-blocked-dismiss")
+            }
+        }
+        .padding(BuddyTheme.Spacing.lg)
+        .frame(width: 280)
+        .background(BuddyTheme.BuddyColor.background)
+        .onAppear { scheduleAutoDismiss() }
+        .accessibilityIdentifier("content-blocked-alert")
+    }
+
+    private func scheduleAutoDismiss() {
+        let seconds = autoDismissSeconds
+        Task { @MainActor in
+            let nanos = UInt64(max(seconds, 0.5) * 1_000_000_000)
+            try? await Task.sleep(nanoseconds: nanos)
+            finish(neverShowAgain: neverShowAgain)
+        }
+    }
+
+    private func finish(neverShowAgain: Bool) {
+        guard !didDismiss else { return }
+        didDismiss = true
+        onDismiss(neverShowAgain)
+    }
+}
+
 // Back-compat font aliases used by apps
 public extension Font {
     static var buddyBody: Font { BuddyTheme.Typography.body }

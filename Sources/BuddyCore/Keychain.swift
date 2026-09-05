@@ -8,7 +8,16 @@ public enum BuddyKeychain {
     }
 
     public static func set(_ value: String, account: String, service: String) throws {
-        let data = Data(value.utf8)
+        try setData(Data(value.utf8), account: account, service: service)
+    }
+
+    public static func get(account: String, service: String) throws -> String {
+        let data = try getData(account: account, service: service)
+        guard let value = String(data: data, encoding: .utf8) else { throw KeychainError.noData }
+        return value
+    }
+
+    public static func setData(_ data: Data, account: String, service: String) throws {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
@@ -17,11 +26,12 @@ public enum BuddyKeychain {
         SecItemDelete(query as CFDictionary)
         var add = query
         add[kSecValueData as String] = data
+        add[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
         let status = SecItemAdd(add as CFDictionary, nil)
         guard status == errSecSuccess else { throw KeychainError.unexpectedStatus(status) }
     }
 
-    public static func get(account: String, service: String) throws -> String {
+    public static func getData(account: String, service: String) throws -> Data {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
@@ -31,10 +41,10 @@ public enum BuddyKeychain {
         ]
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
-        guard status == errSecSuccess, let data = item as? Data, let value = String(data: data, encoding: .utf8) else {
+        guard status == errSecSuccess, let data = item as? Data else {
             throw KeychainError.noData
         }
-        return value
+        return data
     }
 
     public static func delete(account: String, service: String) {
