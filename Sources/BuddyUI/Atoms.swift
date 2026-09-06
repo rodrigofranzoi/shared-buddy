@@ -138,11 +138,15 @@ public struct BuddyBadge: View {
 }
 
 public struct BuddyDivider: View {
-    public init() {}
+    private let opacity: Double
+
+    public init(opacity: Double = 0.4) {
+        self.opacity = opacity
+    }
 
     public var body: some View {
         Divider()
-            .background(BuddyTheme.BuddyColor.border)
+            .overlay(BuddyTheme.BuddyColor.border.opacity(opacity))
             .accessibilityHidden(true)
     }
 }

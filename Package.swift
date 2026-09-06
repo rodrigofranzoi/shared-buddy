@@ -19,7 +19,10 @@ let package = Package(
     targets: [
         .target(
             name: "BuddyCore",
-            path: "Sources/BuddyCore"
+            path: "Sources/BuddyCore",
+            resources: [
+                .process("Resources")
+            ]
         ),
         .target(
             name: "BuddyUI",

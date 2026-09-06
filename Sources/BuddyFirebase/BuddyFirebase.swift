@@ -9,25 +9,24 @@ import FirebaseCrashlytics
 public enum BuddyFirebase {
     public private(set) static var isConfigured = false
 
-    /// Anonymous Analytics is off until the user opts in. Crashlytics stays on after configure.
-    public static var analyticsOptIn: Bool {
-        get { UserDefaults.standard.bool(forKey: BuddySettingsKey.analyticsOptIn) }
-        set { UserDefaults.standard.set(newValue, forKey: BuddySettingsKey.analyticsOptIn) }
-    }
-
     public static func configure() {
         guard FirebaseApp.app() == nil else {
             isConfigured = true
             return
         }
-        // Requires GoogleService-Info.plist in the app bundle.
+        // Requires GoogleService-Info.plist in the app bundle. Skip quietly when absent
+        // (e.g. incomplete local builds / marketing capture harnesses).
+        let hasPlist = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil
+        guard hasPlist else {
+            #if DEBUG
+            print("[BuddyFirebase] Skipping configure — GoogleService-Info.plist not in bundle")
+            #endif
+            return
+        }
         FirebaseApp.configure()
         isConfigured = true
         Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
-        Analytics.setAnalyticsCollectionEnabled(analyticsOptIn)
-        if analyticsOptIn {
-            Analytics.logEvent(Event.appLaunch, parameters: nil)
-        }
+        Analytics.setAnalyticsCollectionEnabled(true)
     }
 
     public static func log(event: String, parameters: [String: String] = [:]) {
@@ -39,7 +38,7 @@ public enum BuddyFirebase {
         #if DEBUG
         print("[BuddyFirebase] \(event) \(safe)")
         #endif
-        guard isConfigured, analyticsOptIn else { return }
+        guard isConfigured else { return }
         var params: [String: Any] = [:]
         for (k, v) in safe { params[k] = v }
         Analytics.logEvent(event, parameters: params.isEmpty ? nil : params)
@@ -49,11 +48,6 @@ public enum BuddyFirebase {
         guard isConfigured else { return }
         let safe = String(message.prefix(100))
         Crashlytics.crashlytics().log(safe)
-    }
-
-    public static func refreshAnalyticsCollection() {
-        guard isConfigured else { return }
-        Analytics.setAnalyticsCollectionEnabled(analyticsOptIn)
     }
 
     public enum Event {

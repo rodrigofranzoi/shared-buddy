@@ -53,9 +53,9 @@ Every Buddy app **must** consume the shared design system from `BuddyUI` — do 
 
 See [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
 
-## Encryption at rest
+## On-device storage
 
-Clipboard and screenshot payloads use AES-GCM in SQLite. See [ENCRYPTION.md](ENCRYPTION.md) for App Store answers.
+Clipboard and screenshot payloads are stored as JSON in UserDefaults (not encrypted). IMAP passwords (OTP Buddy) use Keychain. See [ENCRYPTION.md](ENCRYPTION.md) for App Store answers.
 
 ## Firebase
 

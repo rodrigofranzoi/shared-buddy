@@ -20,7 +20,7 @@ Config files live at `{App}/Resources/GoogleService-Info.plist`.
 
 - Linked through `BuddyFirebase` in `shared-buddy` (FirebaseCore, Analytics, Crashlytics 12.18+)
 - Apps call `BuddyFirebase.configure()` in `App.init()` before other Firebase-backed state
-- Analytics collection is **opt-in** (Settings); Crashlytics is enabled after configure
+- Analytics collection is always enabled; Crashlytics is enabled after configure
 - `NSApplicationCrashOnExceptions` = YES in Info.plist
 - No PII: never log clipboard, screenshots, email, or OTP codes
 

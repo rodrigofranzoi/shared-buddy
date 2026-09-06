@@ -11,13 +11,17 @@ Status: `planned` | `wip` | `done`
 | OTP extraction from email/text | done | Conservative scoring |
 | Keychain helper | done | Generic credential store |
 | Settings key constants | done | Shared UserDefaults keys |
+| Appearance (scheme + accent hex) | done | `BuddyAppearanceSettings`, `BuddyBrand` defaults |
+| Sensitive privacy settings + 10‑min unlock session | done | `SensitivePrivacySettings`, `SensitiveUnlockSession` |
+| Sensitive region OCR for screenshot redaction | done | `SensitiveRegionFinder` |
 | Pause / turn-off controller (session + timed + custom) | done | `BuddyPauseController` |
+| Permanent pause (survives relaunch) | done | `BuddySettingsKey.pausePermanently` |
+| Clipboard ignore-apps list | done | `ClipboardIgnoreSettings` |
+| History limit keys (clipboard + screenshot) | done | Max count + menu-bar counts |
 | Launch at login (SMAppService, default on first install) | done | `BuddyLaunchAtLogin` |
 | Favorite shortcut model | done | Name + payload |
 | Clipboard item model | done | Text/image + tags |
 | Screenshot item model | done | Image + redactions |
-| AES-GCM seal (`BuddySeal`) | done | Keychain-backed 256-bit key |
-| SQLite sealed store (`BuddyDatabase`) | done | Application Support; migrates UserDefaults |
 
 ## BuddyUI
 
@@ -27,9 +31,16 @@ Status: `planned` | `wip` | `done`
 | Atomic components | done | Text, icon, button, badge, divider |
 | Tag chip view | done | Accessibility labeled |
 | Blur / redact overlay primitives | done | For sensitive content |
+| Sensitive privacy settings section | done | Blur + Touch ID toggles shared by apps |
+| Sidebar settings chrome + appearance pane | done | `BuddySettingsSidebarView`, theme color + light/dark |
 | Searchable list chrome | done | |
 | Menu-bar row helpers | done | |
 | Pause controls + launch-at-login toggle | done | Menu footer + Settings |
+| Pause settings section + permanent option | done | `BuddyPauseSettingsSection` |
+| Clippings / screenshot history settings | done | `ClipboardClippingsSettingsSection`, `ScreenshotHistorySettingsSection` |
+| Ignored apps settings | done | `ClipboardIgnoredAppsSettingsSection` |
+| Erase all history (settings + menu/toolbar) | done | `BuddyClearHistorySettingsSection`, `BuddyClearHistoryButton` |
+| Open main window + Quit from menu bar | done | `BuddyMainWindow`, `BuddyMenuBarAppControls` |
 | Content blocked toolbar alert | done | Auto-dismiss + never show again |
 | Dynamic Type / contrast helpers | done | Semantic system colors |
 | DESIGN_SYSTEM.md contract | done | Manifest-required |
@@ -39,7 +50,7 @@ Status: `planned` | `wip` | `done`
 | Feature | Status | Notes |
 |---------|--------|-------|
 | Configure wrapper | done | Real FirebaseCore on macOS |
-| Analytics (opt-in) | done | Spark free tier; gated by settings |
+| Analytics | done | Spark free tier; always enabled; no PII |
 | Crashlytics | done | NSApplicationCrashOnExceptions |
 | Analytics event names (no PII) | done | |
 | Crashlytics breadcrumb helpers | done | |

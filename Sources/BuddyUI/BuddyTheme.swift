@@ -2,6 +2,7 @@ import AppKit
 import SwiftUI
 
 /// Design tokens for the *-buddy suite. Apps must use these instead of ad-hoc styling.
+/// Accent defaults come from ``BuddyBrand`` / ``BuddyAppearanceSettings`` (user-overridable).
 public enum BuddyTheme {
     public enum Spacing {
         public static let xxs: CGFloat = 2

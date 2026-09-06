@@ -53,6 +53,7 @@ public final class BuddyPauseController: ObservableObject {
     @Published public private(set) var isPaused = false
     @Published public private(set) var pauseEndsAt: Date?
     @Published public private(set) var isUntilNextSession = false
+    @Published public private(set) var isPermanent = false
 
     /// Invoked whenever pause state flips (e.g. stop/start monitoring).
     public var onPauseChanged: ((Bool) -> Void)?
@@ -64,20 +65,25 @@ public final class BuddyPauseController: ObservableObject {
         self.defaults = defaults
     }
 
-    /// Call once at launch. Session pauses never persist; timed pauses resume if still in the future.
+    /// Call once at launch. Session pauses never persist; timed / permanent pauses restore.
     public func restorePersistedPauseIfNeeded() {
+        if defaults.bool(forKey: BuddySettingsKey.pausePermanently) {
+            apply(paused: true, endsAt: nil, sessionOnly: false, permanent: true, persist: false)
+            return
+        }
+
         let until = defaults.double(forKey: BuddySettingsKey.pauseUntil)
         guard until > 0 else {
-            apply(paused: false, endsAt: nil, sessionOnly: false, persist: false)
+            apply(paused: false, endsAt: nil, sessionOnly: false, permanent: false, persist: false)
             return
         }
         let end = Date(timeIntervalSince1970: until)
         if end > Date() {
-            apply(paused: true, endsAt: end, sessionOnly: false, persist: false)
+            apply(paused: true, endsAt: end, sessionOnly: false, permanent: false, persist: false)
             scheduleResume(at: end)
         } else {
             clearPersistedPause()
-            apply(paused: false, endsAt: nil, sessionOnly: false, persist: false)
+            apply(paused: false, endsAt: nil, sessionOnly: false, permanent: false, persist: false)
         }
     }
 
@@ -85,7 +91,15 @@ public final class BuddyPauseController: ObservableObject {
         clearPersistedPause()
         resumeTimer?.invalidate()
         resumeTimer = nil
-        apply(paused: true, endsAt: nil, sessionOnly: true, persist: false)
+        apply(paused: true, endsAt: nil, sessionOnly: true, permanent: false, persist: false)
+    }
+
+    public func pausePermanently() {
+        resumeTimer?.invalidate()
+        resumeTimer = nil
+        defaults.removeObject(forKey: BuddySettingsKey.pauseUntil)
+        defaults.set(true, forKey: BuddySettingsKey.pausePermanently)
+        apply(paused: true, endsAt: nil, sessionOnly: false, permanent: true, persist: false)
     }
 
     public func pause(for duration: TimeInterval) {
@@ -102,9 +116,10 @@ public final class BuddyPauseController: ObservableObject {
 
     public func pauseUntil(_ date: Date) {
         let end = max(date, Date().addingTimeInterval(1))
+        defaults.set(false, forKey: BuddySettingsKey.pausePermanently)
         defaults.set(end.timeIntervalSince1970, forKey: BuddySettingsKey.pauseUntil)
         resumeTimer?.invalidate()
-        apply(paused: true, endsAt: end, sessionOnly: false, persist: false)
+        apply(paused: true, endsAt: end, sessionOnly: false, permanent: false, persist: false)
         scheduleResume(at: end)
     }
 
@@ -112,11 +127,12 @@ public final class BuddyPauseController: ObservableObject {
         resumeTimer?.invalidate()
         resumeTimer = nil
         clearPersistedPause()
-        apply(paused: false, endsAt: nil, sessionOnly: false, persist: false)
+        apply(paused: false, endsAt: nil, sessionOnly: false, permanent: false, persist: false)
     }
 
     public var statusSummary: String {
         guard isPaused else { return "On" }
+        if isPermanent { return "Off permanently" }
         if isUntilNextSession { return "Off until next session" }
         if let pauseEndsAt {
             return "Off until \(pauseEndsAt.formatted(date: .omitted, time: .shortened))"
@@ -140,14 +156,25 @@ public final class BuddyPauseController: ObservableObject {
 
     private func clearPersistedPause() {
         defaults.removeObject(forKey: BuddySettingsKey.pauseUntil)
+        defaults.set(false, forKey: BuddySettingsKey.pausePermanently)
     }
 
-    private func apply(paused: Bool, endsAt: Date?, sessionOnly: Bool, persist: Bool) {
+    private func apply(
+        paused: Bool,
+        endsAt: Date?,
+        sessionOnly: Bool,
+        permanent: Bool,
+        persist: Bool
+    ) {
         let changed = isPaused != paused
+            || isPermanent != permanent
+            || isUntilNextSession != sessionOnly
+            || pauseEndsAt != endsAt
         isPaused = paused
         pauseEndsAt = endsAt
         isUntilNextSession = sessionOnly
-        if persist, let endsAt, !sessionOnly {
+        isPermanent = permanent
+        if persist, let endsAt, !sessionOnly, !permanent {
             defaults.set(endsAt.timeIntervalSince1970, forKey: BuddySettingsKey.pauseUntil)
         }
         if changed {

@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 import BuddyCore
 
 /// Footer for menu-bar popovers: turn off until… / resume.
@@ -42,6 +43,11 @@ public struct BuddyPauseControls: View {
                         pause.pauseUntilNextSession()
                     }
                     .accessibilityIdentifier("pause-next-session")
+
+                    Button("Permanently") {
+                        pause.pausePermanently()
+                    }
+                    .accessibilityIdentifier("pause-permanently")
 
                     Divider()
 
@@ -93,6 +99,75 @@ public struct BuddyPauseControls: View {
         }
         .padding(.horizontal)
         .padding(.bottom, BuddyTheme.Spacing.sm)
+    }
+}
+
+/// Preferences pane for pause / resume (On, timed, session, permanent).
+public struct BuddyPauseSettingsSection: View {
+    @ObservedObject private var pause: BuddyPauseController
+    @State private var customHours = 0
+    @State private var customMinutes = 45
+
+    @MainActor
+    public init(pause: BuddyPauseController = .shared) {
+        self.pause = pause
+    }
+
+    public var body: some View {
+        Section {
+            HStack {
+                VStack(alignment: .leading, spacing: BuddyTheme.Spacing.xxs) {
+                    Text(pause.isPaused ? "Paused" : "Active")
+                        .font(BuddyTheme.Typography.label)
+                    Text(pause.statusSummary)
+                        .font(BuddyTheme.Typography.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer(minLength: 0)
+                if pause.isPaused {
+                    Button("Resume") {
+                        pause.resume()
+                    }
+                    .accessibilityIdentifier("settings-pause-resume")
+                }
+            }
+
+            if !pause.isPaused {
+                Button("Pause until next session") {
+                    pause.pauseUntilNextSession()
+                }
+                .accessibilityIdentifier("settings-pause-next-session")
+
+                Button("Pause permanently") {
+                    pause.pausePermanently()
+                }
+                .accessibilityIdentifier("settings-pause-permanently")
+
+                Menu("Pause for…") {
+                    ForEach(BuddyPausePreset.allCases) { preset in
+                        Button(preset.title) {
+                            pause.pause(preset: preset)
+                        }
+                    }
+                }
+                .accessibilityIdentifier("settings-pause-preset-menu")
+
+                Stepper("Hours: \(customHours)", value: $customHours, in: 0...48)
+                Stepper("Minutes: \(customMinutes)", value: $customMinutes, in: 0...59)
+                Button("Pause for custom duration") {
+                    let total = TimeInterval(customHours * 3600 + customMinutes * 60)
+                    guard total > 0 else { return }
+                    pause.pause(for: total)
+                }
+                .disabled(customHours == 0 && customMinutes == 0)
+                .accessibilityIdentifier("settings-pause-custom")
+            }
+        } header: {
+            Text("Monitoring")
+        } footer: {
+            Text("While paused, new clipboard or screenshot captures are not saved. Permanent pause survives relaunch until you resume.")
+                .font(BuddyTheme.Typography.caption)
+        }
     }
 }
 

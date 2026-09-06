@@ -11,11 +11,16 @@ public enum ContentTag: String, Codable, CaseIterable, Sendable, Hashable {
     case iban
     case creditCard
     case otp
+    case amount
     case json
     case filePath
     case colorHex
     case image
     case text
+    case file
+    case richText
+    case pdf
+    case other
 }
 
 public struct TaggedContent: Sendable, Equatable {
@@ -34,9 +39,50 @@ public enum ContentKind: Sendable, Equatable {
 }
 
 public enum ContentTagger {
-    private static let sensitiveTags: Set<ContentTag> = [
-        .password, .bearerToken, .apiKey, .iban, .creditCard, .otp
+    /// Tags that can be marked sensitive (settings pickers + detection candidates).
+    public static let sensitiveTags: Set<ContentTag> = [
+        .password, .bearerToken, .apiKey, .iban, .creditCard, .otp,
+        .email, .phone, .amount
     ]
+
+    /// Whether any of `tags` is currently protected in Settings.
+    public static func containsSensitive<S: Sequence>(_ tags: S) -> Bool where S.Element == ContentTag {
+        !Set(tags).isDisjoint(with: SensitivePrivacySettings.protectedTags)
+    }
+
+    /// Short label for settings copy.
+    public static let sensitiveTypesSummary =
+        "passwords, IBANs, cards, API keys, OTPs, emails, phones, and amounts"
+
+    /// Ordered list for sensitive-type settings UI.
+    public static let autoBlurSelectableTags: [ContentTag] = [
+        .password, .iban, .creditCard, .apiKey, .bearerToken, .otp, .email, .phone, .amount
+    ]
+
+    public static func displayName(for tag: ContentTag) -> String {
+        switch tag {
+        case .password: return "Passwords"
+        case .iban: return "IBANs"
+        case .creditCard: return "Cards"
+        case .apiKey: return "API keys"
+        case .bearerToken: return "Tokens"
+        case .otp: return "OTPs"
+        case .url: return "URLs"
+        case .email: return "Emails"
+        case .phone: return "Phones"
+        case .amount: return "Amounts"
+        case .sha: return "Hashes"
+        case .json: return "JSON"
+        case .filePath: return "Paths"
+        case .colorHex: return "Colors"
+        case .image: return "Images"
+        case .text: return "Text"
+        case .file: return "Files"
+        case .richText: return "Rich text"
+        case .pdf: return "PDFs"
+        case .other: return "Other"
+        }
+    }
 
     public static func tag(_ kind: ContentKind) -> TaggedContent {
         switch kind {
@@ -67,12 +113,13 @@ public enum ContentTagger {
         if looksLikeJSON(trimmed) { tags.insert(.json) }
         if looksLikeFilePath(trimmed) { tags.insert(.filePath) }
         if looksLikeColorHex(trimmed) { tags.insert(.colorHex) }
+        if looksLikeAmount(trimmed) { tags.insert(.amount) }
         if OTPDetector.extract(from: trimmed) != nil { tags.insert(.otp) }
         tags.formUnion(embeddedSensitiveTags(in: trimmed))
 
         if tags.isEmpty { tags.insert(.text) }
 
-        let sensitive = !tags.isDisjoint(with: sensitiveTags)
+        let sensitive = !tags.isDisjoint(with: SensitivePrivacySettings.protectedTags)
         return TaggedContent(tags: tags, isSensitive: sensitive)
     }
 
@@ -90,7 +137,32 @@ public enum ContentTagger {
                 tags.insert(.creditCard)
             }
         }
+        if text.range(
+            of: #"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}"#,
+            options: [.regularExpression, .caseInsensitive]
+        ) != nil {
+            tags.insert(.email)
+        }
+        if text.range(of: #"\+?[\d\s().-]{10,}"#, options: .regularExpression) != nil {
+            let digits = text.filter(\.isNumber)
+            if digits.count >= 10, digits.count <= 15 {
+                tags.insert(.phone)
+            }
+        }
+        if text.range(
+            of: #"(?:[$€£]\s?\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?|\d+[.,]\d{2}\s?(?:USD|EUR|GBP|\$|€|£))"#,
+            options: [.regularExpression, .caseInsensitive]
+        ) != nil {
+            tags.insert(.amount)
+        }
         return tags
+    }
+
+    private static func looksLikeAmount(_ s: String) -> Bool {
+        s.range(
+            of: #"^[$€£]?\s?\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?\s?(?:USD|EUR|GBP)?$"#,
+            options: [.regularExpression, .caseInsensitive]
+        ) != nil
     }
 
     private static func looksLikeURL(_ s: String) -> Bool {
@@ -175,6 +247,6 @@ public enum ContentTagger {
     }
 
     private static func looksLikeColorHex(_ s: String) -> Bool {
-        s.range(of: #"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}|[A-Fa-f0-9]{8})$"#, options: .regularExpression) != nil
+        DetectedContentExtractor.looksLikeColorToken(s)
     }
 }
