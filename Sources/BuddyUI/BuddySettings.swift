@@ -1,6 +1,7 @@
 import AppKit
 import SwiftUI
 import BuddyCore
+import BuddyLocalization
 
 // MARK: - Sidebar settings chrome
 
@@ -36,6 +37,10 @@ public struct BuddySettingsItem: Identifiable, Hashable, Sendable {
         title: "Account",
         systemImage: "envelope"
     )
+
+    public var localizedTitle: String {
+        BuddyL10n.string(key: title)
+    }
 }
 
 /// Left-menu Settings shell: sidebar list + detail form content.
@@ -67,8 +72,12 @@ public struct BuddySettingsSidebarView<Content: View>: View {
         HStack(spacing: 0) {
             List(selection: $selection) {
                 ForEach(items) { item in
-                    Label(item.title, systemImage: item.systemImage)
-                        .tag(item.id)
+                    Label {
+                        Text(item.localizedTitle)
+                    } icon: {
+                        Image(systemName: item.systemImage)
+                    }
+                    .tag(item.id)
                 }
             }
             .listStyle(.sidebar)
@@ -86,7 +95,7 @@ public struct BuddySettingsSidebarView<Content: View>: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                     .accessibilityIdentifier("settings-detail-\(item.id)")
                 } else {
-                    Text("Select a category")
+                    Text("Select a category", bundle: BuddyL10n.bundle)
                         .foregroundStyle(BuddyTheme.BuddyColor.textSecondary)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
@@ -132,12 +141,12 @@ public struct BuddySettingsTabView<Content: View>: View {
 /// Grouped form pane for one Settings tab.
 @available(*, deprecated, message: "Use BuddySettingsSidebarView with BuddySettingsItem instead.")
 public struct BuddySettingsPane<Content: View>: View {
-    private let title: String
+    private let title: LocalizedStringKey
     private let systemImage: String
     private let content: Content
 
     public init(
-        _ title: String,
+        _ title: LocalizedStringKey,
         systemImage: String,
         @ViewBuilder content: () -> Content
     ) {
@@ -152,7 +161,11 @@ public struct BuddySettingsPane<Content: View>: View {
         }
         .formStyle(.grouped)
         .tabItem {
-            Label(title, systemImage: systemImage)
+            Label {
+                Text(title, bundle: BuddyL10n.bundle)
+            } icon: {
+                Image(systemName: systemImage)
+            }
         }
     }
 }
@@ -172,11 +185,13 @@ public struct BuddyAppearanceSettingsSection: View {
     }
 
     public var body: some View {
-        Section("Mode") {
-            Picker("Appearance", selection: $colorSchemeRaw) {
+        Section {
+            Picker(selection: $colorSchemeRaw) {
                 ForEach(BuddyAppearanceSettings.ColorSchemePreference.allCases, id: \.rawValue) { preference in
                     Text(preference.title).tag(preference.rawValue)
                 }
+            } label: {
+                Text("Appearance", bundle: BuddyL10n.bundle)
             }
             .pickerStyle(.segmented)
             .labelsHidden()
@@ -184,6 +199,8 @@ public struct BuddyAppearanceSettingsSection: View {
             .onChange(of: colorSchemeRaw) { _ in
                 BuddyAppearanceSettings.applyAppKitAppearance()
             }
+        } header: {
+            Text("Mode", bundle: BuddyL10n.bundle)
         }
 
         Section {
@@ -201,7 +218,6 @@ public struct BuddyAppearanceSettingsSection: View {
             .padding(.vertical, BuddyTheme.Spacing.xxs)
 
             ColorPicker(
-                "Custom color",
                 selection: Binding(
                     get: { Color(nsColor: BuddyAppearanceSettings.accentNSColor(for: brand)) },
                     set: { newColor in
@@ -209,19 +225,23 @@ public struct BuddyAppearanceSettingsSection: View {
                     }
                 ),
                 supportsOpacity: false
-            )
+            ) {
+                Text("Custom color", bundle: BuddyL10n.bundle)
+            }
             .accessibilityIdentifier("settings-appearance-custom-color")
 
             if !isUsingBrandDefault {
-                Button("Reset to \(brand.displayName) default") {
+                Button {
                     accentHexRaw = brand.defaultAccentHex
+                } label: {
+                    Text("Reset to \(brand.displayName) default", bundle: BuddyL10n.bundle)
                 }
                 .accessibilityIdentifier("settings-appearance-reset-accent")
             }
         } header: {
-            Text("Theme color")
+            Text("Theme color", bundle: BuddyL10n.bundle)
         } footer: {
-            Text("Default for \(brand.displayName) is \(brand.defaultAccentHex).")
+            Text("Default for \(brand.displayName) is \(brand.defaultAccentHex).", bundle: BuddyL10n.bundle)
                 .font(BuddyTheme.Typography.caption)
         }
         .onAppear {
@@ -258,7 +278,7 @@ private struct AccentSwatchButton: View {
         }
         .buttonStyle(.plain)
         .help(hex)
-        .accessibilityLabel("Theme color \(hex)")
+        .accessibilityLabel(Text("Theme color \(hex)", bundle: BuddyL10n.bundle))
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
@@ -319,11 +339,23 @@ public struct BuddyLegalLinksSection: View {
     }
 
     public var body: some View {
-        Section("Legal") {
-            Link("Privacy Policy", destination: BuddyLegalURLs.privacyPolicy(for: app))
-                .accessibilityIdentifier("settings-privacy-policy")
-            Link("Terms of Use", destination: BuddyLegalURLs.termsOfUse(for: app))
-                .accessibilityIdentifier("settings-terms-of-use")
+        Section {
+            Link(destination: BuddyLegalURLs.privacyPolicy(for: app)) {
+                Text("Privacy Policy", bundle: BuddyL10n.bundle)
+            }
+            .accessibilityIdentifier("settings-privacy-policy")
+            Link(destination: BuddyLegalURLs.termsOfUse(for: app)) {
+                Text("Terms of Use", bundle: BuddyL10n.bundle)
+            }
+            .accessibilityIdentifier("settings-terms-of-use")
+            if let reviewURL = BuddyLegalURLs.writeReviewURL(for: app) {
+                Link(destination: reviewURL) {
+                    Text("Rate App", bundle: BuddyL10n.bundle)
+                }
+                .accessibilityIdentifier("settings-rate-app")
+            }
+        } header: {
+            Text("Legal", bundle: BuddyL10n.bundle)
         }
     }
 }

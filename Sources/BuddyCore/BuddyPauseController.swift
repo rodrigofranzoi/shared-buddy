@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import BuddyLocalization
 
 public extension Notification.Name {
     static let buddyPauseDidChange = Notification.Name("buddy.pauseDidChange")
@@ -33,14 +34,14 @@ public enum BuddyPausePreset: String, CaseIterable, Identifiable, Sendable {
 
     public var title: String {
         switch self {
-        case .fiveMinutes: return "5 minutes"
-        case .fifteenMinutes: return "15 minutes"
-        case .twentyMinutes: return "20 minutes"
-        case .thirtyMinutes: return "30 minutes"
-        case .oneHour: return "1 hour"
-        case .twoHours: return "2 hours"
-        case .fourHours: return "4 hours"
-        case .eightHours: return "8 hours"
+        case .fiveMinutes: return BuddyL10n.string("5 minutes")
+        case .fifteenMinutes: return BuddyL10n.string("15 minutes")
+        case .twentyMinutes: return BuddyL10n.string("20 minutes")
+        case .thirtyMinutes: return BuddyL10n.string("30 minutes")
+        case .oneHour: return BuddyL10n.string("1 hour")
+        case .twoHours: return BuddyL10n.string("2 hours")
+        case .fourHours: return BuddyL10n.string("4 hours")
+        case .eightHours: return BuddyL10n.string("8 hours")
         }
     }
 }
@@ -131,13 +132,14 @@ public final class BuddyPauseController: ObservableObject {
     }
 
     public var statusSummary: String {
-        guard isPaused else { return "On" }
-        if isPermanent { return "Off permanently" }
-        if isUntilNextSession { return "Off until next session" }
+        guard isPaused else { return BuddyL10n.string("On") }
+        if isPermanent { return BuddyL10n.string("Off permanently") }
+        if isUntilNextSession { return BuddyL10n.string("Off until next session") }
         if let pauseEndsAt {
-            return "Off until \(pauseEndsAt.formatted(date: .omitted, time: .shortened))"
+            let time = pauseEndsAt.formatted(date: .omitted, time: .shortened)
+            return BuddyL10n.string("Off until \(time)")
         }
-        return "Off"
+        return BuddyL10n.string("Off")
     }
 
     private func scheduleResume(at date: Date) {

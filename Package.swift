@@ -19,6 +19,7 @@ let package = Package(
     targets: [
         .target(
             name: "BuddyCore",
+            dependencies: ["BuddyLocalization"],
             path: "Sources/BuddyCore",
             resources: [
                 .process("Resources")

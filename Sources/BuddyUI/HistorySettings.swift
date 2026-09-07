@@ -2,6 +2,7 @@ import SwiftUI
 import AppKit
 import UniformTypeIdentifiers
 import BuddyCore
+import BuddyLocalization
 
 // MARK: - Clippings / history limits
 
@@ -22,33 +23,29 @@ public struct ClipboardClippingsSettingsSection: View {
 
     public var body: some View {
         Section {
-            Stepper(
-                "Remember \(maxHistoryCount) clippings",
-                value: $maxHistoryCount,
-                in: 10...2000,
-                step: 10
-            )
+            Stepper(value: $maxHistoryCount, in: 10...2000, step: 10) {
+                Text("Remember \(maxHistoryCount) clippings", bundle: BuddyL10n.bundle)
+            }
             .accessibilityIdentifier("settings-clipboard-max-history")
             .onChange(of: maxHistoryCount) { _ in onLimitsChanged?() }
 
-            Stepper(
-                "Show \(menuBarRecentCount) clippings in menu bar",
-                value: $menuBarRecentCount,
-                in: 1...50
-            )
+            Stepper(value: $menuBarRecentCount, in: 1...50) {
+                Text("Show \(menuBarRecentCount) clippings in menu bar", bundle: BuddyL10n.bundle)
+            }
             .accessibilityIdentifier("settings-clipboard-menu-recent")
 
-            Stepper(
-                "Show \(menuBarFavoriteCount) favorites in menu bar",
-                value: $menuBarFavoriteCount,
-                in: 0...50
-            )
+            Stepper(value: $menuBarFavoriteCount, in: 0...50) {
+                Text("Show \(menuBarFavoriteCount) favorites in menu bar", bundle: BuddyL10n.bundle)
+            }
             .accessibilityIdentifier("settings-clipboard-menu-favorites")
         } header: {
-            Text("Clippings")
+            Text("Clippings", bundle: BuddyL10n.bundle)
         } footer: {
-            Text("Older clippings beyond the remember limit are removed automatically. Favorites are kept separately.")
-                .font(BuddyTheme.Typography.caption)
+            Text(
+                "Older clippings beyond the remember limit are removed automatically. Favorites are kept separately.",
+                bundle: BuddyL10n.bundle
+            )
+            .font(BuddyTheme.Typography.caption)
         }
     }
 }
@@ -57,8 +54,12 @@ public struct ClipboardClippingsSettingsSection: View {
 public struct ScreenshotHistorySettingsSection: View {
     @AppStorage(BuddySettingsKey.screenshotMaxHistoryCount) private var maxHistoryCount = 100
     @AppStorage(BuddySettingsKey.screenshotMenuBarRecentCount) private var menuBarRecentCount = 8
+    @State private var maxHistoryDraft = ""
+    @FocusState private var maxHistoryFocused: Bool
 
     private let onLimitsChanged: (() -> Void)?
+    private let maxHistoryRange = 10...2000
+    private let menuBarRecentRange = 1...50
 
     public init(onLimitsChanged: (() -> Void)? = nil) {
         self.onLimitsChanged = onLimitsChanged
@@ -66,26 +67,70 @@ public struct ScreenshotHistorySettingsSection: View {
 
     public var body: some View {
         Section {
-            Stepper(
-                "Remember \(maxHistoryCount) screenshots",
-                value: $maxHistoryCount,
-                in: 10...2000,
-                step: 10
-            )
-            .accessibilityIdentifier("settings-screenshot-max-history")
-            .onChange(of: maxHistoryCount) { _ in onLimitsChanged?() }
+            HStack {
+                Text("Remember screenshots", bundle: BuddyL10n.bundle)
+                Spacer(minLength: BuddyTheme.Spacing.sm)
+                TextField("", text: $maxHistoryDraft)
+                    .labelsHidden()
+                    .textFieldStyle(.roundedBorder)
+                    .multilineTextAlignment(.trailing)
+                    .frame(width: 72)
+                    .focused($maxHistoryFocused)
+                    .onSubmit(commitMaxHistory)
+                    .onChange(of: maxHistoryDraft) { newValue in
+                        let filtered = newValue.filter(\.isNumber)
+                        if filtered != newValue {
+                            maxHistoryDraft = filtered
+                        }
+                    }
+                    .accessibilityIdentifier("settings-screenshot-max-history")
+            }
+            .onAppear(perform: syncMaxHistoryDraft)
+            .onChange(of: maxHistoryCount) { _ in
+                if !maxHistoryFocused {
+                    syncMaxHistoryDraft()
+                }
+            }
+            .onChange(of: maxHistoryFocused) { focused in
+                if !focused {
+                    commitMaxHistory()
+                }
+            }
 
-            Stepper(
-                "Show \(menuBarRecentCount) screenshots in menu bar",
-                value: $menuBarRecentCount,
-                in: 1...50
-            )
+            Stepper(value: $menuBarRecentCount, in: menuBarRecentRange) {
+                Text("Show \(menuBarRecentCount) screenshots in menu bar", bundle: BuddyL10n.bundle)
+            }
             .accessibilityIdentifier("settings-screenshot-menu-recent")
+            .onChange(of: menuBarRecentCount) { newValue in
+                let clamped = min(max(newValue, menuBarRecentRange.lowerBound), menuBarRecentRange.upperBound)
+                if clamped != newValue {
+                    menuBarRecentCount = clamped
+                }
+            }
         } header: {
-            Text("Screenshots")
+            Text("Screenshots", bundle: BuddyL10n.bundle)
         } footer: {
-            Text("Older screenshots beyond the remember limit are removed automatically.")
-                .font(BuddyTheme.Typography.caption)
+            Text(
+                "Older screenshots beyond the remember limit are removed automatically.",
+                bundle: BuddyL10n.bundle
+            )
+            .font(BuddyTheme.Typography.caption)
+        }
+    }
+
+    private func syncMaxHistoryDraft() {
+        maxHistoryDraft = "\(maxHistoryCount)"
+    }
+
+    private func commitMaxHistory() {
+        let digits = maxHistoryDraft.filter(\.isNumber)
+        let parsed = Int(digits) ?? maxHistoryCount
+        let clamped = min(max(parsed, maxHistoryRange.lowerBound), maxHistoryRange.upperBound)
+        let changed = clamped != maxHistoryCount
+        maxHistoryCount = clamped
+        maxHistoryDraft = "\(clamped)"
+        if changed {
+            onLimitsChanged?()
         }
     }
 }
@@ -101,7 +146,7 @@ public struct ClipboardIgnoredAppsSettingsSection: View {
     public var body: some View {
         Section {
             if apps.isEmpty {
-                Text("No apps ignored")
+                Text("No apps ignored", bundle: BuddyL10n.bundle)
                     .foregroundStyle(.secondary)
             } else {
                 ForEach(apps) { app in
@@ -120,21 +165,26 @@ public struct ClipboardIgnoredAppsSettingsSection: View {
                             Image(systemName: "minus.circle.fill")
                         }
                         .buttonStyle(.borderless)
-                        .accessibilityLabel("Stop ignoring \(app.displayName)")
+                        .accessibilityLabel(Text("Stop ignoring \(app.displayName)", bundle: BuddyL10n.bundle))
                         .accessibilityIdentifier("settings-ignore-remove-\(app.bundleIdentifier)")
                     }
                 }
             }
 
-            Button("Add App…") {
+            Button {
                 addApp()
+            } label: {
+                Text("Add App…", bundle: BuddyL10n.bundle)
             }
             .accessibilityIdentifier("settings-ignore-add-app")
         } header: {
-            Text("Ignored Apps")
+            Text("Ignored Apps", bundle: BuddyL10n.bundle)
         } footer: {
-            Text("Copies made while these apps are frontmost are not saved to Clipboard Buddy history.")
-                .font(BuddyTheme.Typography.caption)
+            Text(
+                "Copies made while these apps are frontmost are not saved to Clipboard Buddy history.",
+                bundle: BuddyL10n.bundle
+            )
+            .font(BuddyTheme.Typography.caption)
         }
         .onAppear(perform: reload)
     }
@@ -150,8 +200,8 @@ public struct ClipboardIgnoredAppsSettingsSection: View {
         panel.allowsMultipleSelection = true
         panel.allowedContentTypes = [.application]
         panel.directoryURL = URL(fileURLWithPath: "/Applications")
-        panel.message = "Choose apps whose clipboard copies should be ignored"
-        panel.prompt = "Ignore"
+        panel.message = BuddyL10n.string("Choose apps whose clipboard copies should be ignored")
+        panel.prompt = BuddyL10n.string("Ignore")
         guard panel.runModal() == .OK else { return }
 
         for url in panel.urls {
@@ -182,30 +232,43 @@ public struct BuddyClearHistorySettingsSection: View {
         self.onClear = onClear
     }
 
+    private var localizedNoun: String {
+        BuddyL10n.string(key: itemNoun)
+    }
+
     public var body: some View {
         Section {
-            Button("Erase All History…", role: .destructive) {
+            Button(role: .destructive) {
                 confirm = true
+            } label: {
+                Text("Erase All History…", bundle: BuddyL10n.bundle)
             }
             .accessibilityIdentifier("settings-erase-all-history")
         } header: {
-            Text("History")
+            Text("History", bundle: BuddyL10n.bundle)
         } footer: {
-            Text("Removes all saved \(itemNoun) from this Mac. This cannot be undone.")
-                .font(BuddyTheme.Typography.caption)
+            Text(
+                "Removes all saved \(localizedNoun) from this Mac. This cannot be undone.",
+                bundle: BuddyL10n.bundle
+            )
+            .font(BuddyTheme.Typography.caption)
         }
         .confirmationDialog(
-            "Erase all \(itemNoun)?",
+            Text("Erase all \(localizedNoun)?", bundle: BuddyL10n.bundle),
             isPresented: $confirm,
             titleVisibility: .visible
         ) {
-            Button("Erase All", role: .destructive) {
+            Button(role: .destructive) {
                 onClear()
+            } label: {
+                Text("Erase All", bundle: BuddyL10n.bundle)
             }
             .accessibilityIdentifier("settings-erase-all-confirm")
-            Button("Cancel", role: .cancel) {}
+            Button(role: .cancel) {} label: {
+                Text("Cancel", bundle: BuddyL10n.bundle)
+            }
         } message: {
-            Text("This cannot be undone.")
+            Text("This cannot be undone.", bundle: BuddyL10n.bundle)
         }
     }
 }
@@ -228,6 +291,10 @@ public struct BuddyClearHistoryButton: View {
         self.onClear = onClear
     }
 
+    private var localizedNoun: String {
+        BuddyL10n.string(key: itemNoun)
+    }
+
     public var body: some View {
         Group {
             switch style {
@@ -235,8 +302,12 @@ public struct BuddyClearHistoryButton: View {
                 Button(role: .destructive) {
                     confirmEraseWithAlert()
                 } label: {
-                    Label("Erase All History…", systemImage: "trash")
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Label {
+                        Text("Erase All History…", bundle: BuddyL10n.bundle)
+                    } icon: {
+                        Image(systemName: "trash")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .buttonStyle(.borderless)
                 .padding(.horizontal)
@@ -247,33 +318,37 @@ public struct BuddyClearHistoryButton: View {
                 } label: {
                     Image(systemName: "trash")
                 }
-                .help("Erase all history")
+                .help(Text("Erase all history", bundle: BuddyL10n.bundle))
                 .confirmationDialog(
-                    "Erase all \(itemNoun)?",
+                    Text("Erase all \(localizedNoun)?", bundle: BuddyL10n.bundle),
                     isPresented: $confirm,
                     titleVisibility: .visible
                 ) {
-                    Button("Erase All", role: .destructive) {
+                    Button(role: .destructive) {
                         onClear()
+                    } label: {
+                        Text("Erase All", bundle: BuddyL10n.bundle)
                     }
                     .accessibilityIdentifier("erase-all-history-confirm")
-                    Button("Cancel", role: .cancel) {}
+                    Button(role: .cancel) {} label: {
+                        Text("Cancel", bundle: BuddyL10n.bundle)
+                    }
                 } message: {
-                    Text("This cannot be undone.")
+                    Text("This cannot be undone.", bundle: BuddyL10n.bundle)
                 }
             }
         }
         .accessibilityIdentifier("erase-all-history")
-        .accessibilityLabel("Erase all history")
+        .accessibilityLabel(Text("Erase all history", bundle: BuddyL10n.bundle))
     }
 
     private func confirmEraseWithAlert() {
         let alert = NSAlert()
-        alert.messageText = "Erase all \(itemNoun)?"
-        alert.informativeText = "This cannot be undone."
+        alert.messageText = BuddyL10n.string("Erase all \(localizedNoun)?")
+        alert.informativeText = BuddyL10n.string("This cannot be undone.")
         alert.alertStyle = .warning
-        alert.addButton(withTitle: "Erase All")
-        alert.addButton(withTitle: "Cancel")
+        alert.addButton(withTitle: BuddyL10n.string("Erase All"))
+        alert.addButton(withTitle: BuddyL10n.string("Cancel"))
         if alert.runModal() == .alertFirstButtonReturn {
             onClear()
         }

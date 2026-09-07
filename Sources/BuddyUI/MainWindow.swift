@@ -1,5 +1,7 @@
 import AppKit
 import SwiftUI
+import BuddyCore
+import BuddyLocalization
 
 /// Shows / re-shows the SwiftUI `WindowGroup` main window for menu-bar (LSUIElement) apps.
 ///
@@ -130,15 +132,18 @@ public struct BuddyMainWindowRegistrar: NSViewRepresentable {
 /// Menu-bar footer: open the main window + quit the app.
 public struct BuddyMenuBarAppControls: View {
     public let appName: String
+    public var brand: BuddyBrand?
     public var onOpen: (() -> Void)?
     public var onQuit: (() -> Void)?
 
     public init(
         appName: String,
+        brand: BuddyBrand? = nil,
         onOpen: (() -> Void)? = nil,
         onQuit: (() -> Void)? = nil
     ) {
         self.appName = appName
+        self.brand = brand
         self.onOpen = onOpen
         self.onQuit = onQuit
     }
@@ -150,20 +155,46 @@ public struct BuddyMenuBarAppControls: View {
                 onOpen?()
                 BuddyMainWindow.show()
             } label: {
-                Label("Open \(appName)", systemImage: "macwindow")
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                Label {
+                    Text("Open \(appName)", bundle: BuddyL10n.bundle)
+                } icon: {
+                    Image(systemName: "macwindow")
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(.borderless)
             .padding(.horizontal)
             .padding(.vertical, BuddyTheme.Spacing.sm)
             .accessibilityIdentifier("menu-bar-open-app")
 
+            if let brand,
+               let reviewURL = BuddyLegalURLs.writeReviewURL(for: brand.legalApp) {
+                Button {
+                    NSWorkspace.shared.open(reviewURL)
+                } label: {
+                    Label {
+                        Text("Rate \(appName)", bundle: BuddyL10n.bundle)
+                    } icon: {
+                        Image(systemName: "star")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .buttonStyle(.borderless)
+                .padding(.horizontal)
+                .padding(.vertical, BuddyTheme.Spacing.sm)
+                .accessibilityIdentifier("menu-bar-rate-app")
+            }
+
             Button {
                 onQuit?()
                 NSApp.terminate(nil)
             } label: {
-                Label("Quit \(appName)", systemImage: "power")
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                Label {
+                    Text("Quit \(appName)", bundle: BuddyL10n.bundle)
+                } icon: {
+                    Image(systemName: "power")
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(.borderless)
             .padding(.horizontal)

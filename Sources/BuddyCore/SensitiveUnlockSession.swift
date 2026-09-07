@@ -1,6 +1,7 @@
 import Foundation
 import LocalAuthentication
 import Combine
+import BuddyLocalization
 
 /// Session unlock for sensitive content. A successful auth (or no-auth reveal)
 /// keeps content visible for ``unlockDuration`` so Touch ID is not needed every tap.
@@ -33,9 +34,10 @@ public final class SensitiveUnlockSession: ObservableObject {
     /// Reveal sensitive content. Requires Touch ID / password when that setting is on,
     /// then stays open for 10 minutes.
     public func unlock(
-        reason: String = "Reveal sensitive content",
+        reason: String? = nil,
         completion: @escaping (Bool) -> Void
     ) {
+        let reason = reason ?? BuddyL10n.string("Reveal sensitive content")
         if isUnlocked {
             completion(true)
             return
@@ -47,20 +49,30 @@ public final class SensitiveUnlockSession: ObservableObject {
             return
         }
 
+        authenticate(reason: reason) { success in
+            if success {
+                self.grantUnlock()
+            }
+            completion(success)
+        }
+    }
+
+    /// Always prompts for Touch ID / Mac password (ignores the unlock session).
+    /// Use when changing privacy settings so an open session cannot bypass confirmation.
+    public func authenticate(
+        reason: String,
+        completion: @escaping (Bool) -> Void
+    ) {
         let context = LAContext()
         var error: NSError?
         if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
             context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { success, _ in
                 Task { @MainActor in
-                    if success {
-                        self.grantUnlock()
-                    }
                     completion(success)
                 }
             }
         } else {
-            // Device has no auth configured — allow reveal rather than brick the UI.
-            grantUnlock()
+            // Device has no auth configured — allow rather than brick the UI.
             completion(true)
         }
     }

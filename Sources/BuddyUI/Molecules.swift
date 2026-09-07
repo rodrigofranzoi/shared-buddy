@@ -13,13 +13,13 @@ public struct TagChip: View {
     }
 
     public var body: some View {
-        Text(tag.rawValue)
+        Text(ContentTagger.displayName(for: tag))
             .font(BuddyTheme.Typography.label)
             .padding(.horizontal, BuddyTheme.Spacing.sm)
             .padding(.vertical, BuddyTheme.Spacing.xs)
             .background(chipBackground)
             .clipShape(RoundedRectangle(cornerRadius: BuddyTheme.Radius.md, style: .continuous))
-            .accessibilityLabel(Text("Tag: \(tag.rawValue)"))
+            .accessibilityLabel(ContentTagger.displayName(for: tag))
     }
 
     private var chipBackground: some View {
@@ -50,8 +50,8 @@ public struct SensitiveBlurView<Content: View>: View {
                 .allowsHitTesting(!isHidden)
             if isHidden {
                 BuddyButton("Reveal", systemImage: "eye.slash", kind: .secondary, action: onReveal)
-                    .accessibilityLabel("Hidden sensitive content")
-                    .accessibilityHint("Double tap to reveal")
+                    .accessibilityLabel(Text("Hidden sensitive content", bundle: BuddyL10n.bundle))
+                    .accessibilityHint(Text("Double tap to reveal", bundle: BuddyL10n.bundle))
             }
         }
         .animation(.easeInOut(duration: BuddyTheme.Duration.value(BuddyTheme.Duration.quick)), value: isHidden)
@@ -60,18 +60,20 @@ public struct SensitiveBlurView<Content: View>: View {
 
 public struct BuddySearchField: View {
     @Binding public var text: String
-    public var placeholder: String
+    public var placeholderKey: LocalizedStringKey
 
-    public init(text: Binding<String>, placeholder: String = "Search") {
+    public init(text: Binding<String>, placeholder: LocalizedStringKey = "Search") {
         self._text = text
-        self.placeholder = placeholder
+        self.placeholderKey = placeholder
     }
 
     public var body: some View {
-        TextField(placeholder, text: $text)
-            .textFieldStyle(.roundedBorder)
-            .font(BuddyTheme.Typography.body)
-            .accessibilityLabel(placeholder)
+        TextField(text: $text) {
+            Text(placeholderKey, bundle: BuddyL10n.bundle)
+        }
+        .textFieldStyle(.roundedBorder)
+        .font(BuddyTheme.Typography.body)
+        .accessibilityLabel(Text(placeholderKey, bundle: BuddyL10n.bundle))
     }
 }
 
@@ -134,9 +136,9 @@ public struct MenuBarRow: View {
                             .accessibilityHidden(true)
                     }
                     VStack(alignment: .leading, spacing: BuddyTheme.Spacing.xxs) {
-                        BuddyText(title, style: .body)
+                        BuddyText(verbatim: title, style: .body)
                             .lineLimit(1)
-                        BuddyText(subtitle, style: .caption, secondary: true)
+                        BuddyText(verbatim: subtitle, style: .caption, secondary: true)
                             .lineLimit(1)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -145,15 +147,15 @@ public struct MenuBarRow: View {
             }
             .buttonStyle(.plain)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel("\(title), \(subtitle)")
+            .accessibilityLabel(Text(verbatim: "\(title), \(subtitle)"))
 
             if let openAction {
                 Button(action: openAction) {
                     Image(systemName: "safari")
                 }
                 .buttonStyle(.borderless)
-                .accessibilityLabel("Open link")
-                .help("Open link")
+                .accessibilityLabel(Text("Open link", bundle: BuddyL10n.bundle))
+                .help(Text("Open link", bundle: BuddyL10n.bundle))
             }
 
             if let copyAction {
@@ -169,8 +171,8 @@ public struct MenuBarRow: View {
                         .foregroundStyle(justCopied ? Color.green : Color.primary)
                 }
                 .buttonStyle(.borderless)
-                .accessibilityLabel(justCopied ? "Copied" : "Copy")
-                .help(justCopied ? "Copied" : "Copy to clipboard")
+                .accessibilityLabel(justCopied ? Text("Copied", bundle: BuddyL10n.bundle) : Text("Copy", bundle: BuddyL10n.bundle))
+                .help(justCopied ? Text("Copied", bundle: BuddyL10n.bundle) : Text("Copy to clipboard", bundle: BuddyL10n.bundle))
             }
         }
         .padding(.vertical, BuddyTheme.Spacing.sm)
@@ -230,21 +232,21 @@ public struct DetectedContentTokenRow: View {
                 Button {
                     onOpen(url)
                 } label: {
-                    Label("Open", systemImage: "safari")
+                    Label { Text("Open", bundle: BuddyL10n.bundle) } icon: { Image(systemName: "safari") }
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
-                .help("Open link")
+                .help(Text("Open link", bundle: BuddyL10n.bundle))
             }
 
             Button {
                 onCopy(token.raw)
             } label: {
-                Label("Copy", systemImage: "doc.on.doc")
+                Label { Text("Copy", bundle: BuddyL10n.bundle) } icon: { Image(systemName: "doc.on.doc") }
             }
             .buttonStyle(.bordered)
             .controlSize(.small)
-            .help("Copy to clipboard")
+            .help(Text("Copy to clipboard", bundle: BuddyL10n.bundle))
         }
         .padding(.vertical, BuddyTheme.Spacing.sm)
         .overlay(alignment: .bottom) {
@@ -253,7 +255,7 @@ public struct DetectedContentTokenRow: View {
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel(token.kind == .color ? "Detected color" : "Detected link")
+        .accessibilityLabel(token.kind == .color ? Text("Detected color", bundle: BuddyL10n.bundle) : Text("Detected link", bundle: BuddyL10n.bundle))
         .accessibilityValue(token.raw)
     }
 }
@@ -308,10 +310,12 @@ public struct ContentBlockedAlert: View {
                 }
             }
 
-            Toggle("Never show again", isOn: $neverShowAgain)
-                .toggleStyle(.checkbox)
-                .font(BuddyTheme.Typography.caption)
-                .accessibilityIdentifier("content-blocked-never-show")
+            Toggle(isOn: $neverShowAgain) {
+                Text("Never show again", bundle: BuddyL10n.bundle)
+            }
+            .toggleStyle(.checkbox)
+            .font(BuddyTheme.Typography.caption)
+            .accessibilityIdentifier("content-blocked-never-show")
 
             HStack {
                 Spacer(minLength: 0)
@@ -352,22 +356,30 @@ public struct SensitivePrivacySettingsSection: View {
     public init() {}
 
     public var body: some View {
-        Section("Sensitive content") {
-            Toggle("Ask for password or Touch ID to view sensitive content", isOn: $requireAuth)
-                .accessibilityIdentifier("settings-require-auth-sensitive")
+        Section {
+            Toggle(isOn: requireAuthBinding) {
+                Text("Ask for password or Touch ID to view sensitive content", bundle: BuddyL10n.bundle)
+            }
+            .accessibilityIdentifier("settings-require-auth-sensitive")
 
             if requireAuth {
-                Text("Matching items stay blurred until unlocked, then remain visible for 10 minutes.")
-                    .font(BuddyTheme.Typography.caption)
-                    .foregroundStyle(.secondary)
+                Text(
+                    "Matching items stay blurred until unlocked, then remain visible for 10 minutes.",
+                    bundle: BuddyL10n.bundle
+                )
+                .font(BuddyTheme.Typography.caption)
+                .foregroundStyle(.secondary)
 
-                Text("What is sensitive content")
+                Text("What is sensitive content", bundle: BuddyL10n.bundle)
                     .font(BuddyTheme.Typography.label)
                     .padding(.top, 4)
 
-                Text("These types stay hidden until unlocked with password or Touch ID.")
-                    .font(BuddyTheme.Typography.caption)
-                    .foregroundStyle(.secondary)
+                Text(
+                    "These types stay hidden until unlocked with password or Touch ID.",
+                    bundle: BuddyL10n.bundle
+                )
+                .font(BuddyTheme.Typography.caption)
+                .foregroundStyle(.secondary)
 
                 ForEach(ContentTagger.autoBlurSelectableTags, id: \.self) { tag in
                     Toggle(ContentTagger.displayName(for: tag), isOn: protectedBinding(for: tag))
@@ -375,8 +387,30 @@ public struct SensitivePrivacySettingsSection: View {
                         .accessibilityIdentifier("settings-protected-\(tag.rawValue)")
                 }
             }
+        } header: {
+            Text("Sensitive content", bundle: BuddyL10n.bundle)
         }
         .onAppear { syncProtectedStorage() }
+    }
+
+    private var requireAuthBinding: Binding<Bool> {
+        Binding(
+            get: { requireAuth },
+            set: { newValue in
+                if newValue {
+                    requireAuth = true
+                    return
+                }
+                // Turning off must confirm with password / Touch ID (even if already unlocked).
+                SensitiveUnlockSession.shared.authenticate(
+                    reason: BuddyL10n.string("Disable password or Touch ID protection")
+                ) { success in
+                    guard success else { return }
+                    requireAuth = false
+                    SensitiveUnlockSession.shared.lock()
+                }
+            }
+        )
     }
 
     private func protectedBinding(for tag: ContentTag) -> Binding<Bool> {
@@ -404,16 +438,21 @@ public struct AutoBlurSettingsSection: View {
     public init() {}
 
     public var body: some View {
-        Section("Auto-blur") {
-            Text("These types are detected and blurred in the screenshot editor.")
-                .font(BuddyTheme.Typography.caption)
-                .foregroundStyle(.secondary)
+        Section {
+            Text(
+                "These types are detected and blurred in the screenshot editor.",
+                bundle: BuddyL10n.bundle
+            )
+            .font(BuddyTheme.Typography.caption)
+            .foregroundStyle(.secondary)
 
             ForEach(ContentTagger.autoBlurSelectableTags, id: \.self) { tag in
                 Toggle(ContentTagger.displayName(for: tag), isOn: autoBlurBinding(for: tag))
                     .toggleStyle(.checkbox)
                     .accessibilityIdentifier("settings-auto-blur-\(tag.rawValue)")
             }
+        } header: {
+            Text("Auto-blur", bundle: BuddyL10n.bundle)
         }
         .onAppear { syncAutoBlurStorage() }
     }
@@ -451,19 +490,19 @@ public func buddyOpenAppSettings() {
 
 /// Toolbar / control that opens Settings via `SettingsLink` (macOS 14+) with a sendAction fallback.
 public struct BuddyOpenSettingsButton<Label: View>: View {
-    private let helpText: String
-    private let accessibilityLabelText: String
+    private let helpKey: LocalizedStringKey
+    private let accessibilityLabelKey: LocalizedStringKey
     private let accessibilityId: String?
     @ViewBuilder private let label: () -> Label
 
     public init(
-        help: String = "Settings",
-        accessibilityLabel: String = "Settings",
+        help: LocalizedStringKey = "Settings",
+        accessibilityLabel: LocalizedStringKey = "Settings",
         accessibilityIdentifier: String? = nil,
         @ViewBuilder label: @escaping () -> Label
     ) {
-        self.helpText = help
-        self.accessibilityLabelText = accessibilityLabel
+        self.helpKey = help
+        self.accessibilityLabelKey = accessibilityLabel
         self.accessibilityId = accessibilityIdentifier
         self.label = label
     }
@@ -476,8 +515,8 @@ public struct BuddyOpenSettingsButton<Label: View>: View {
                 Button(action: buddyOpenAppSettings, label: label)
             }
         }
-        .help(helpText)
-        .accessibilityLabel(accessibilityLabelText)
+        .help(Text(helpKey, bundle: BuddyL10n.bundle))
+        .accessibilityLabel(Text(accessibilityLabelKey, bundle: BuddyL10n.bundle))
         .modifier(BuddyOptionalAccessibilityIdentifier(accessibilityId))
     }
 }
@@ -501,24 +540,24 @@ private struct BuddyOptionalAccessibilityIdentifier: ViewModifier {
 
 /// Gear-icon Settings control used across Buddy apps.
 public struct BuddySettingsGearButton: View {
-    private let helpText: String
-    private let accessibilityLabelText: String
+    private let helpKey: LocalizedStringKey
+    private let accessibilityLabelKey: LocalizedStringKey
     private let accessibilityId: String?
 
     public init(
-        help: String = "Settings",
-        accessibilityLabel: String = "Settings",
+        help: LocalizedStringKey = "Settings",
+        accessibilityLabel: LocalizedStringKey = "Settings",
         accessibilityIdentifier: String? = nil
     ) {
-        self.helpText = help
-        self.accessibilityLabelText = accessibilityLabel
+        self.helpKey = help
+        self.accessibilityLabelKey = accessibilityLabel
         self.accessibilityId = accessibilityIdentifier
     }
 
     public var body: some View {
         BuddyOpenSettingsButton(
-            help: helpText,
-            accessibilityLabel: accessibilityLabelText,
+            help: helpKey,
+            accessibilityLabel: accessibilityLabelKey,
             accessibilityIdentifier: accessibilityId
         ) {
             Image(systemName: "gearshape")
@@ -530,21 +569,24 @@ public struct BuddySettingsGearButton: View {
 @available(macOS 14.0, *)
 public struct BuddyDeferredOpenSettingsButton: View {
     @Environment(\.openSettings) private var openSettings
-    private let title: String
+    private let title: LocalizedStringKey
     private let beforeOpen: () -> Void
 
-    public init(title: String, beforeOpen: @escaping () -> Void = {}) {
+    public init(title: LocalizedStringKey, beforeOpen: @escaping () -> Void = {}) {
         self.title = title
         self.beforeOpen = beforeOpen
     }
 
     public var body: some View {
-        Button(title) {
+        Button {
             beforeOpen()
             DispatchQueue.main.async {
                 openSettings()
                 NSApp.activate(ignoringOtherApps: true)
             }
+        } label: {
+            // App-owned string (catalog in the host app main bundle).
+            Text(title)
         }
     }
 }

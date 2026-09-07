@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import BuddyLocalization
 
 /// Brand identity for each Buddy app (default accent colors).
 public enum BuddyBrand: String, CaseIterable, Sendable {
@@ -42,9 +43,9 @@ public enum BuddyAppearanceSettings {
 
         public var title: String {
             switch self {
-            case .system: return "System"
-            case .light: return "Light"
-            case .dark: return "Dark"
+            case .system: return BuddyL10n.string("System")
+            case .light: return BuddyL10n.string("Light")
+            case .dark: return BuddyL10n.string("Dark")
             }
         }
     }

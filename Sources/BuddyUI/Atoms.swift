@@ -1,4 +1,5 @@
 import SwiftUI
+import BuddyLocalization
 
 // MARK: - Atoms
 
@@ -7,20 +8,41 @@ public struct BuddyText: View {
         case title, body, caption, label
     }
 
-    private let text: String
+    private enum Content {
+        case localized(LocalizedStringKey)
+        case verbatim(String)
+    }
+
+    private let content: Content
     private let style: Style
     private let secondary: Bool
 
-    public init(_ text: String, style: Style = .body, secondary: Bool = false) {
-        self.text = text
+    public init(_ key: LocalizedStringKey, style: Style = .body, secondary: Bool = false) {
+        self.content = .localized(key)
+        self.style = style
+        self.secondary = secondary
+    }
+
+    public init(verbatim text: String, style: Style = .body, secondary: Bool = false) {
+        self.content = .verbatim(text)
         self.style = style
         self.secondary = secondary
     }
 
     public var body: some View {
-        Text(text)
+        textView
             .font(font)
             .foregroundStyle(secondary ? BuddyTheme.BuddyColor.textSecondary : BuddyTheme.BuddyColor.textPrimary)
+    }
+
+    @ViewBuilder
+    private var textView: some View {
+        switch content {
+        case .localized(let key):
+            Text(key, bundle: BuddyL10n.bundle)
+        case .verbatim(let text):
+            Text(verbatim: text)
+        }
     }
 
     private var font: Font {
@@ -35,17 +57,17 @@ public struct BuddyText: View {
 
 public struct BuddyIcon: View {
     private let systemName: String
-    private let accessibilityLabel: String
+    private let accessibilityLabelKey: LocalizedStringKey
 
-    public init(systemName: String, accessibilityLabel: String) {
+    public init(systemName: String, accessibilityLabel: LocalizedStringKey) {
         self.systemName = systemName
-        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityLabelKey = accessibilityLabel
     }
 
     public var body: some View {
         Image(systemName: systemName)
             .foregroundStyle(BuddyTheme.BuddyColor.textPrimary)
-            .accessibilityLabel(accessibilityLabel)
+            .accessibilityLabel(Text(accessibilityLabelKey, bundle: BuddyL10n.bundle))
     }
 }
 
@@ -54,13 +76,13 @@ public struct BuddyButton: View {
         case primary, secondary, ghost, danger
     }
 
-    private let title: String
+    private let title: LocalizedStringKey
     private let systemImage: String?
     private let kind: Kind
     private let action: () -> Void
 
     public init(
-        _ title: String,
+        _ title: LocalizedStringKey,
         systemImage: String? = nil,
         kind: Kind = .primary,
         action: @escaping () -> Void
@@ -77,7 +99,7 @@ public struct BuddyButton: View {
                 if let systemImage {
                     Image(systemName: systemImage)
                 }
-                Text(title)
+                Text(title, bundle: BuddyL10n.bundle)
             }
             .font(BuddyTheme.Typography.body)
             .padding(.horizontal, BuddyTheme.Spacing.md)
@@ -91,7 +113,7 @@ public struct BuddyButton: View {
             )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(title)
+        .accessibilityLabel(Text(title, bundle: BuddyL10n.bundle))
     }
 
     private var background: Color {
@@ -119,21 +141,21 @@ public struct BuddyButton: View {
 }
 
 public struct BuddyBadge: View {
-    private let text: String
+    private let key: LocalizedStringKey
 
-    public init(_ text: String) {
-        self.text = text
+    public init(_ key: LocalizedStringKey) {
+        self.key = key
     }
 
     public var body: some View {
-        Text(text)
+        Text(key, bundle: BuddyL10n.bundle)
             .font(BuddyTheme.Typography.label)
             .padding(.horizontal, BuddyTheme.Spacing.sm)
             .padding(.vertical, BuddyTheme.Spacing.xxs)
             .background(BuddyTheme.BuddyColor.accent.opacity(0.2))
             .foregroundStyle(BuddyTheme.BuddyColor.accent)
             .clipShape(Capsule())
-            .accessibilityLabel(text)
+            .accessibilityLabel(Text(key, bundle: BuddyL10n.bundle))
     }
 }
 

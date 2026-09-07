@@ -17,4 +17,19 @@ public enum BuddyLegalURLs {
     public static func termsOfUse(for app: App) -> URL {
         URL(string: "\(pagesHost)/\(app.rawValue)/terms.html")!
     }
+
+    /// Numeric App Store Connect Apple ID (not the bundle ID).
+    public static func appStoreID(for app: App) -> String? {
+        switch app {
+        case .clipboardBuddy: return "6809226741"
+        case .screenshotBuddy: return "6809226358"
+        case .otpBuddy: return "6809226854"
+        }
+    }
+
+    /// Opens the App Store write-review page when an App Store ID is known.
+    public static func writeReviewURL(for app: App) -> URL? {
+        guard let id = appStoreID(for: app) else { return nil }
+        return URL(string: "https://apps.apple.com/app/id\(id)?action=write-review")
+    }
 }

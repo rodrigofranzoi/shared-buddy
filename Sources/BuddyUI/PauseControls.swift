@@ -1,6 +1,7 @@
 import SwiftUI
 import AppKit
 import BuddyCore
+import BuddyLocalization
 
 /// Footer for menu-bar popovers: turn off until… / resume.
 public struct BuddyPauseControls: View {
@@ -21,15 +22,17 @@ public struct BuddyPauseControls: View {
             if pause.isPaused {
                 HStack {
                     VStack(alignment: .leading, spacing: BuddyTheme.Spacing.xxs) {
-                        Text("Paused")
+                        Text("Paused", bundle: BuddyL10n.bundle)
                             .font(BuddyTheme.Typography.label)
                         Text(pause.statusSummary)
                             .font(BuddyTheme.Typography.caption)
                             .foregroundStyle(.secondary)
                     }
                     Spacer(minLength: 0)
-                    Button("Resume") {
+                    Button {
                         pause.resume()
+                    } label: {
+                        Text("Resume", bundle: BuddyL10n.bundle)
                     }
                     .accessibilityIdentifier("pause-resume")
                 }
@@ -39,13 +42,17 @@ public struct BuddyPauseControls: View {
                 customDurationForm
             } else {
                 Menu {
-                    Button("Until next session") {
+                    Button {
                         pause.pauseUntilNextSession()
+                    } label: {
+                        Text("Until next session", bundle: BuddyL10n.bundle)
                     }
                     .accessibilityIdentifier("pause-next-session")
 
-                    Button("Permanently") {
+                    Button {
                         pause.pausePermanently()
+                    } label: {
+                        Text("Permanently", bundle: BuddyL10n.bundle)
                     }
                     .accessibilityIdentifier("pause-permanently")
 
@@ -59,13 +66,19 @@ public struct BuddyPauseControls: View {
 
                     Divider()
 
-                    Button("Custom…") {
+                    Button {
                         showCustom = true
+                    } label: {
+                        Text("Custom…", bundle: BuddyL10n.bundle)
                     }
                     .accessibilityIdentifier("pause-custom")
                 } label: {
-                    Label("Turn Off", systemImage: "pause.circle")
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Label {
+                        Text("Turn Off", bundle: BuddyL10n.bundle)
+                    } icon: {
+                        Image(systemName: "pause.circle")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .menuStyle(.borderlessButton)
                 .padding(.horizontal)
@@ -77,20 +90,28 @@ public struct BuddyPauseControls: View {
 
     private var customDurationForm: some View {
         VStack(alignment: .leading, spacing: BuddyTheme.Spacing.sm) {
-            Text("Custom duration")
+            Text("Custom duration", bundle: BuddyL10n.bundle)
                 .font(BuddyTheme.Typography.label)
-            Stepper("Hours: \(customHours)", value: $customHours, in: 0...48)
-            Stepper("Minutes: \(customMinutes)", value: $customMinutes, in: 0...59)
+            Stepper(value: $customHours, in: 0...48) {
+                Text("Hours: \(customHours)", bundle: BuddyL10n.bundle)
+            }
+            Stepper(value: $customMinutes, in: 0...59) {
+                Text("Minutes: \(customMinutes)", bundle: BuddyL10n.bundle)
+            }
             HStack {
-                Button("Cancel") {
+                Button {
                     showCustom = false
+                } label: {
+                    Text("Cancel", bundle: BuddyL10n.bundle)
                 }
                 Spacer(minLength: 0)
-                Button("Turn Off") {
+                Button {
                     let total = TimeInterval(customHours * 3600 + customMinutes * 60)
                     guard total > 0 else { return }
                     pause.pause(for: total)
                     showCustom = false
+                } label: {
+                    Text("Turn Off", bundle: BuddyL10n.bundle)
                 }
                 .keyboardShortcut(.defaultAction)
                 .disabled(customHours == 0 && customMinutes == 0)
@@ -117,7 +138,7 @@ public struct BuddyPauseSettingsSection: View {
         Section {
             HStack {
                 VStack(alignment: .leading, spacing: BuddyTheme.Spacing.xxs) {
-                    Text(pause.isPaused ? "Paused" : "Active")
+                    Text(pause.isPaused ? BuddyL10n.string("Paused") : BuddyL10n.string("Active"))
                         .font(BuddyTheme.Typography.label)
                     Text(pause.statusSummary)
                         .font(BuddyTheme.Typography.caption)
@@ -125,49 +146,101 @@ public struct BuddyPauseSettingsSection: View {
                 }
                 Spacer(minLength: 0)
                 if pause.isPaused {
-                    Button("Resume") {
+                    Button {
                         pause.resume()
+                    } label: {
+                        Text("Resume", bundle: BuddyL10n.bundle)
                     }
+                    .buttonStyle(.bordered)
                     .accessibilityIdentifier("settings-pause-resume")
                 }
             }
 
             if !pause.isPaused {
-                Button("Pause until next session") {
-                    pause.pauseUntilNextSession()
-                }
-                .accessibilityIdentifier("settings-pause-next-session")
+                VStack(alignment: .leading, spacing: BuddyTheme.Spacing.sm) {
+                    HStack(spacing: BuddyTheme.Spacing.sm) {
+                        equalWidthButton("Pause until next session", id: "settings-pause-next-session") {
+                            pause.pauseUntilNextSession()
+                        }
+                        equalWidthButton("Pause permanently", id: "settings-pause-permanently") {
+                            pause.pausePermanently()
+                        }
+                    }
 
-                Button("Pause permanently") {
-                    pause.pausePermanently()
-                }
-                .accessibilityIdentifier("settings-pause-permanently")
+                    HStack(spacing: BuddyTheme.Spacing.lg) {
+                        Stepper(value: $customHours, in: 0...48) {
+                            Text("Hours: \(customHours)", bundle: BuddyL10n.bundle)
+                        }
+                        Stepper(value: $customMinutes, in: 0...59) {
+                            Text("Minutes: \(customMinutes)", bundle: BuddyL10n.bundle)
+                        }
+                    }
 
-                Menu("Pause for…") {
-                    ForEach(BuddyPausePreset.allCases) { preset in
-                        Button(preset.title) {
-                            pause.pause(preset: preset)
+                    HStack(spacing: BuddyTheme.Spacing.sm) {
+                        equalWidthMenu("Pause for…", id: "settings-pause-preset-menu") {
+                            ForEach(BuddyPausePreset.allCases) { preset in
+                                Button(preset.title) {
+                                    pause.pause(preset: preset)
+                                }
+                            }
+                        }
+                        equalWidthButton(
+                            "Pause for custom duration",
+                            id: "settings-pause-custom",
+                            disabled: customHours == 0 && customMinutes == 0
+                        ) {
+                            let total = TimeInterval(customHours * 3600 + customMinutes * 60)
+                            guard total > 0 else { return }
+                            pause.pause(for: total)
                         }
                     }
                 }
-                .accessibilityIdentifier("settings-pause-preset-menu")
-
-                Stepper("Hours: \(customHours)", value: $customHours, in: 0...48)
-                Stepper("Minutes: \(customMinutes)", value: $customMinutes, in: 0...59)
-                Button("Pause for custom duration") {
-                    let total = TimeInterval(customHours * 3600 + customMinutes * 60)
-                    guard total > 0 else { return }
-                    pause.pause(for: total)
-                }
-                .disabled(customHours == 0 && customMinutes == 0)
-                .accessibilityIdentifier("settings-pause-custom")
             }
         } header: {
-            Text("Monitoring")
+            Text("Monitoring", bundle: BuddyL10n.bundle)
         } footer: {
-            Text("While paused, new clipboard or screenshot captures are not saved. Permanent pause survives relaunch until you resume.")
-                .font(BuddyTheme.Typography.caption)
+            Text(
+                "While paused, new clipboard or screenshot captures are not saved. Permanent pause survives relaunch until you resume.",
+                bundle: BuddyL10n.bundle
+            )
+            .font(BuddyTheme.Typography.caption)
         }
+    }
+
+    private func equalWidthButton(
+        _ title: String,
+        id: String,
+        disabled: Bool = false,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            Text(LocalizedStringKey(title), bundle: BuddyL10n.bundle)
+                .frame(maxWidth: .infinity, minHeight: 22)
+                .multilineTextAlignment(.center)
+        }
+        .buttonStyle(.bordered)
+        .controlSize(.large)
+        .disabled(disabled)
+        .frame(maxWidth: .infinity)
+        .accessibilityIdentifier(id)
+    }
+
+    private func equalWidthMenu<Content: View>(
+        _ title: String,
+        id: String,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        Menu {
+            content()
+        } label: {
+            Text(LocalizedStringKey(title), bundle: BuddyL10n.bundle)
+                .frame(maxWidth: .infinity, minHeight: 22)
+                .multilineTextAlignment(.center)
+        }
+        .menuStyle(.borderedButton)
+        .controlSize(.large)
+        .frame(maxWidth: .infinity)
+        .accessibilityIdentifier(id)
     }
 }
 
@@ -180,21 +253,23 @@ public struct BuddyLaunchAtLoginToggle: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: BuddyTheme.Spacing.xs) {
-            Toggle("Launch at login", isOn: $launchAtLogin)
-                .onChange(of: launchAtLogin) { enabled in
-                    do {
-                        try BuddyLaunchAtLogin.setEnabled(enabled)
-                        errorMessage = nil
-                    } catch {
-                        errorMessage = error.localizedDescription
-                        launchAtLogin = BuddyLaunchAtLogin.isEnabled
-                    }
-                }
-                .onAppear {
-                    BuddyLaunchAtLogin.refreshFromSystem()
+            Toggle(isOn: $launchAtLogin) {
+                Text("Launch at login", bundle: BuddyL10n.bundle)
+            }
+            .onChange(of: launchAtLogin) { enabled in
+                do {
+                    try BuddyLaunchAtLogin.setEnabled(enabled)
+                    errorMessage = nil
+                } catch {
+                    errorMessage = error.localizedDescription
                     launchAtLogin = BuddyLaunchAtLogin.isEnabled
                 }
-                .accessibilityIdentifier("launch-at-login-toggle")
+            }
+            .onAppear {
+                BuddyLaunchAtLogin.refreshFromSystem()
+                launchAtLogin = BuddyLaunchAtLogin.isEnabled
+            }
+            .accessibilityIdentifier("launch-at-login-toggle")
 
             if let errorMessage {
                 Text(errorMessage)

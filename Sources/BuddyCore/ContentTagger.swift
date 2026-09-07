@@ -1,4 +1,5 @@
 import Foundation
+import BuddyLocalization
 
 public enum ContentTag: String, Codable, CaseIterable, Sendable, Hashable {
     case url
@@ -51,8 +52,9 @@ public enum ContentTagger {
     }
 
     /// Short label for settings copy.
-    public static let sensitiveTypesSummary =
-        "passwords, IBANs, cards, API keys, OTPs, emails, phones, and amounts"
+    public static var sensitiveTypesSummary: String {
+        BuddyL10n.string("passwords, IBANs, cards, API keys, OTPs, emails, phones, and amounts")
+    }
 
     /// Ordered list for sensitive-type settings UI.
     public static let autoBlurSelectableTags: [ContentTag] = [
@@ -61,26 +63,26 @@ public enum ContentTagger {
 
     public static func displayName(for tag: ContentTag) -> String {
         switch tag {
-        case .password: return "Passwords"
-        case .iban: return "IBANs"
-        case .creditCard: return "Cards"
-        case .apiKey: return "API keys"
-        case .bearerToken: return "Tokens"
-        case .otp: return "OTPs"
-        case .url: return "URLs"
-        case .email: return "Emails"
-        case .phone: return "Phones"
-        case .amount: return "Amounts"
-        case .sha: return "Hashes"
-        case .json: return "JSON"
-        case .filePath: return "Paths"
-        case .colorHex: return "Colors"
-        case .image: return "Images"
-        case .text: return "Text"
-        case .file: return "Files"
-        case .richText: return "Rich text"
-        case .pdf: return "PDFs"
-        case .other: return "Other"
+        case .password: return BuddyL10n.string("Passwords")
+        case .iban: return BuddyL10n.string("IBANs")
+        case .creditCard: return BuddyL10n.string("Cards")
+        case .apiKey: return BuddyL10n.string("API keys")
+        case .bearerToken: return BuddyL10n.string("Tokens")
+        case .otp: return BuddyL10n.string("OTPs")
+        case .url: return BuddyL10n.string("URLs")
+        case .email: return BuddyL10n.string("Emails")
+        case .phone: return BuddyL10n.string("Phones")
+        case .amount: return BuddyL10n.string("Amounts")
+        case .sha: return BuddyL10n.string("Hashes")
+        case .json: return BuddyL10n.string("JSON")
+        case .filePath: return BuddyL10n.string("Paths")
+        case .colorHex: return BuddyL10n.string("Colors")
+        case .image: return BuddyL10n.string("Images")
+        case .text: return BuddyL10n.string("Text")
+        case .file: return BuddyL10n.string("Files")
+        case .richText: return BuddyL10n.string("Rich text")
+        case .pdf: return BuddyL10n.string("PDFs")
+        case .other: return BuddyL10n.string("Other")
         }
     }
 
