@@ -25,7 +25,7 @@ public enum BuddyLegalURLs {
         case .clipboardBuddy: return "6809226741"
         case .screenshotBuddy: return "6809226358"
         case .otpBuddy: return "6809226854"
-        case .paintBuddy: return nil
+        case .paintBuddy: return "6809586126"
         }
     }
 

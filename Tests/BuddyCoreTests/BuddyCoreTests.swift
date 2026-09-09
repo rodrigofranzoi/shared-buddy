@@ -454,3 +454,71 @@ final class QRCodePayloadTests: XCTestCase {
         return image
     }
 }
+
+final class BuddyAppReviewPromptTests: XCTestCase {
+    func testRequiresLaunchesOrEventsAndCooldown() {
+        let suite = "buddy.review.tests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defaults.removePersistentDomain(forName: suite)
+
+        var reference = Date(timeIntervalSince1970: 1_700_000_000)
+        let prompt = BuddyAppReviewPrompt(
+            defaults: defaults,
+            configuration: .init(
+                minimumLaunches: 3,
+                minimumSignificantEvents: 5,
+                minimumDaysSinceFirstLaunch: 2,
+                minimumDaysBetweenPrompts: 10
+            ),
+            now: { reference }
+        )
+
+        XCTAssertFalse(prompt.shouldPrompt(hasAppStoreListing: true))
+
+        prompt.recordLaunch()
+        prompt.recordLaunch()
+        XCTAssertFalse(prompt.shouldPrompt(hasAppStoreListing: true))
+
+        prompt.recordLaunch()
+        // Still too soon since first launch.
+        XCTAssertFalse(prompt.shouldPrompt(hasAppStoreListing: true))
+
+        reference = reference.addingTimeInterval(3 * 86_400)
+        XCTAssertTrue(prompt.shouldPrompt(hasAppStoreListing: true))
+        XCTAssertFalse(prompt.shouldPrompt(hasAppStoreListing: false))
+
+        prompt.markPrompted()
+        XCTAssertFalse(prompt.shouldPrompt(hasAppStoreListing: true))
+
+        reference = reference.addingTimeInterval(11 * 86_400)
+        XCTAssertTrue(prompt.shouldPrompt(hasAppStoreListing: true))
+    }
+
+    func testSignificantEventsCanQualify() {
+        let suite = "buddy.review.events.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defaults.removePersistentDomain(forName: suite)
+
+        var reference = Date(timeIntervalSince1970: 1_700_000_000)
+        let prompt = BuddyAppReviewPrompt(
+            defaults: defaults,
+            configuration: .init(
+                minimumLaunches: 99,
+                minimumSignificantEvents: 3,
+                minimumDaysSinceFirstLaunch: 1,
+                minimumDaysBetweenPrompts: 30
+            ),
+            now: { reference }
+        )
+
+        prompt.recordLaunch()
+        prompt.recordSignificantEvent()
+        prompt.recordSignificantEvent()
+        XCTAssertFalse(prompt.shouldPrompt(hasAppStoreListing: true))
+
+        prompt.recordSignificantEvent()
+        reference = reference.addingTimeInterval(2 * 86_400)
+        XCTAssertTrue(prompt.shouldPrompt(hasAppStoreListing: true))
+    }
+}
+

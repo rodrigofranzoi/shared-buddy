@@ -1,4 +1,5 @@
 import AppKit
+import StoreKit
 import SwiftUI
 import BuddyCore
 import BuddyLocalization
@@ -357,5 +358,79 @@ public struct BuddyLegalLinksSection: View {
         } header: {
             Text("Legal", bundle: BuddyL10n.bundle)
         }
+    }
+}
+
+/// Dedicated settings section that opens the App Store write-review page.
+public struct BuddyRateAppSettingsSection: View {
+    private let app: BuddyLegalURLs.App
+    private let appDisplayName: String
+
+    public init(app: BuddyLegalURLs.App, appDisplayName: String) {
+        self.app = app
+        self.appDisplayName = appDisplayName
+    }
+
+    public init(brand: BuddyBrand) {
+        self.app = brand.legalApp
+        self.appDisplayName = brand.displayName
+    }
+
+    public var body: some View {
+        if let reviewURL = BuddyLegalURLs.writeReviewURL(for: app) {
+            Section {
+                Link(destination: reviewURL) {
+                    Label {
+                        Text("Rate \(appDisplayName)", bundle: BuddyL10n.bundle)
+                    } icon: {
+                        Image(systemName: "star")
+                    }
+                }
+                .accessibilityIdentifier("settings-rate-app-section")
+            } header: {
+                Text("Support", bundle: BuddyL10n.bundle)
+            } footer: {
+                Text(
+                    "If \(appDisplayName) helps your workflow, a quick rating on the App Store means a lot.",
+                    bundle: BuddyL10n.bundle
+                )
+            }
+        }
+    }
+}
+
+/// Records engagement and occasionally presents the system App Store rating prompt.
+public struct BuddyOccasionalReviewModifier: ViewModifier {
+    private let brand: BuddyBrand
+    @Environment(\.requestReview) private var requestReview
+
+    public init(brand: BuddyBrand) {
+        self.brand = brand
+    }
+
+    public func body(content: Content) -> some View {
+        content
+            .onAppear {
+                considerPrompt()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .buddyConsiderAppReview)) { _ in
+                considerPrompt()
+            }
+    }
+
+    private func considerPrompt() {
+        let prompt = BuddyAppReviewPrompt.shared
+        guard prompt.shouldPrompt(hasAppStoreListing: BuddyLegalURLs.appStoreID(for: brand.legalApp) != nil) else {
+            return
+        }
+        prompt.markPrompted()
+        requestReview()
+    }
+}
+
+public extension View {
+    /// Asks for an App Store rating after enough launches / engagement (system-throttled).
+    func buddyAskForReviewOccasionally(brand: BuddyBrand) -> some View {
+        modifier(BuddyOccasionalReviewModifier(brand: brand))
     }
 }

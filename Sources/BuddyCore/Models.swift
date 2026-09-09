@@ -425,6 +425,14 @@ public enum BuddySettingsKey {
     public static let paintFloatingViewMode = "buddy.paint.floatingViewMode"
     /// Swatch size (points) for Paint Buddy floating palette grid mode.
     public static let paintFloatingGridCellSize = "buddy.paint.floatingGridCellSize"
+    /// First launch timestamp for App Store review prompting (`timeIntervalSince1970`).
+    public static let reviewFirstLaunchAt = "buddy.review.firstLaunchAt"
+    /// Number of app launches counted toward review prompting.
+    public static let reviewLaunchCount = "buddy.review.launchCount"
+    /// Meaningful actions (save color, favorite, etc.) toward review prompting.
+    public static let reviewSignificantEventCount = "buddy.review.significantEventCount"
+    /// Last time the in-app review prompt was requested (`timeIntervalSince1970`).
+    public static let reviewLastPromptAt = "buddy.review.lastPromptAt"
 }
 
 /// Brush preferences for the screenshot editor redaction tools.
