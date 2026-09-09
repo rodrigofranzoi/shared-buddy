@@ -82,6 +82,7 @@ GitHub Actions on `macos-latest`: build + unit tests (+ UI tests when scheme exi
 | `clipboard-buddy` | Clipboard history + favorites |
 | `screenshot-buddy` | Screenshot gallery + editor |
 | `otp-buddy` | Email OTP → clipboard |
+| `paint-buddy` | Color history + floating palette |
 
 ## Product (this repo)
 

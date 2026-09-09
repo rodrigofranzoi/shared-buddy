@@ -139,10 +139,68 @@ final class DetectedContentExtractorTests: XCTestCase {
         XCTAssertTrue(tokens.isEmpty)
     }
 
+    func testPaintColorSuggestions() {
+        let color = NSColor(srgbRed: 0.486, green: 0.227, blue: 0.929, alpha: 1)
+        let suggestions = PaintColorSuggestions.suggestions(from: color)
+        XCTAssertFalse(suggestions.isEmpty)
+        XCTAssertTrue(suggestions.contains { $0.kind == .darker })
+        XCTAssertTrue(suggestions.contains { $0.kind == .lighter })
+        XCTAssertTrue(suggestions.contains { $0.kind == .complementary })
+        XCTAssertTrue(suggestions.contains { $0.kind == .analogous })
+        XCTAssertTrue(suggestions.contains { $0.kind == .muted })
+        let baseHex = EditorRedactionSettings.hex(from: color).uppercased()
+        XCTAssertFalse(suggestions.contains { $0.hex.uppercased() == baseHex })
+    }
+
+    func testRGBAComponentsForChannelCopy() {
+        let color = NSColor(srgbRed: 16.0 / 255.0, green: 185.0 / 255.0, blue: 129.0 / 255.0, alpha: 0.5)
+        let components = EditorRedactionSettings.rgbaComponents(from: color)
+        XCTAssertEqual(components.r, 16)
+        XCTAssertEqual(components.g, 185)
+        XCTAssertEqual(components.b, 129)
+        XCTAssertEqual(components.a, 0.5, accuracy: 0.001)
+    }
+
+    func testHexRoundTripPreservesValues() {
+        let color = EditorRedactionSettings.nsColor(fromColorToken: "#111111")
+        XCTAssertNotNil(color)
+        XCTAssertEqual(EditorRedactionSettings.hex(from: color!), "#111111")
+        XCTAssertEqual(EditorRedactionSettings.hexPlain(from: color!), "111111")
+        XCTAssertEqual(PaintCopyFormat.hexPlain.string(from: color!), "111111")
+    }
+
+    func testHexPlainFromStoredHex() {
+        XCTAssertEqual(EditorRedactionSettings.hexPlain(fromHex: "#1A73E8"), "1A73E8")
+        XCTAssertEqual(EditorRedactionSettings.hexPlain(fromHex: "1A73E8"), "1A73E8")
+    }
+
     func testInvalidRGBIgnored() {
         XCTAssertFalse(DetectedContentExtractor.looksLikeColorToken("rgb(999, 0, 0)"))
         let color = EditorRedactionSettings.nsColor(fromColorToken: "rgb(999, 0, 0)")
         XCTAssertNil(color)
+    }
+
+    func testNamedColor() {
+        XCTAssertTrue(DetectedContentExtractor.looksLikeColorToken("red"))
+        XCTAssertEqual(EditorRedactionSettings.colorTokenKind("Blue"), .named)
+        let color = EditorRedactionSettings.nsColor(fromColorToken: "red")
+        XCTAssertEqual(color?.redComponent ?? 0, 1, accuracy: 0.01)
+        XCTAssertEqual(color?.greenComponent ?? 1, 0, accuracy: 0.01)
+        XCTAssertEqual(color?.blueComponent ?? 1, 0, accuracy: 0.01)
+    }
+
+    func testTupleColor() {
+        XCTAssertEqual(EditorRedactionSettings.colorTokenKind("(0, 0, 0)"), .tuple)
+        XCTAssertEqual(EditorRedactionSettings.colorTokenKind("255, 128, 0"), .tuple)
+        let color = EditorRedactionSettings.nsColor(fromColorToken: "(26, 115, 232)")
+        XCTAssertNotNil(color)
+        XCTAssertEqual(color?.redComponent ?? 0, 26.0 / 255.0, accuracy: 0.01)
+    }
+
+    func testColorTokenKinds() {
+        XCTAssertEqual(EditorRedactionSettings.colorTokenKind("#1A73E8"), .hex)
+        XCTAssertEqual(EditorRedactionSettings.colorTokenKind("rgb(1, 2, 3)"), .rgb)
+        XCTAssertEqual(EditorRedactionSettings.colorTokenKind("rgba(1, 2, 3, 0.5)"), .rgba)
     }
 
     func testDedupesAndLimits() {

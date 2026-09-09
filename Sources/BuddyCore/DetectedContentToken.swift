@@ -50,6 +50,8 @@ public enum DetectedContentExtractor {
     private static let hexPattern = #"#(?:[A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\b"#
     private static let rgbPattern =
         #"rgba?\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}(?:\s*,\s*(?:0|1|0?\.\d+|1\.0|\d{1,3}%))?\s*\)"#
+    private static let tuplePattern =
+        #"\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}(?:\s*,\s*(?:0|1|0?\.\d+|1\.0|\d{1,3}%))?\s*\)"#
     private static let urlPattern = #"(?:https?://|www\.)[^\s<>\"')\]]+"#
 
     /// Extracts embedded color and URL tokens from multi-line text (deduped, order preserved).
@@ -81,6 +83,14 @@ public enum DetectedContentExtractor {
             guard EditorRedactionSettings.nsColor(fromColorToken: match) != nil else { return }
             append(match, kind: .color)
         }
+        collectMatches(in: trimmed, pattern: tuplePattern) { match in
+            let cleaned = match.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard EditorRedactionSettings.nsColor(fromColorToken: cleaned) != nil,
+                  EditorRedactionSettings.colorTokenKind(cleaned) == .tuple,
+                  !isRGBFunctionArgument(match, in: trimmed)
+            else { return }
+            append(cleaned, kind: .color)
+        }
         collectMatches(in: trimmed, pattern: urlPattern) { match in
             let cleaned = match.trimmingCharacters(in: CharacterSet(charactersIn: ".,;:!?)]}>\"'"))
             guard DetectedContentToken.openableURL(from: cleaned) != nil else { return }
@@ -96,7 +106,7 @@ public enum DetectedContentExtractor {
         }
     }
 
-    /// True when the entire string is a hex or rgb(a) color token.
+    /// True when the entire string is a hex, rgb(a), named, or tuple color token.
     public static func looksLikeColorToken(_ s: String) -> Bool {
         EditorRedactionSettings.nsColor(fromColorToken: s) != nil
     }
@@ -108,5 +118,14 @@ public enum DetectedContentExtractor {
             guard let swiftRange = Range(match.range, in: text) else { continue }
             body(String(text[swiftRange]))
         }
+    }
+
+    /// True when `match` is the parenthesized argument list of `rgb(...)` / `rgba(...)`.
+    private static func isRGBFunctionArgument(_ match: String, in text: String) -> Bool {
+        guard let range = text.range(of: match) else { return false }
+        let prefix = text[..<range.lowerBound]
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+        return prefix.hasSuffix("rgb") || prefix.hasSuffix("rgba")
     }
 }

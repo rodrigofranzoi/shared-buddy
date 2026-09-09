@@ -6,6 +6,7 @@ public enum BuddyLegalURLs {
         case clipboardBuddy = "clipboard-buddy"
         case screenshotBuddy = "screenshot-buddy"
         case otpBuddy = "otp-buddy"
+        case paintBuddy = "paint-buddy"
     }
 
     private static let pagesHost = "https://rodrigofranzoi.github.io"
@@ -24,6 +25,7 @@ public enum BuddyLegalURLs {
         case .clipboardBuddy: return "6809226741"
         case .screenshotBuddy: return "6809226358"
         case .otpBuddy: return "6809226854"
+        case .paintBuddy: return nil
         }
     }
 

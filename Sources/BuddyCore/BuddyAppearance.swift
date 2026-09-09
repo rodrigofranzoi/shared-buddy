@@ -7,6 +7,7 @@ public enum BuddyBrand: String, CaseIterable, Sendable {
     case clipboardBuddy
     case screenshotBuddy
     case otpBuddy
+    case paintBuddy
 
     /// Marketing / default theme accents.
     public var defaultAccentHex: String {
@@ -14,6 +15,7 @@ public enum BuddyBrand: String, CaseIterable, Sendable {
         case .clipboardBuddy: return "#10B981"
         case .screenshotBuddy: return "#E85D22"
         case .otpBuddy: return "#3B82F6"
+        case .paintBuddy: return "#7C3AED"
         }
     }
 
@@ -22,6 +24,7 @@ public enum BuddyBrand: String, CaseIterable, Sendable {
         case .clipboardBuddy: return "Clipboard Buddy"
         case .screenshotBuddy: return "Screenshot Buddy"
         case .otpBuddy: return "OTP Buddy"
+        case .paintBuddy: return "Paint Buddy"
         }
     }
 
@@ -30,6 +33,7 @@ public enum BuddyBrand: String, CaseIterable, Sendable {
         case .clipboardBuddy: return .clipboardBuddy
         case .screenshotBuddy: return .screenshotBuddy
         case .otpBuddy: return .otpBuddy
+        case .paintBuddy: return .paintBuddy
         }
     }
 }
@@ -55,6 +59,7 @@ public enum BuddyAppearanceSettings {
         BuddyBrand.clipboardBuddy.defaultAccentHex,
         BuddyBrand.screenshotBuddy.defaultAccentHex,
         BuddyBrand.otpBuddy.defaultAccentHex,
+        BuddyBrand.paintBuddy.defaultAccentHex,
         "#8B5CF6",
         "#EC4899",
         "#14B8A6",

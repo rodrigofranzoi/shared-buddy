@@ -41,6 +41,15 @@ CLIP_COLORS = {
     "sidebar": (236, 245, 239),
     "chip": (167, 243, 208),
 }
+PAINT_COLORS = {
+    "top": (124, 58, 237),
+    "mid": (167, 139, 250),
+    "bot": (233, 213, 255),
+    "accent": (124, 58, 237),
+    "ui_bg": (250, 247, 255),
+    "sidebar": (243, 238, 255),
+    "chip": (221, 214, 254),
+}
 
 FONT_LATIN = "/System/Library/Fonts/SFNS.ttf"
 FONT_AR = "/System/Library/Fonts/SFArabic.ttf"
@@ -506,6 +515,171 @@ CLIP_FEATURES = {
             "ru": {"fav": "Избранное", "recent": "Недавние", "fav_rows": ["Ссылка поддержки", "Фирменный зелёный"], "recent_rows": ["•••• пароль", "Заметки встречи"]},
             "ja": {"fav": "お気に入り", "recent": "最近", "fav_rows": ["サポートリンク", "ブランド緑"], "recent_rows": ["•••• パスワード", "会議メモ"]},
         },
+    },
+}
+
+PAINT_FEATURES = {
+    "history": {
+        "titles": {
+            "en": "Color history",
+            "nl": "Kleurenhistorie",
+            "pt": "Histórico de cores",
+            "es": "Historial de color",
+            "fr": "Historique des couleurs",
+            "it": "Cronologia colori",
+            "ar": "سجل الألوان",
+            "zh": "颜色历史",
+            "ru": "История цветов",
+            "ja": "カラー履歴",
+        },
+        "descs": {
+            "en": "Clipboard colors land in one tidy history you can search and copy.",
+            "nl": "Klembordkleuren belanden in één nette geschiedenis om te zoeken en kopiëren.",
+            "pt": "Cores da área de transferência ficam num histórico limpo para pesquisar e copiar.",
+            "es": "Los colores del portapapeles quedan en un historial claro para buscar y copiar.",
+            "fr": "Les couleurs du presse-papiers rejoignent un historique clair à chercher et copier.",
+            "it": "I colori dagli appunti finiscono in una cronologia ordinata da cercare e copiare.",
+            "ar": "ألوان الحافظة تُحفظ في سجل مرتب يمكنك البحث فيه والنسخ منه.",
+            "zh": "剪贴板颜色汇入整洁历史，便于搜索与复制。",
+            "ru": "Цвета из буфера попадают в аккуратную историю — ищите и копируйте.",
+            "ja": "クリップボードの色がすっきりした履歴に。検索してコピー。",
+        },
+        "ui": {},
+    },
+    "detail": {
+        "titles": {
+            "en": "Copy any format",
+            "nl": "Kopieer elk formaat",
+            "pt": "Copie qualquer formato",
+            "es": "Copia cualquier formato",
+            "fr": "Copiez tout format",
+            "it": "Copia qualsiasi formato",
+            "ar": "انسخ بأي تنسيق",
+            "zh": "任意格式复制",
+            "ru": "Любой формат",
+            "ja": "好きな形式でコピー",
+        },
+        "descs": {
+            "en": "Hex, RGB, and RGBA — click a value to copy what you need.",
+            "nl": "Hex, RGB en RGBA — klik een waarde om te kopiëren.",
+            "pt": "Hex, RGB e RGBA — clique num valor para copiar o que precisa.",
+            "es": "Hex, RGB y RGBA — haz clic en un valor para copiarlo.",
+            "fr": "Hex, RGB et RGBA — cliquez une valeur pour copier.",
+            "it": "Hex, RGB e RGBA — clicca un valore per copiarlo.",
+            "ar": "Hex وRGB وRGBA — انقر قيمة لنسخ ما تحتاجه.",
+            "zh": "Hex、RGB、RGBA——点击即可复制所需格式。",
+            "ru": "Hex, RGB и RGBA — нажмите значение, чтобы скопировать.",
+            "ja": "Hex・RGB・RGBA。値をクリックしてコピー。",
+        },
+        "ui": {},
+    },
+    "palette": {
+        "titles": {
+            "en": "Floating palette",
+            "nl": "Zwevend palet",
+            "pt": "Paleta flutuante",
+            "es": "Paleta flotante",
+            "fr": "Palette flottante",
+            "it": "Palette flottante",
+            "ar": "لوحة عائمة",
+            "zh": "浮动色板",
+            "ru": "Плавающая палитра",
+            "ja": "フローティングパレット",
+        },
+        "descs": {
+            "en": "Keep swatches always on top while you design or code.",
+            "nl": "Houd swatches altijd bovenaan terwijl je ontwerpt of codeert.",
+            "pt": "Mantenha swatches sempre no topo enquanto desenha ou programa.",
+            "es": "Mantén las muestras siempre encima mientras diseñas o programas.",
+            "fr": "Gardez vos nuanciers toujours au premier plan en design ou code.",
+            "it": "Tieni i campioni sempre in primo piano mentre progetti o programmi.",
+            "ar": "أبقِ العينات دائمًا في المقدمة أثناء التصميم أو البرمجة.",
+            "zh": "设计或写代码时，色块始终置顶。",
+            "ru": "Образцы всегда поверх окон — пока вы дизайните или пишете код.",
+            "ja": "デザインやコーディング中もスウォッチを常に前面に。",
+        },
+        "ui": {},
+    },
+    "formats": {
+        "titles": {
+            "en": "Capture your way",
+            "nl": "Vang zoals jij wilt",
+            "pt": "Capture à sua maneira",
+            "es": "Captura a tu manera",
+            "fr": "Capturez à votre façon",
+            "it": "Cattura a modo tuo",
+            "ar": "التقط بطريقتك",
+            "zh": "按需捕获",
+            "ru": "Как вам удобно",
+            "ja": "好きな形式で取り込む",
+        },
+        "descs": {
+            "en": "Choose which formats to save and how copied colors are formatted.",
+            "nl": "Kies welke formaten je opslaat en hoe gekopieerde kleuren worden geformatteerd.",
+            "pt": "Escolha que formatos guardar e como as cores copiadas são formatadas.",
+            "es": "Elige qué formatos guardar y cómo se formatean los colores copiados.",
+            "fr": "Choisissez les formats à enregistrer et le format de copie des couleurs.",
+            "it": "Scegli quali formati salvare e come formattare i colori copiati.",
+            "ar": "اختر التنسيقات المحفوظة وكيف تُنسَّق الألوان المنسوخة.",
+            "zh": "选择要保存的格式，以及复制颜色时的输出格式。",
+            "ru": "Выберите, какие форматы сохранять и как копировать цвета.",
+            "ja": "保存する形式とコピー時の書式を選べます。",
+        },
+        "ui": {},
+    },
+    "pick": {
+        "titles": {
+            "en": "Pick from screen",
+            "nl": "Kies van het scherm",
+            "pt": "Escolha no ecrã",
+            "es": "Elige de la pantalla",
+            "fr": "Prélevez à l’écran",
+            "it": "Scegli dallo schermo",
+            "ar": "التقط من الشاشة",
+            "zh": "从屏幕取色",
+            "ru": "С экрана",
+            "ja": "画面からピック",
+        },
+        "descs": {
+            "en": "One-shot eyedropper — no Screen Recording permission needed.",
+            "nl": "Eenmalige pipet — geen schermopname-toestemming nodig.",
+            "pt": "Conta-gotas de um clique — sem gravação de ecrã.",
+            "es": "Cuentagotas de un clic — sin grabación de pantalla.",
+            "fr": "Pipette en un clic — sans enregistrement d’écran.",
+            "it": "Contagocce monouso — nessuna registrazione dello schermo.",
+            "ar": "قطارة بنقرة واحدة — دون إذن تسجيل الشاشة.",
+            "zh": "一键取色——无需屏幕录制权限。",
+            "ru": "Пипетка в один клик — без разрешения на запись экрана.",
+            "ja": "ワンショットのスポイト。画面収録の許可は不要。",
+        },
+        "ui": {},
+    },
+    "menubar": {
+        "titles": {
+            "en": "Menu bar ready",
+            "nl": "Klaar in de menubalk",
+            "pt": "Pronto na barra de menus",
+            "es": "Listo en la barra de menús",
+            "fr": "Prêt dans la barre de menus",
+            "it": "Pronto nella barra dei menu",
+            "ar": "جاهز في شريط القوائم",
+            "zh": "菜单栏即用",
+            "ru": "В меню сразу",
+            "ja": "メニューバーですぐに",
+        },
+        "descs": {
+            "en": "Recent colors stay one click away — pick, palette, and pause.",
+            "nl": "Recente kleuren op één klik — pipet, palet en pauze.",
+            "pt": "Cores recentes a um clique — conta-gotas, paleta e pausa.",
+            "es": "Colores recientes a un clic — cuentagotas, paleta y pausa.",
+            "fr": "Couleurs récentes en un clic — pipette, palette et pause.",
+            "it": "Colori recenti a un clic — contagocce, palette e pausa.",
+            "ar": "الألوان الأخيرة بنقرة — قطارة ولوحة وإيقاف.",
+            "zh": "最近颜色一键即达——取色、色板与暂停。",
+            "ru": "Недавние цвета в один клик — пипетка, палитра и пауза.",
+            "ja": "最近の色はワンクリック。ピック・パレット・一時停止。",
+        },
+        "ui": {},
     },
 }
 
@@ -1070,6 +1244,7 @@ def paste_buddy_mascot(
 def write_mock_content():
     shot_mock = ROOT / "screenshot-buddy/docs/screenshots/mock-content.md"
     clip_mock = ROOT / "clipboard-buddy/docs/screenshots/mock-content.md"
+    paint_mock = ROOT / "paint-buddy/docs/screenshots/mock-content.md"
     shot_mock.write_text(
         """# Screenshot Buddy — mock content for store shots
 
@@ -1106,6 +1281,25 @@ Seed history with:
 | https://buddy.app/share/42 | url | for QR sheet |
 
 Enable require-auth for password/iban/apiKey so blur + unlock UI shows.
+""",
+        encoding="utf-8",
+    )
+    paint_mock.parent.mkdir(parents=True, exist_ok=True)
+    paint_mock.write_text(
+        """# Paint Buddy — mock content for store shots
+
+Seed color history with:
+
+| Hex | Raw | Kind | Source |
+|-----|-----|------|--------|
+| #7C3AED | #7C3AED | hex | Clipboard |
+| #10B981 | rgb(16, 185, 129) | rgb | Clipboard |
+| #FF6347 | tomato | named | Clipboard |
+| #0EA5E9 | #0EA5E9 | hex | Color Panel |
+| #F59E0B | rgba(245, 158, 11, 1) | rgba | Clipboard |
+| #F43F5E | (244, 63, 94) | tuple | Clipboard |
+
+Floating palette should use grid layout. Settings capture opens Preferences (capture formats + copy format).
 """,
         encoding="utf-8",
     )
@@ -1168,36 +1362,58 @@ def main():
     import sys
 
     frame_only = "--frame-only" in sys.argv
+    apps: list[str] = []
+    if "--app" in sys.argv:
+        idx = sys.argv.index("--app")
+        if idx + 1 < len(sys.argv):
+            apps = [sys.argv[idx + 1].strip().lower()]
+    if not apps:
+        apps = ["screenshot", "clipboard", "paint"]
+
     write_mock_content()
-    if frame_only:
-        frame_existing(
+
+    targets = {
+        "screenshot": (
             "screenshot-buddy",
             SHOT_FEATURES,
             SHOT_COLORS,
             ROOT / "screenshot-buddy/docs/screenshots",
-        )
-        frame_existing(
+            SHOT_RENDERERS,
+        ),
+        "clipboard": (
             "clipboard-buddy",
             CLIP_FEATURES,
             CLIP_COLORS,
             ROOT / "clipboard-buddy/docs/screenshots",
-        )
+            CLIP_RENDERERS,
+        ),
+        "paint": (
+            "paint-buddy",
+            PAINT_FEATURES,
+            PAINT_COLORS,
+            ROOT / "paint-buddy/docs/screenshots",
+            None,
+        ),
+    }
+
+    if frame_only:
+        for key in apps:
+            if key not in targets:
+                print(f"Unknown app {key}; expected screenshot|clipboard|paint")
+                continue
+            name, features, colors, out_root, _ = targets[key]
+            frame_existing(name, features, colors, out_root)
     else:
         print("Generating PIL mock raws. Use --frame-only to frame real captures.")
-        generate_app(
-            "screenshot-buddy",
-            SHOT_FEATURES,
-            SHOT_RENDERERS,
-            SHOT_COLORS,
-            ROOT / "screenshot-buddy/docs/screenshots",
-        )
-        generate_app(
-            "clipboard-buddy",
-            CLIP_FEATURES,
-            CLIP_RENDERERS,
-            CLIP_COLORS,
-            ROOT / "clipboard-buddy/docs/screenshots",
-        )
+        for key in apps:
+            if key not in targets:
+                print(f"Unknown app {key}; expected screenshot|clipboard|paint")
+                continue
+            name, features, colors, out_root, renderers = targets[key]
+            if not renderers:
+                print(f"SKIP mock generation for {name} (real captures only).")
+                continue
+            generate_app(name, features, renderers, colors, out_root)
     print("Done.")
 
 

@@ -88,7 +88,8 @@ public struct MenuBarRow: View {
     public let showsSeparator: Bool
     public let action: () -> Void
 
-    @State private var justCopied = false
+    @State private var rowJustCopied = false
+    @State private var buttonJustCopied = false
 
     public init(
         title: String,
@@ -114,7 +115,17 @@ public struct MenuBarRow: View {
 
     public var body: some View {
         HStack(spacing: BuddyTheme.Spacing.sm) {
-            Button(action: action) {
+            Button {
+                action()
+                // Color rows: flash “Copied” on the row itself (not the copy button).
+                if colorSwatch != nil {
+                    rowJustCopied = true
+                    Task { @MainActor in
+                        try? await Task.sleep(nanoseconds: 1_200_000_000)
+                        rowJustCopied = false
+                    }
+                }
+            } label: {
                 HStack(spacing: BuddyTheme.Spacing.sm) {
                     if let thumbnail {
                         thumbnail
@@ -126,14 +137,22 @@ public struct MenuBarRow: View {
                             .blur(radius: thumbnailBlur)
                             .accessibilityHidden(true)
                     } else if let colorSwatch {
-                        RoundedRectangle(cornerRadius: 4, style: .continuous)
-                            .fill(colorSwatch)
-                            .frame(width: 18, height: 18)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 4, style: .continuous)
-                                    .strokeBorder(Color.primary.opacity(0.15), lineWidth: 1)
-                            )
-                            .accessibilityHidden(true)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                .fill(colorSwatch)
+                                .frame(width: 18, height: 18)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                        .strokeBorder(Color.primary.opacity(0.15), lineWidth: 1)
+                                )
+                            if rowJustCopied {
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 9, weight: .bold))
+                                    .foregroundStyle(.white)
+                                    .shadow(radius: 1)
+                            }
+                        }
+                        .accessibilityHidden(true)
                     }
                     VStack(alignment: .leading, spacing: BuddyTheme.Spacing.xxs) {
                         BuddyText(verbatim: title, style: .body)
@@ -148,6 +167,7 @@ public struct MenuBarRow: View {
             .buttonStyle(.plain)
             .accessibilityElement(children: .combine)
             .accessibilityLabel(Text(verbatim: "\(title), \(subtitle)"))
+            .accessibilityValue(rowJustCopied ? Text("Copied", bundle: BuddyL10n.bundle) : Text(verbatim: ""))
 
             if let openAction {
                 Button(action: openAction) {
@@ -161,18 +181,18 @@ public struct MenuBarRow: View {
             if let copyAction {
                 Button {
                     copyAction()
-                    justCopied = true
+                    buttonJustCopied = true
                     Task { @MainActor in
                         try? await Task.sleep(nanoseconds: 1_200_000_000)
-                        justCopied = false
+                        buttonJustCopied = false
                     }
                 } label: {
-                    Image(systemName: justCopied ? "checkmark.circle.fill" : "doc.on.doc")
-                        .foregroundStyle(justCopied ? Color.green : Color.primary)
+                    Image(systemName: buttonJustCopied ? "checkmark.circle.fill" : "doc.on.doc")
+                        .foregroundStyle(buttonJustCopied ? Color.green : Color.primary)
                 }
                 .buttonStyle(.borderless)
-                .accessibilityLabel(justCopied ? Text("Copied", bundle: BuddyL10n.bundle) : Text("Copy", bundle: BuddyL10n.bundle))
-                .help(justCopied ? Text("Copied", bundle: BuddyL10n.bundle) : Text("Copy to clipboard", bundle: BuddyL10n.bundle))
+                .accessibilityLabel(buttonJustCopied ? Text("Copied", bundle: BuddyL10n.bundle) : Text("Copy", bundle: BuddyL10n.bundle))
+                .help(buttonJustCopied ? Text("Copied", bundle: BuddyL10n.bundle) : Text("Copy to clipboard", bundle: BuddyL10n.bundle))
             }
         }
         .padding(.vertical, BuddyTheme.Spacing.sm)

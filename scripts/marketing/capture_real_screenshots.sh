@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build Screenshot/Clipboard Buddy and capture real App Store screenshots per locale.
+# Build Buddy apps and capture real App Store screenshots per locale.
 set -euo pipefail
 setopt NULL_GLOB 2>/dev/null || true
 
@@ -70,19 +70,23 @@ capture_locale() {
 }
 
 frame_banners() {
-  python3 "$ROOT/shared-buddy/scripts/marketing/generate_marketing_banners.py" --frame-only
+  python3 "$ROOT/shared-buddy/scripts/marketing/generate_marketing_banners.py" --frame-only "$@"
 }
 
 main() {
   local only="${1:-all}"
   local shot_app=""
   local clip_app=""
+  local paint_app=""
 
   if [[ "$only" == "all" || "$only" == "screenshot" ]]; then
     shot_app="$(build_app "$ROOT/screenshot-buddy" ScreenshotBuddy ScreenshotBuddy)"
   fi
   if [[ "$only" == "all" || "$only" == "clipboard" ]]; then
     clip_app="$(build_app "$ROOT/clipboard-buddy" ClipboardBuddy ClipboardBuddy)"
+  fi
+  if [[ "$only" == "all" || "$only" == "paint" ]]; then
+    paint_app="$(build_app "$ROOT/paint-buddy" PaintBuddy PaintBuddy)"
   fi
 
   for lang in "${LANGS[@]}"; do
@@ -96,10 +100,23 @@ main() {
         "$ROOT/clipboard-buddy/docs/screenshots/$lang/raw" \
         "$lang"
     fi
+    if [[ -n "$paint_app" ]]; then
+      capture_locale "$paint_app" \
+        "$ROOT/paint-buddy/docs/screenshots/$lang/raw" \
+        "$lang"
+    fi
   done
 
   echo "==> Framing banners from real captures" >&2
-  frame_banners
+  if [[ "$only" == "paint" ]]; then
+    frame_banners --app paint
+  elif [[ "$only" == "screenshot" ]]; then
+    frame_banners --app screenshot
+  elif [[ "$only" == "clipboard" ]]; then
+    frame_banners --app clipboard
+  else
+    frame_banners
+  fi
   echo "Done." >&2
 }
 
