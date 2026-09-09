@@ -883,7 +883,7 @@ public enum PaintColorSettings {
         }
     }
 
-    public static let defaultFloatingGridCellSize = 72
+    public static let defaultFloatingGridCellSize = 40
     public static let minFloatingGridCellSize = 40
     public static let maxFloatingGridCellSize = 120
 

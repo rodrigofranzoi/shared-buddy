@@ -13,6 +13,12 @@ build_app() {
   local scheme="$2"
   local name="$3"
   echo "==> Building $name" >&2
+  local marketing_ents="${dir}/${name}/${name}-Marketing.entitlements"
+  local ents_args=()
+  if [[ -f "$marketing_ents" ]]; then
+    ents_args=(CODE_SIGN_ENTITLEMENTS="$marketing_ents")
+    echo "    (using marketing entitlements without App Sandbox for capture writes)" >&2
+  fi
   (
     cd "$dir"
     xcodegen generate >/dev/null
@@ -21,6 +27,7 @@ build_app() {
       -configuration "$CONFIGURATION" \
       -derivedDataPath "$DERIVED/$scheme" \
       -destination 'platform=macOS' \
+      "${ents_args[@]}" \
       build
   ) >/tmp/buddy-build-"$scheme".log 2>&1 || {
     echo "ERROR: build failed for $name — see /tmp/buddy-build-$scheme.log" >&2
