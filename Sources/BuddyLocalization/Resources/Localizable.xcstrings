@@ -62,8 +62,15 @@
             "state": "translated",
             "value": "検索"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suchen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Reveal": {
       "localizations": {
@@ -126,8 +133,15 @@
             "state": "translated",
             "value": "表示"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anzeigen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Appearance": {
       "localizations": {
@@ -190,8 +204,15 @@
             "state": "translated",
             "value": "外観"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erscheinungsbild"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Preferences": {
       "localizations": {
@@ -254,8 +275,15 @@
             "state": "translated",
             "value": "環境設定"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Privacy": {
       "localizations": {
@@ -318,8 +346,15 @@
             "state": "translated",
             "value": "プライバシー"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenschutz"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Account": {
       "localizations": {
@@ -382,8 +417,15 @@
             "state": "translated",
             "value": "アカウント"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konto"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Select a category": {
       "localizations": {
@@ -446,8 +488,15 @@
             "state": "translated",
             "value": "カテゴリを選択"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kategorie auswählen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Mode": {
       "localizations": {
@@ -510,8 +559,15 @@
             "state": "translated",
             "value": "モード"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modus"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Theme color": {
       "localizations": {
@@ -574,8 +630,15 @@
             "state": "translated",
             "value": "テーマカラー"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akzentfarbe"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Custom color": {
       "localizations": {
@@ -638,8 +701,15 @@
             "state": "translated",
             "value": "カスタムカラー"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benutzerdefinierte Farbe"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Legal": {
       "localizations": {
@@ -702,8 +772,15 @@
             "state": "translated",
             "value": "法的情報"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rechtliches"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Privacy Policy": {
       "localizations": {
@@ -766,8 +843,15 @@
             "state": "translated",
             "value": "プライバシーポリシー"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenschutzerklärung"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Terms of Use": {
       "localizations": {
@@ -830,8 +914,15 @@
             "state": "translated",
             "value": "利用規約"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutzungsbedingungen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Rate App": {
       "localizations": {
@@ -894,8 +985,15 @@
             "state": "translated",
             "value": "アプリを評価"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App bewerten"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "System": {
       "localizations": {
@@ -958,8 +1056,15 @@
             "state": "translated",
             "value": "システム"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Light": {
       "localizations": {
@@ -1022,8 +1127,15 @@
             "state": "translated",
             "value": "ライト"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hell"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Dark": {
       "localizations": {
@@ -1086,8 +1198,15 @@
             "state": "translated",
             "value": "ダーク"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dunkel"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Launch at login": {
       "localizations": {
@@ -1150,8 +1269,15 @@
             "state": "translated",
             "value": "ログイン時に開く"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei Anmeldung starten"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Monitoring": {
       "localizations": {
@@ -1214,8 +1340,15 @@
             "state": "translated",
             "value": "モニタリング"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überwachung"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Paused": {
       "localizations": {
@@ -1278,8 +1411,15 @@
             "state": "translated",
             "value": "一時停止中"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausiert"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Active": {
       "localizations": {
@@ -1342,8 +1482,15 @@
             "state": "translated",
             "value": "稼働中"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiv"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Resume": {
       "localizations": {
@@ -1406,8 +1553,15 @@
             "state": "translated",
             "value": "再開"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fortsetzen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Turn Off": {
       "localizations": {
@@ -1470,8 +1624,15 @@
             "state": "translated",
             "value": "オフにする"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausschalten"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Until next session": {
       "localizations": {
@@ -1534,8 +1695,15 @@
             "state": "translated",
             "value": "次のセッションまで"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bis zur nächsten Sitzung"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Permanently": {
       "localizations": {
@@ -1598,8 +1766,15 @@
             "state": "translated",
             "value": "永続的に"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dauerhaft"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Custom…": {
       "localizations": {
@@ -1662,8 +1837,15 @@
             "state": "translated",
             "value": "カスタム…"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benutzerdefiniert…"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Custom duration": {
       "localizations": {
@@ -1726,8 +1908,15 @@
             "state": "translated",
             "value": "カスタム時間"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benutzerdefinierte Dauer"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Cancel": {
       "localizations": {
@@ -1790,8 +1979,15 @@
             "state": "translated",
             "value": "キャンセル"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbrechen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "History": {
       "localizations": {
@@ -1854,8 +2050,15 @@
             "state": "translated",
             "value": "履歴"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historie"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Erase All History…": {
       "localizations": {
@@ -1918,8 +2121,15 @@
             "state": "translated",
             "value": "履歴をすべて消去…"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamte Historie löschen…"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Erase All": {
       "localizations": {
@@ -1982,8 +2192,15 @@
             "state": "translated",
             "value": "すべて消去"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles löschen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "This cannot be undone.": {
       "localizations": {
@@ -2046,8 +2263,15 @@
             "state": "translated",
             "value": "この操作は取り消せません。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das kann nicht rückgängig gemacht werden."
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Erase all history": {
       "localizations": {
@@ -2110,8 +2334,15 @@
             "state": "translated",
             "value": "履歴をすべて消去"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamte Historie löschen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Sensitive content": {
       "localizations": {
@@ -2174,8 +2405,15 @@
             "state": "translated",
             "value": "機密コンテンツ"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensible Inhalte"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Auto-blur": {
       "localizations": {
@@ -2238,8 +2476,15 @@
             "state": "translated",
             "value": "自動ぼかし"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-Unschärfe"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Open link": {
       "localizations": {
@@ -2302,8 +2547,15 @@
             "state": "translated",
             "value": "リンクを開く"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link öffnen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Copy to clipboard": {
       "localizations": {
@@ -2366,8 +2618,15 @@
             "state": "translated",
             "value": "クリップボードにコピー"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In die Zwischenablage kopieren"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Copy": {
       "localizations": {
@@ -2430,8 +2689,15 @@
             "state": "translated",
             "value": "コピー"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopieren"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Copied": {
       "localizations": {
@@ -2494,8 +2760,15 @@
             "state": "translated",
             "value": "コピー済み"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopiert"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Open": {
       "localizations": {
@@ -2558,8 +2831,15 @@
             "state": "translated",
             "value": "開く"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Content blocked": {
       "localizations": {
@@ -2622,8 +2902,15 @@
             "state": "translated",
             "value": "コンテンツがブロックされました"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inhalt blockiert"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Dismiss": {
       "localizations": {
@@ -2686,8 +2973,15 @@
             "state": "translated",
             "value": "閉じる"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schließen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Never show again": {
       "localizations": {
@@ -2750,8 +3044,15 @@
             "state": "translated",
             "value": "今後表示しない"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht mehr anzeigen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Add App…": {
       "localizations": {
@@ -2814,8 +3115,15 @@
             "state": "translated",
             "value": "アプリを追加…"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App hinzufügen…"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Ignored Apps": {
       "localizations": {
@@ -2878,8 +3186,15 @@
             "state": "translated",
             "value": "無視するアプリ"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ignorierte Apps"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Clippings": {
       "localizations": {
@@ -2942,8 +3257,15 @@
             "state": "translated",
             "value": "クリップ"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausschnitte"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Screenshots": {
       "localizations": {
@@ -3006,8 +3328,15 @@
             "state": "translated",
             "value": "スクリーンショット"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "clippings": {
       "localizations": {
@@ -3070,8 +3399,15 @@
             "state": "translated",
             "value": "クリップ"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausschnitte"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "screenshots": {
       "localizations": {
@@ -3134,8 +3470,15 @@
             "state": "translated",
             "value": "スクリーンショット"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "No apps ignored": {
       "localizations": {
@@ -3198,8 +3541,15 @@
             "state": "translated",
             "value": "無視するアプリはありません"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Apps ignoriert"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Settings": {
       "localizations": {
@@ -3262,8 +3612,15 @@
             "state": "translated",
             "value": "設定"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Blocked content": {
       "localizations": {
@@ -3326,8 +3683,15 @@
             "state": "translated",
             "value": "ブロックされたコンテンツ"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blockierte Inhalte"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Hidden sensitive content": {
       "localizations": {
@@ -3390,8 +3754,15 @@
             "state": "translated",
             "value": "非表示の機密コンテンツ"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versteckte sensible Inhalte"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Double tap to reveal": {
       "localizations": {
@@ -3454,8 +3825,15 @@
             "state": "translated",
             "value": "ダブルタップで表示"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doppeltippen zum Anzeigen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Detected color": {
       "localizations": {
@@ -3518,8 +3896,15 @@
             "state": "translated",
             "value": "検出された色"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erkannte Farbe"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Detected link": {
       "localizations": {
@@ -3582,8 +3967,15 @@
             "state": "translated",
             "value": "検出されたリンク"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erkannter Link"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "On": {
       "localizations": {
@@ -3646,8 +4038,15 @@
             "state": "translated",
             "value": "オン"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Off": {
       "localizations": {
@@ -3710,8 +4109,15 @@
             "state": "translated",
             "value": "オフ"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Off permanently": {
       "localizations": {
@@ -3774,8 +4180,15 @@
             "state": "translated",
             "value": "永続的にオフ"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dauerhaft aus"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Off until next session": {
       "localizations": {
@@ -3838,8 +4251,15 @@
             "state": "translated",
             "value": "次のセッションまでオフ"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus bis zur nächsten Sitzung"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "5 minutes": {
       "localizations": {
@@ -3902,8 +4322,15 @@
             "state": "translated",
             "value": "5分"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 Minuten"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "15 minutes": {
       "localizations": {
@@ -3966,8 +4393,15 @@
             "state": "translated",
             "value": "15分"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 Minuten"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "20 minutes": {
       "localizations": {
@@ -4030,8 +4464,15 @@
             "state": "translated",
             "value": "20分"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "20 Minuten"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "30 minutes": {
       "localizations": {
@@ -4094,8 +4535,15 @@
             "state": "translated",
             "value": "30分"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 Minuten"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "1 hour": {
       "localizations": {
@@ -4158,8 +4606,15 @@
             "state": "translated",
             "value": "1時間"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Stunde"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "2 hours": {
       "localizations": {
@@ -4222,8 +4677,15 @@
             "state": "translated",
             "value": "2時間"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 Stunden"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "4 hours": {
       "localizations": {
@@ -4286,8 +4748,15 @@
             "state": "translated",
             "value": "4時間"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4 Stunden"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "8 hours": {
       "localizations": {
@@ -4350,8 +4819,15 @@
             "state": "translated",
             "value": "8時間"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "8 Stunden"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Pause until next session": {
       "localizations": {
@@ -4414,8 +4890,15 @@
             "state": "translated",
             "value": "次のセッションまで一時停止"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bis zur nächsten Sitzung pausieren"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Pause permanently": {
       "localizations": {
@@ -4478,8 +4961,15 @@
             "state": "translated",
             "value": "永続的に一時停止"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dauerhaft pausieren"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Pause for…": {
       "localizations": {
@@ -4542,8 +5032,15 @@
             "state": "translated",
             "value": "一時停止…"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausieren für…"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Pause for custom duration": {
       "localizations": {
@@ -4606,8 +5103,15 @@
             "state": "translated",
             "value": "カスタム時間で一時停止"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für benutzerdefinierte Dauer pausieren"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Ignore": {
       "localizations": {
@@ -4670,8 +5174,15 @@
             "state": "translated",
             "value": "無視"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ignorieren"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Choose apps whose clipboard copies should be ignored": {
       "localizations": {
@@ -4734,8 +5245,15 @@
             "state": "translated",
             "value": "クリップボードのコピーを無視するアプリを選択"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps wählen, deren Zwischenablage-Kopien ignoriert werden sollen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Ask for password or Touch ID to view sensitive content": {
       "localizations": {
@@ -4798,8 +5316,15 @@
             "state": "translated",
             "value": "機密コンテンツの表示にパスワードまたはTouch IDを要求"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwort oder Touch ID anfordern, um sensible Inhalte anzuzeigen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Matching items stay blurred until unlocked, then remain visible for 10 minutes.": {
       "localizations": {
@@ -4862,8 +5387,15 @@
             "state": "translated",
             "value": "一致する項目は解除までぼかし、その後10分間表示されます。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passende Einträge bleiben unscharf bis zur Entsperrung und sind danach 10 Minuten sichtbar."
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "What is sensitive content": {
       "localizations": {
@@ -4926,8 +5458,15 @@
             "state": "translated",
             "value": "機密コンテンツとは"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was sind sensible Inhalte"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "These types stay hidden until unlocked with password or Touch ID.": {
       "localizations": {
@@ -4990,8 +5529,15 @@
             "state": "translated",
             "value": "これらの種類はパスワードまたはTouch IDで解除するまで非表示です。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Typen bleiben verborgen, bis sie mit Passwort oder Touch ID entsperrt werden."
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "These types are detected and blurred in the screenshot editor.": {
       "localizations": {
@@ -5054,8 +5600,15 @@
             "state": "translated",
             "value": "これらの種類はスクリーンショット編集で検出されぼかされます。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Typen werden erkannt und im Screenshot-Editor unscharf gemacht."
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Older clippings beyond the remember limit are removed automatically. Favorites are kept separately.": {
       "localizations": {
@@ -5118,8 +5671,15 @@
             "state": "translated",
             "value": "記憶上限を超えた古いクリップは自動削除されます。お気に入りは別管理です。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ältere Ausschnitte über dem Speicherlimit werden automatisch entfernt. Favoriten bleiben separat erhalten."
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Older screenshots beyond the remember limit are removed automatically.": {
       "localizations": {
@@ -5182,8 +5742,15 @@
             "state": "translated",
             "value": "記憶上限を超えた古いスクリーンショットは自動削除されます。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ältere Screenshots über dem Speicherlimit werden automatisch entfernt."
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Copies made while these apps are frontmost are not saved to Clipboard Buddy history.": {
       "localizations": {
@@ -5246,8 +5813,15 @@
             "state": "translated",
             "value": "これらのアプリが最前面のときのコピーは Clipboard Buddy の履歴に保存されません。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopien, während diese Apps im Vordergrund sind, werden nicht in der Clipboard-Buddy-Historie gespeichert."
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "While paused, new clipboard or screenshot captures are not saved. Permanent pause survives relaunch until you resume.": {
       "localizations": {
@@ -5310,8 +5884,15 @@
             "state": "translated",
             "value": "一時停止中は新しいクリップボードやスクリーンショットは保存されません。永続一時停止は再開するまで再起動後も続きます。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Während der Pause werden neue Zwischenablage- oder Screenshot-Erfassungen nicht gespeichert. Eine dauerhafte Pause bleibt nach Neustart bis zum Fortsetzen bestehen."
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "We can’t copy this kind of content. Pornography and sexual material aren’t allowed.": {
       "localizations": {
@@ -5374,8 +5955,15 @@
             "state": "translated",
             "value": "この種のコンテンツはコピーできません。ポルノや性的な内容は許可されていません。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Art von Inhalt kann nicht kopiert werden. Pornografie und sexuelles Material sind nicht erlaubt."
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Reveal sensitive content": {
       "localizations": {
@@ -5438,8 +6026,15 @@
             "state": "translated",
             "value": "機密コンテンツを表示"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensible Inhalte anzeigen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Disable password or Touch ID protection": {
       "localizations": {
@@ -5502,8 +6097,15 @@
             "state": "translated",
             "value": "パスワードまたは Touch ID の保護をオフにする"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwort- oder Touch-ID-Schutz deaktivieren"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Passwords": {
       "localizations": {
@@ -5566,8 +6168,15 @@
             "state": "translated",
             "value": "パスワード"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwörter"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "IBANs": {
       "localizations": {
@@ -5630,8 +6239,15 @@
             "state": "translated",
             "value": "IBAN"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IBANs"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Cards": {
       "localizations": {
@@ -5694,8 +6310,15 @@
             "state": "translated",
             "value": "カード"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karten"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "API keys": {
       "localizations": {
@@ -5758,8 +6381,15 @@
             "state": "translated",
             "value": "APIキー"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "API-Schlüssel"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Tokens": {
       "localizations": {
@@ -5822,8 +6452,15 @@
             "state": "translated",
             "value": "トークン"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tokens"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "OTPs": {
       "localizations": {
@@ -5886,8 +6523,15 @@
             "state": "translated",
             "value": "OTP"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OTPs"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "URLs": {
       "localizations": {
@@ -5950,8 +6594,15 @@
             "state": "translated",
             "value": "URL"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URLs"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Emails": {
       "localizations": {
@@ -6014,8 +6665,15 @@
             "state": "translated",
             "value": "メール"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-Mails"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Phones": {
       "localizations": {
@@ -6078,8 +6736,15 @@
             "state": "translated",
             "value": "電話"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefone"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Amounts": {
       "localizations": {
@@ -6142,8 +6807,15 @@
             "state": "translated",
             "value": "金額"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beträge"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Hashes": {
       "localizations": {
@@ -6206,8 +6878,15 @@
             "state": "translated",
             "value": "ハッシュ"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hashes"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "JSON": {
       "localizations": {
@@ -6270,8 +6949,15 @@
             "state": "translated",
             "value": "JSON"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JSON"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Paths": {
       "localizations": {
@@ -6334,8 +7020,15 @@
             "state": "translated",
             "value": "パス"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pfade"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Colors": {
       "localizations": {
@@ -6398,8 +7091,15 @@
             "state": "translated",
             "value": "色"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Farben"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Images": {
       "localizations": {
@@ -6462,8 +7162,15 @@
             "state": "translated",
             "value": "画像"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilder"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Text": {
       "localizations": {
@@ -6526,8 +7233,15 @@
             "state": "translated",
             "value": "テキスト"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Text"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Files": {
       "localizations": {
@@ -6590,8 +7304,15 @@
             "state": "translated",
             "value": "ファイル"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Rich text": {
       "localizations": {
@@ -6654,8 +7375,15 @@
             "state": "translated",
             "value": "リッチテキスト"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rich Text"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "PDFs": {
       "localizations": {
@@ -6718,8 +7446,15 @@
             "state": "translated",
             "value": "PDF"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDFs"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Other": {
       "localizations": {
@@ -6782,8 +7517,15 @@
             "state": "translated",
             "value": "その他"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonstiges"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "passwords, IBANs, cards, API keys, OTPs, emails, phones, and amounts": {
       "localizations": {
@@ -6846,8 +7588,15 @@
             "state": "translated",
             "value": "パスワード、IBAN、カード、APIキー、OTP、メール、電話、金額"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwörter, IBANs, Karten, API-Schlüssel, OTPs, E-Mails, Telefone und Beträge"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Open %@": {
       "localizations": {
@@ -6910,8 +7659,15 @@
             "state": "translated",
             "value": "%@を開く"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ öffnen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Rate %@": {
       "localizations": {
@@ -6974,8 +7730,15 @@
             "state": "translated",
             "value": "%@を評価"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ bewerten"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Quit %@": {
       "localizations": {
@@ -7038,8 +7801,15 @@
             "state": "translated",
             "value": "%@を終了"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ beenden"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Erase all %@?": {
       "localizations": {
@@ -7102,8 +7872,15 @@
             "state": "translated",
             "value": "%@をすべて消去しますか？"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle %@ löschen?"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Removes all saved %@ from this Mac. This cannot be undone.": {
       "localizations": {
@@ -7166,8 +7943,15 @@
             "state": "translated",
             "value": "このMacから保存済みの%@をすべて削除します。この操作は取り消せません。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löscht alle gespeicherten %@ von diesem Mac. Das kann nicht rückgängig gemacht werden."
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Reset to %@ default": {
       "localizations": {
@@ -7230,8 +8014,15 @@
             "state": "translated",
             "value": "%@のデフォルトに戻す"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf %@-Standard zurücksetzen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Default for %@ is %@.": {
       "localizations": {
@@ -7294,8 +8085,15 @@
             "state": "translated",
             "value": "%@のデフォルトは%@です。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard für %@ ist %@."
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Theme color %@": {
       "localizations": {
@@ -7358,8 +8156,15 @@
             "state": "translated",
             "value": "テーマカラー %@"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akzentfarbe %@"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Stop ignoring %@": {
       "localizations": {
@@ -7422,8 +8227,15 @@
             "state": "translated",
             "value": "%@の無視をやめる"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ nicht mehr ignorieren"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Remember %lld clippings": {
       "localizations": {
@@ -7486,8 +8298,15 @@
             "state": "translated",
             "value": "%lld件のクリップを記憶"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Ausschnitte merken"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Show %lld clippings in menu bar": {
       "localizations": {
@@ -7550,8 +8369,15 @@
             "state": "translated",
             "value": "メニューバーに%lld件のクリップを表示"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Ausschnitte in der Menüleiste anzeigen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Show %lld favorites in menu bar": {
       "localizations": {
@@ -7614,8 +8440,15 @@
             "state": "translated",
             "value": "メニューバーに%lld件のお気に入りを表示"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Favoriten in der Menüleiste anzeigen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Remember %lld screenshots": {
       "localizations": {
@@ -7678,8 +8511,15 @@
             "state": "translated",
             "value": "%lld件のスクリーンショットを記憶"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Screenshots merken"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Show %lld screenshots in menu bar": {
       "localizations": {
@@ -7742,8 +8582,15 @@
             "state": "translated",
             "value": "メニューバーに%lld件のスクリーンショットを表示"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Screenshots in der Menüleiste anzeigen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Off until %@": {
       "localizations": {
@@ -7806,8 +8653,15 @@
             "state": "translated",
             "value": "%@までオフ"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus bis %@"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Hours: %lld": {
       "localizations": {
@@ -7870,8 +8724,15 @@
             "state": "translated",
             "value": "時間: %lld"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stunden: %lld"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Minutes: %lld": {
       "localizations": {
@@ -7934,8 +8795,15 @@
             "state": "translated",
             "value": "分: %lld"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minuten: %lld"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Buddy.Search": {
       "localizations": {
@@ -7998,8 +8866,15 @@
             "state": "translated",
             "value": "検索"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suchen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Buddy.Reveal": {
       "localizations": {
@@ -8062,8 +8937,15 @@
             "state": "translated",
             "value": "表示"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anzeigen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Remember screenshots": {
       "localizations": {
@@ -8126,8 +9008,15 @@
             "state": "translated",
             "value": "スクリーンショットを記憶"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screenshots merken"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Remember %lld colors": {
       "localizations": {
@@ -8189,6 +9078,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld 色を保持"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Farben merken"
           }
         }
       },
@@ -8255,6 +9150,12 @@
             "state": "translated",
             "value": "メニューバーに %lld 色を表示"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Farben in der Menüleiste anzeigen"
+          }
         }
       },
       "extractionState": "manual"
@@ -8319,6 +9220,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "起動時にフローティングパレットを開く"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwebende Palette beim Start öffnen"
           }
         }
       },
@@ -8385,6 +9292,12 @@
             "state": "translated",
             "value": "フローティングスウォッチサイズ: %lld pt"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwebende Swatch-Größe: %lld pt"
+          }
         }
       },
       "extractionState": "manual"
@@ -8449,6 +9362,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "保持上限を超えた古い色は自動的に削除されます。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ältere Farben über dem Speicherlimit werden automatisch entfernt."
           }
         }
       },
@@ -8515,6 +9434,12 @@
             "state": "translated",
             "value": "クリップボード取り込み"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zwischenablage-Erfassung"
+          }
         }
       },
       "extractionState": "manual"
@@ -8579,6 +9504,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "hex（#RRGGBB）を保存"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hex speichern (#RRGGBB)"
           }
         }
       },
@@ -8645,6 +9576,12 @@
             "state": "translated",
             "value": "rgb(...) を保存"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rgb(...) speichern"
+          }
         }
       },
       "extractionState": "manual"
@@ -8709,6 +9646,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "rgba(...) を保存"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rgba(...) speichern"
           }
         }
       },
@@ -8775,6 +9718,12 @@
             "state": "translated",
             "value": "名前付き色（red, blue…）を保存"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benannte Farben speichern (red, blue…)"
+          }
         }
       },
       "extractionState": "manual"
@@ -8839,6 +9788,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "タプル (0, 0, 0) を保存"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tupel speichern (0, 0, 0)"
           }
         }
       },
@@ -8905,6 +9860,12 @@
             "state": "translated",
             "value": "色をコピーしたとき、有効な形式だけが履歴に追加されます。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur aktivierte Formate werden beim Kopieren einer Farbe zur Historie hinzugefügt."
+          }
         }
       },
       "extractionState": "manual"
@@ -8969,6 +9930,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "優先形式"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bevorzugtes Format"
           }
         }
       },
@@ -9035,6 +10002,12 @@
             "state": "translated",
             "value": "コピー形式"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopieren als"
+          }
         }
       },
       "extractionState": "manual"
@@ -9099,6 +10072,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hex（#RRGGBB）"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hex (#RRGGBB)"
           }
         }
       },
@@ -9165,6 +10144,12 @@
             "state": "translated",
             "value": "# なし Hex（RRGGBB）"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hex ohne # (RRGGBB)"
+          }
         }
       },
       "extractionState": "manual"
@@ -9226,6 +10211,12 @@
           }
         },
         "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RGB"
+          }
+        },
+        "de": {
           "stringUnit": {
             "state": "translated",
             "value": "RGB"
@@ -9295,6 +10286,12 @@
             "state": "translated",
             "value": "RGBA"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RGBA"
+          }
         }
       },
       "extractionState": "manual"
@@ -9359,6 +10356,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "履歴の色をクリックしたときやカラーパネルから選んだときに使います。リスト表示にも反映されます。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird verwendet, wenn Sie eine Farbe in der Historie anklicken oder im Farbpanel wählen. Steuert auch die Anzeige in Listen."
           }
         }
       },
@@ -9425,6 +10428,12 @@
             "state": "translated",
             "value": "サポート"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Support"
+          }
         }
       },
       "extractionState": "manual"
@@ -9489,6 +10498,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ が作業に役立つなら、App Store での短い評価はとても励みになります。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn %@ Ihren Workflow unterstützt, bedeutet eine kurze Bewertung im App Store sehr viel."
           }
         }
       },
@@ -9555,6 +10570,12 @@
             "state": "translated",
             "value": "より暗く"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dunkler"
+          }
         }
       },
       "extractionState": "manual"
@@ -9619,6 +10640,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "さらに暗く"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Viel dunkler"
           }
         }
       },
@@ -9685,6 +10712,12 @@
             "state": "translated",
             "value": "より明るく"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heller"
+          }
         }
       },
       "extractionState": "manual"
@@ -9749,6 +10782,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "さらに明るく"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Viel heller"
           }
         }
       },
@@ -9815,6 +10854,12 @@
             "state": "translated",
             "value": "補色"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Komplementär"
+          }
         }
       },
       "extractionState": "manual"
@@ -9879,6 +10924,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "類似 −"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analog −"
           }
         }
       },
@@ -9945,6 +10996,12 @@
             "state": "translated",
             "value": "類似 +"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analog +"
+          }
         }
       },
       "extractionState": "manual"
@@ -10009,6 +11066,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "ミュート"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gedämpft"
           }
         }
       },
@@ -10075,8 +11138,15 @@
             "state": "translated",
             "value": "ログイン時に%@を開きますか？"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ beim Anmelden öffnen?"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "You can change this anytime in Settings. The app will not open at login unless you choose to.": {
       "localizations": {
@@ -10139,8 +11209,15 @@
             "state": "translated",
             "value": "設定でいつでも変更できます。選択しない限り、ログイン時にアプリは開きません。"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sie können dies jederzeit in den Einstellungen ändern. Die App startet beim Anmelden nur, wenn Sie das wählen."
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Not Now": {
       "localizations": {
@@ -10203,8 +11280,15 @@
             "state": "translated",
             "value": "後で"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht jetzt"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Open at Login": {
       "localizations": {
@@ -10267,8 +11351,15 @@
             "state": "translated",
             "value": "ログイン時に開く"
           }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei Anmeldung öffnen"
+          }
         }
-      }
+      },
+      "extractionState": "manual"
     },
     "Open floating history on launch": {
       "localizations": {
@@ -10330,6 +11421,84 @@
           "stringUnit": {
             "state": "translated",
             "value": "起動時にフローティング履歴を開く"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwebende Historie beim Start öffnen"
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Startup": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Startup"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opstarten"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arranque"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicio"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Démarrage"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvio"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بدء التشغيل"
+          }
+        },
+        "zh": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启动"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запуск"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "起動"
           }
         }
       }

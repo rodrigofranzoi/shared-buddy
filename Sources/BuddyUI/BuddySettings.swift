@@ -220,7 +220,7 @@ public struct BuddyAppearanceSettingsSection: View {
 
             ColorPicker(
                 selection: Binding(
-                    get: { Color(nsColor: BuddyAppearanceSettings.accentNSColor(for: brand)) },
+                    get: { Color(nsColor: BuddyAppearanceSettings.accentBaseNSColor(for: brand)) },
                     set: { newColor in
                         accentHexRaw = EditorRedactionSettings.hex(from: NSColor(newColor))
                     }

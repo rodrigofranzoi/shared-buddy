@@ -257,10 +257,47 @@ final class OTPDetectorTests: XCTestCase {
 }
 
 final class LocaleTests: XCTestCase {
-    func testTenLocales() {
-        XCTAssertEqual(BuddyLocale.supported.count, 10)
+    func testSupportedLocalesIncludeGerman() {
+        XCTAssertEqual(BuddyLocale.supported.count, 11)
+        XCTAssertEqual(BuddyLocale.de.displayName, "Deutsch")
         XCTAssertTrue(BuddyLocale.ar.isRTL)
         XCTAssertFalse(BuddyLocale.en.isRTL)
+        XCTAssertFalse(BuddyLocale.de.isRTL)
+    }
+}
+
+final class LaunchAtLoginConsentTests: XCTestCase {
+    private let configuredKey = BuddySettingsKey.launchAtLoginConfigured
+    private let enabledKey = BuddySettingsKey.launchAtLogin
+
+    override func setUp() {
+        super.setUp()
+        UserDefaults.standard.removeObject(forKey: configuredKey)
+        UserDefaults.standard.removeObject(forKey: enabledKey)
+    }
+
+    override func tearDown() {
+        UserDefaults.standard.removeObject(forKey: configuredKey)
+        UserDefaults.standard.removeObject(forKey: enabledKey)
+        super.tearDown()
+    }
+
+    func testNeedsConsentUntilUserConfigures() {
+        XCTAssertTrue(BuddyLaunchAtLogin.needsConsentPrompt)
+        XCTAssertFalse(BuddyLaunchAtLogin.isEnabled)
+
+        UserDefaults.standard.set(true, forKey: configuredKey)
+        UserDefaults.standard.set(false, forKey: enabledKey)
+        XCTAssertFalse(BuddyLaunchAtLogin.needsConsentPrompt)
+        XCTAssertFalse(BuddyLaunchAtLogin.isEnabled)
+    }
+
+    func testConfigureDefaultsMarksConfiguredOff() {
+        XCTAssertTrue(BuddyLaunchAtLogin.needsConsentPrompt)
+        let enabled = BuddyLaunchAtLogin.configureDefaultsOnFirstInstall()
+        XCTAssertFalse(enabled)
+        XCTAssertFalse(BuddyLaunchAtLogin.needsConsentPrompt)
+        XCTAssertFalse(BuddyLaunchAtLogin.isEnabled)
     }
 }
 
@@ -519,6 +556,40 @@ final class BuddyAppReviewPromptTests: XCTestCase {
         prompt.recordSignificantEvent()
         reference = reference.addingTimeInterval(2 * 86_400)
         XCTAssertTrue(prompt.shouldPrompt(hasAppStoreListing: true))
+    }
+}
+
+final class BuddyAppearanceContrastTests: XCTestCase {
+    func testPaintBuddyPurpleIsBoostedForDarkBackgrounds() {
+        let base = EditorRedactionSettings.nsColor(fromHex: BuddyBrand.paintBuddy.defaultAccentHex)
+        let boosted = BuddyAppearanceSettings.contrastBoostedForDarkBackground(base)
+
+        let baseL = relativeLuminance(base)
+        let boostedL = relativeLuminance(boosted)
+        XCTAssertGreaterThan(boostedL, baseL)
+
+        let ratio = (boostedL + 0.05) / 0.05
+        XCTAssertGreaterThanOrEqual(ratio, 5.45)
+    }
+
+    func testAlreadyBrightAccentsStayUnchanged() {
+        let green = EditorRedactionSettings.nsColor(fromHex: BuddyBrand.clipboardBuddy.defaultAccentHex)
+        let boosted = BuddyAppearanceSettings.contrastBoostedForDarkBackground(green)
+        XCTAssertEqual(hex(green), hex(boosted))
+    }
+
+    private func relativeLuminance(_ color: NSColor) -> CGFloat {
+        let srgb = color.usingColorSpace(.sRGB) ?? color
+        func linearize(_ c: CGFloat) -> CGFloat {
+            c <= 0.04045 ? c / 12.92 : pow((c + 0.055) / 1.055, 2.4)
+        }
+        return 0.2126 * linearize(srgb.redComponent)
+            + 0.7152 * linearize(srgb.greenComponent)
+            + 0.0722 * linearize(srgb.blueComponent)
+    }
+
+    private func hex(_ color: NSColor) -> String {
+        EditorRedactionSettings.hex(from: color)
     }
 }
 

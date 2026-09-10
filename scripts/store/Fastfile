@@ -1,0 +1,301 @@
+# frozen_string_literal: true
+
+# Shared Fastlane lanes for Buddy macOS App Store apps.
+# Imported from each app's fastlane/Fastfile after setting BUDDY_* ENV vars.
+
+require "fileutils"
+require "json"
+require "pathname"
+require "shellwords"
+
+UI = FastlaneCore::UI unless defined?(UI)
+
+def buddy_root
+  # App repo root (parent of fastlane/)
+  Pathname.new(File.expand_path("..", FastlaneCore::FastlaneFolder.path)).cleanpath
+end
+
+def buddy_shared_scripts
+  candidate = buddy_root.join("Vendor/shared-buddy/scripts/store")
+  return candidate if candidate.directory?
+
+  # Monorepo sibling checkout (mac-buddy/shared-buddy)
+  sibling = buddy_root.join("../shared-buddy/scripts/store")
+  return sibling.cleanpath if sibling.directory?
+
+  UI.user_error!("shared-buddy scripts not found. Link Vendor/shared-buddy or check out shared-buddy next to this app.")
+end
+
+def buddy_env!(key, fallback = nil)
+  value = ENV[key].to_s.strip
+  value = fallback.to_s if value.empty? && !fallback.nil?
+  UI.user_error!("Missing #{key}") if value.empty?
+  value
+end
+
+def buddy_review_information
+  first = ENV["DELIVER_CONTACT_FIRST_NAME"].to_s.strip
+  last = ENV["DELIVER_CONTACT_LAST_NAME"].to_s.strip
+  email = ENV["DELIVER_CONTACT_EMAIL"].to_s.strip
+  phone = ENV["DELIVER_CONTACT_PHONE"].to_s.strip
+  demo_user = ENV["DELIVER_DEMO_USER"].to_s.strip
+  demo_password = ENV["DELIVER_DEMO_PASSWORD"].to_s.strip
+
+  info = {}
+  info[:first_name] = first unless first.empty?
+  info[:last_name] = last unless last.empty?
+  info[:email_address] = email unless email.empty?
+  info[:phone_number] = phone unless phone.empty?
+  info[:demo_user] = demo_user unless demo_user.empty?
+  info[:demo_password] = demo_password unless demo_password.empty?
+  info.empty? ? nil : info
+end
+
+def buddy_ensure_review_contact!
+  info = buddy_review_information
+  missing = %i[first_name last_name email_address phone_number].reject { |k| info && info[k] }
+  return info if missing.empty?
+
+  UI.user_error!(
+    "App Review contact incomplete (missing: #{missing.join(', ')}). " \
+    "Set DELIVER_CONTACT_FIRST_NAME / LAST_NAME / EMAIL / PHONE in fastlane/.env " \
+    "(phone must look like +31 612345678)."
+  )
+end
+
+def buddy_api_key
+  key_id = ENV["APP_STORE_CONNECT_API_KEY_ID"].to_s.strip
+  issuer = ENV["APP_STORE_CONNECT_API_ISSUER_ID"].to_s.strip
+  key_path = ENV["APP_STORE_CONNECT_API_KEY_PATH"].to_s.strip
+  key_content = ENV["APP_STORE_CONNECT_API_KEY"].to_s.strip
+
+  return nil if key_id.empty? || issuer.empty?
+  return nil if key_path.empty? && key_content.empty?
+
+  opts = {
+    key_id: key_id,
+    issuer_id: issuer,
+    duration: 1200,
+    in_house: false
+  }
+  if !key_content.empty?
+    opts[:key_content] = key_content
+    opts[:is_key_content_base64] = ENV["APP_STORE_CONNECT_API_KEY_IS_BASE64"] == "true"
+  else
+    opts[:key_filepath] = File.expand_path(key_path)
+  end
+  app_store_connect_api_key(**opts)
+end
+
+def buddy_ensure_project!
+  Dir.chdir(buddy_root.to_s) do
+    unless File.exist?(buddy_env!("BUDDY_XCODEPROJ"))
+      UI.message("Generating Xcode project with XcodeGen…")
+      sh("xcodegen", "generate")
+    end
+    firebase = Dir.glob("**/GoogleService-Info.plist").reject { |p| p.include?(".sample") }
+    if firebase.empty? && File.executable?("scripts/link-firebase.sh")
+      UI.important("GoogleService-Info.plist missing — run scripts/link-firebase.sh before shipping.")
+    end
+  end
+end
+
+def buddy_write_review_contact!
+  info = buddy_ensure_review_contact!
+  dir = buddy_root.join("fastlane/metadata/review_information")
+  FileUtils.mkdir_p(dir)
+  {
+    first_name: "first_name.txt",
+    last_name: "last_name.txt",
+    email_address: "email_address.txt",
+    phone_number: "phone_number.txt",
+    demo_user: "demo_user.txt",
+    demo_password: "demo_password.txt"
+  }.each do |key, file|
+    next unless info[key]
+    File.write(dir.join(file), "#{info[key]}\n")
+  end
+  info
+end
+
+def buddy_prepare!(skip_screenshots: false)
+  script = buddy_shared_scripts.join("prepare_deliver_metadata.py")
+  UI.user_error!("Missing #{script}") unless script.file?
+  cmd = ["python3", script.to_s, "--root", buddy_root.to_s, "--app", buddy_env!("BUDDY_APP_KEY")]
+  cmd << "--skip-screenshots" if skip_screenshots
+  sh(*cmd)
+  buddy_write_review_contact!
+end
+
+def buddy_export_options_path
+  path = buddy_root.join("fastlane/ExportOptions.plist")
+  return path.to_s if path.file?
+
+  team = buddy_env!("FASTLANE_TEAM_ID", ENV["BUDDY_TEAM_ID"] || "G42Z863W7H")
+  path.parent.mkpath
+  path.write(<<~PLIST)
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>method</key>
+      <string>app-store</string>
+      <key>teamID</key>
+      <string>#{team}</string>
+      <key>signingStyle</key>
+      <string>automatic</string>
+      <key>destination</key>
+      <string>export</string>
+    </dict>
+    </plist>
+  PLIST
+  path.to_s
+end
+
+platform :mac do
+  before_all do
+    ENV["FASTLANE_TEAM_ID"] ||= ENV["BUDDY_TEAM_ID"] || "G42Z863W7H"
+    ENV["BUDDY_PLATFORM"] ||= "osx"
+  end
+
+  desc "Generate fastlane/metadata + screenshots from STORE.md and docs/screenshots"
+  lane :prepare do |options|
+    buddy_prepare!(skip_screenshots: options[:skip_screenshots] == true)
+  end
+
+  desc "Archive and export a Mac App Store .pkg (signed)"
+  lane :build do |options|
+    buddy_ensure_project!
+    api_key = buddy_api_key
+    team = buddy_env!("FASTLANE_TEAM_ID", "G42Z863W7H")
+    scheme = buddy_env!("BUDDY_SCHEME")
+    project = buddy_env!("BUDDY_XCODEPROJ")
+    output = buddy_root.join("build").to_s
+    FileUtils.mkdir_p(output)
+
+    # Prefer automatic signing with the distribution team already on this Mac.
+    # Do not force "Apple Distribution" here — with automatic signing that conflicts
+    # (Xcode wants Apple Development at archive time, Distribution only at export).
+    update_code_signing_settings(
+      use_automatic_signing: true,
+      path: buddy_root.join(project).to_s,
+      team_id: team,
+      targets: [scheme]
+    )
+
+    build_mac_app(
+      project: buddy_root.join(project).to_s,
+      scheme: scheme,
+      clean: options[:clean] != false,
+      output_directory: output,
+      output_name: scheme,
+      export_method: "app-store",
+      export_team_id: team,
+      export_options: buddy_export_options_path,
+      skip_package_pkg: false,
+      xcargs: "DEVELOPMENT_TEAM=#{team}"
+    )
+  end
+
+  desc "Upload binary to TestFlight (Mac)"
+  lane :beta do |options|
+    api_key = buddy_api_key
+    buddy_prepare!(skip_screenshots: true) unless options[:skip_prepare]
+    build(clean: options[:clean]) unless options[:skip_build]
+
+    pkg = Dir[buddy_root.join("build/*.pkg").to_s].max_by { |f| File.mtime(f) }
+    UI.user_error!("No .pkg found in build/. Run build first.") unless pkg
+
+    upload_to_testflight(
+      api_key: api_key,
+      pkg: pkg,
+      app_identifier: buddy_env!("BUDDY_BUNDLE_ID"),
+      skip_waiting_for_build_processing: options[:skip_waiting] != false,
+      distribute_external: false,
+      changelog: options[:changelog]
+    )
+  end
+
+  desc "Upload STORE.md translations + screenshots to App Store Connect (no binary)"
+  lane :metadata do |options|
+    api_key = buddy_api_key
+    buddy_prepare!(skip_screenshots: options[:skip_screenshots] == true)
+
+    upload_to_app_store(
+      api_key: api_key,
+      app_identifier: buddy_env!("BUDDY_BUNDLE_ID"),
+      platform: "osx",
+      skip_binary_upload: true,
+      skip_app_version_update: options[:skip_app_version_update] == true,
+      skip_screenshots: options[:skip_screenshots] == true,
+      skip_metadata: false,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      run_precheck_before_submit: false,
+      submit_for_review: false,
+      overwrite_screenshots: options[:overwrite_screenshots] != false,
+      metadata_path: buddy_root.join("fastlane/metadata").to_s,
+      screenshots_path: buddy_root.join("fastlane/screenshots").to_s,
+      app_review_information: buddy_review_information
+    )
+  end
+
+  desc "Upload screenshots only"
+  lane :screenshots do |options|
+    api_key = buddy_api_key
+    buddy_prepare!
+
+    upload_to_app_store(
+      api_key: api_key,
+      app_identifier: buddy_env!("BUDDY_BUNDLE_ID"),
+      platform: "osx",
+      skip_binary_upload: true,
+      skip_metadata: true,
+      skip_screenshots: false,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      run_precheck_before_submit: false,
+      submit_for_review: false,
+      overwrite_screenshots: true,
+      screenshots_path: buddy_root.join("fastlane/screenshots").to_s
+    )
+  end
+
+  desc "Sign, upload binary + metadata + screenshots; optionally submit for review"
+  lane :release do |options|
+    api_key = buddy_api_key
+    buddy_prepare! unless options[:skip_prepare]
+    build(clean: options[:clean]) unless options[:skip_build]
+
+    pkg = Dir[buddy_root.join("build/*.pkg").to_s].max_by { |f| File.mtime(f) }
+    UI.user_error!("No .pkg found in build/.") unless pkg
+
+    submit = options[:submit] == true || options[:submit_for_review] == true
+
+    upload_to_app_store(
+      api_key: api_key,
+      app_identifier: buddy_env!("BUDDY_BUNDLE_ID"),
+      platform: "osx",
+      pkg: pkg,
+      skip_binary_upload: false,
+      skip_screenshots: options[:skip_screenshots] == true,
+      skip_metadata: options[:skip_metadata] == true,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      run_precheck_before_submit: false,
+      submit_for_review: submit,
+      automatic_release: options[:automatic_release] == true,
+      overwrite_screenshots: options[:overwrite_screenshots] != false,
+      metadata_path: buddy_root.join("fastlane/metadata").to_s,
+      screenshots_path: buddy_root.join("fastlane/screenshots").to_s,
+      app_review_information: buddy_review_information,
+      submission_information: {
+        export_compliance_uses_encryption: false,
+        export_compliance_encryption_updated: false,
+        content_rights_contains_third_party_content: false,
+        content_rights_has_rights: true,
+        add_id_info_uses_idfa: false
+      }
+    )
+  end
+end

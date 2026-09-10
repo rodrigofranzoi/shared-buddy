@@ -5,6 +5,7 @@
 | Code | Language |
 |------|----------|
 | en | English (source) |
+| de | German |
 | nl | Dutch |
 | pt | Portuguese |
 | es | Spanish |
@@ -26,6 +27,6 @@
 ## Workflow
 
 1. Add English keys to the correct String Catalog (app vs shared)
-2. Translate all 10 locales
+2. Translate all 11 locales
 3. Verify RTL layout with `ar`
 4. Update [STORE.md](STORE.md) per locale for App Store Connect

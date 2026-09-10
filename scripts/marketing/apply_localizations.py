@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-LANGS = ["en", "nl", "pt", "es", "fr", "it", "ar", "zh", "ru", "ja"]
+LANGS = ["en", "de", "nl", "pt", "es", "fr", "it", "ar", "zh", "ru", "ja"]
 
 # key -> {lang: value}. English may equal the key.
 SCREENSHOT: dict[str, dict[str, str]] = {

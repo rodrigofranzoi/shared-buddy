@@ -279,3 +279,16 @@ public struct BuddyLaunchAtLoginToggle: View {
         }
     }
 }
+
+/// Preferences → Startup: launch-at-login toggle (same control as the first-launch consent prompt).
+public struct BuddyStartupSettingsSection: View {
+    public init() {}
+
+    public var body: some View {
+        Section {
+            BuddyLaunchAtLoginToggle()
+        } header: {
+            Text("Startup", bundle: BuddyL10n.bundle)
+        }
+    }
+}

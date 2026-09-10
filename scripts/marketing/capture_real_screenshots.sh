@@ -4,7 +4,7 @@ set -euo pipefail
 setopt NULL_GLOB 2>/dev/null || true
 
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
-LANGS=(en nl pt es fr it ar zh ru ja)
+LANGS=(en de nl pt es fr it ar zh ru ja)
 DERIVED="${TMPDIR:-/tmp}/buddy-marketing-derived"
 CONFIGURATION="${CONFIGURATION:-Debug}"
 

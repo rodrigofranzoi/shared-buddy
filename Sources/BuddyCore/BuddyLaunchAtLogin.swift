@@ -43,7 +43,7 @@ public enum BuddyLaunchAtLogin {
     }
 
     /// First-launch consent popup. Registers as a Login Item only if the user chooses
-    /// **Open at Login**. Default button is **Not Now** (stays off).
+    /// **Open at Login**. Default button is **Not Now** (stays off). Later changes go through Settings.
     @MainActor
     @discardableResult
     public static func promptForConsentIfNeeded(appDisplayName: String) -> Bool {
@@ -58,8 +58,8 @@ public enum BuddyLaunchAtLogin {
 
         let alert = NSAlert()
         alert.messageText = String(
-            localized: "Open \(appDisplayName) when you log in?",
-            bundle: BuddyL10n.bundle
+            format: BuddyL10n.string(key: "Open %@ when you log in?"),
+            appDisplayName
         )
         alert.informativeText = BuddyL10n.string(
             "You can change this anytime in Settings. The app will not open at login unless you choose to."

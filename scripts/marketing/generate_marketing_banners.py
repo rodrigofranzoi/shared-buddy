@@ -23,7 +23,7 @@ except ImportError:  # pragma: no cover
     TTFont = None
 
 ROOT = Path(__file__).resolve().parents[3]
-LANGS = ["en", "nl", "pt", "es", "fr", "it", "ar", "zh", "ru", "ja"]
+LANGS = ["en", "de", "nl", "pt", "es", "fr", "it", "ar", "zh", "ru", "ja"]
 
 BANNER_W, BANNER_H = 1280, 800
 RAW_W, RAW_H = 980, 620
@@ -528,6 +528,7 @@ PAINT_FEATURES = {
     "history": {
         "titles": {
             "en": "History & Favorites",
+            "de": "Historie & Favoriten",
             "nl": "Geschiedenis & favorieten",
             "pt": "Histórico e favoritos",
             "es": "Historial y favoritos",
@@ -540,6 +541,7 @@ PAINT_FEATURES = {
         },
         "descs": {
             "en": "Clipboard colors land in History — switch to Favorites for pinned swatches.",
+            "de": "Zwischenablage-Farben landen in der Historie — Favoriten für angeheftete Swatches.",
             "nl": "Klembordkleuren in Geschiedenis — schakel naar Favorieten voor vastgezette swatches.",
             "pt": "Cores da área de transferência no Histórico — mude para Favoritos para swatches fixos.",
             "es": "Los colores del portapapeles van al Historial — cambia a Favoritos para muestras fijas.",
@@ -555,6 +557,7 @@ PAINT_FEATURES = {
     "detail": {
         "titles": {
             "en": "Copy any channel",
+            "de": "Jeden Kanal kopieren",
             "nl": "Kopieer elk kanaal",
             "pt": "Copie qualquer canal",
             "es": "Copia cualquier canal",
@@ -567,6 +570,7 @@ PAINT_FEATURES = {
         },
         "descs": {
             "en": "Hex, RGB, RGBA, and R/G/B/A chips — plus suggested relatives to try next.",
+            "de": "Hex, RGB, RGBA und R/G/B/A-Chips — plus Vorschläge verwandter Farben.",
             "nl": "Hex, RGB, RGBA en R/G/B/A-chips — plus voorgestelde verwante kleuren.",
             "pt": "Hex, RGB, RGBA e chips R/G/B/A — mais sugestões de cores relacionadas.",
             "es": "Hex, RGB, RGBA y chips R/G/B/A — más sugerencias de colores afines.",
@@ -582,6 +586,7 @@ PAINT_FEATURES = {
     "palette": {
         "titles": {
             "en": "Floating History",
+            "de": "Schwebende Historie",
             "nl": "Zwevende geschiedenis",
             "pt": "Histórico flutuante",
             "es": "Historial flotante",
@@ -594,6 +599,7 @@ PAINT_FEATURES = {
         },
         "descs": {
             "en": "Keep recent swatches always on top — grid, list, or detailed with channel chips.",
+            "de": "Aktuelle Swatches immer im Vordergrund — Raster, Liste oder Detail mit Kanal-Chips.",
             "nl": "Houd recente swatches altijd bovenaan — raster, lijst of detail met kanaalchips.",
             "pt": "Mantenha swatches recentes no topo — grelha, lista ou detalhado com canais.",
             "es": "Mantén muestras recientes arriba — cuadrícula, lista o detalle con canales.",
@@ -609,6 +615,7 @@ PAINT_FEATURES = {
     "favorites": {
         "titles": {
             "en": "Floating Favorites",
+            "de": "Schwebende Favoriten",
             "nl": "Zwevende favorieten",
             "pt": "Favoritos flutuantes",
             "es": "Favoritos flotantes",
@@ -621,6 +628,7 @@ PAINT_FEATURES = {
         },
         "descs": {
             "en": "A second always-on panel just for starred colors you reuse all day.",
+            "de": "Ein zweites Immer-oben-Panel nur für Favoritenfarben, die Sie den ganzen Tag nutzen.",
             "nl": "Een tweede altijd-bovenste paneel voor vastgezette kleuren die je de hele dag gebruikt.",
             "pt": "Um segundo painel sempre no topo só para cores favoritas que reutiliza.",
             "es": "Un segundo panel siempre encima solo para colores favoritos que reutilizas.",
@@ -636,6 +644,7 @@ PAINT_FEATURES = {
     "formats": {
         "titles": {
             "en": "Capture your way",
+            "de": "Erfassen wie Sie wollen",
             "nl": "Vang zoals jij wilt",
             "pt": "Capture à sua maneira",
             "es": "Captura a tu manera",
@@ -648,6 +657,7 @@ PAINT_FEATURES = {
         },
         "descs": {
             "en": "Choose which formats to save and how copied colors are formatted — even hex without #.",
+            "de": "Wählen Sie Speicherformate und das Kopierformat — auch Hex ohne #.",
             "nl": "Kies welke formaten je opslaat en hoe gekopieerde kleuren worden geformatteerd — ook hex zonder #.",
             "pt": "Escolha que formatos guardar e como as cores copiadas são formatadas — até hex sem #.",
             "es": "Elige qué formatos guardar y cómo se formatean los colores — incluso hex sin #.",
@@ -663,6 +673,7 @@ PAINT_FEATURES = {
     "pick": {
         "titles": {
             "en": "Pick from screen",
+            "de": "Vom Bildschirm wählen",
             "nl": "Kies van het scherm",
             "pt": "Escolha no ecrã",
             "es": "Elige de la pantalla",
@@ -675,6 +686,7 @@ PAINT_FEATURES = {
         },
         "descs": {
             "en": "One-shot eyedropper into History or Favorites — no Screen Recording needed.",
+            "de": "Einmal-Pipette in Historie oder Favoriten — ohne Bildschirmaufzeichnung.",
             "nl": "Eenmalige pipet naar Geschiedenis of Favorieten — geen schermopname nodig.",
             "pt": "Conta-gotas de um clique para Histórico ou Favoritos — sem gravação de ecrã.",
             "es": "Cuentagotas de un clic a Historial o Favoritos — sin grabación de pantalla.",
@@ -690,6 +702,7 @@ PAINT_FEATURES = {
     "menubar": {
         "titles": {
             "en": "Menu bar ready",
+            "de": "Bereit in der Menüleiste",
             "nl": "Klaar in de menubalk",
             "pt": "Pronto na barra de menus",
             "es": "Listo en la barra de menús",
@@ -702,6 +715,7 @@ PAINT_FEATURES = {
         },
         "descs": {
             "en": "Recent colors one click away — pick, History, Favorites, and pause.",
+            "de": "Aktuelle Farben mit einem Klick — Pipette, Historie, Favoriten und Pause.",
             "nl": "Recente kleuren op één klik — pipet, Geschiedenis, Favorieten en pauze.",
             "pt": "Cores recentes a um clique — conta-gotas, Histórico, Favoritos e pausa.",
             "es": "Colores recientes a un clic — cuentagotas, Historial, Favoritos y pausa.",

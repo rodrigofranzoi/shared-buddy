@@ -95,8 +95,73 @@ public enum BuddyAppearanceSettings {
         UserDefaults.standard.set(brand.defaultAccentHex, forKey: BuddySettingsKey.appearanceAccentHex)
     }
 
-    public static func accentNSColor(for brand: BuddyBrand) -> NSColor {
+    /// Stored accent as a fixed sRGB color (settings swatches / color picker).
+    public static func accentBaseNSColor(for brand: BuddyBrand) -> NSColor {
         EditorRedactionSettings.nsColor(fromHex: accentHex(for: brand))
+    }
+
+    /// Accent for UI tinting — lightens in dark appearance so purple/etc. stay readable on black.
+    public static func accentNSColor(for brand: BuddyBrand) -> NSColor {
+        let base = accentBaseNSColor(for: brand)
+        return NSColor(name: nil, dynamicProvider: { appearance in
+            let isDark = appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+            guard isDark else { return base }
+            return contrastBoostedForDarkBackground(base)
+        })
+    }
+
+    /// Mixes toward white until contrast vs black is clearly readable on dark chrome (~5.5:1).
+    static func contrastBoostedForDarkBackground(_ color: NSColor, minimumRatio: CGFloat = 5.5) -> NSColor {
+        let srgb = color.usingColorSpace(.sRGB) ?? color
+        if contrastRatio(foreground: srgb, background: .black) >= minimumRatio {
+            return srgb
+        }
+
+        var low: CGFloat = 0
+        var high: CGFloat = 1
+        var best = srgb
+        for _ in 0..<14 {
+            let mid = (low + high) / 2
+            let candidate = blend(srgb, toward: .white, amount: mid)
+            if contrastRatio(foreground: candidate, background: .black) >= minimumRatio {
+                best = candidate
+                high = mid
+            } else {
+                low = mid
+            }
+        }
+        return best
+    }
+
+    private static func blend(_ color: NSColor, toward other: NSColor, amount: CGFloat) -> NSColor {
+        let a = color.usingColorSpace(.sRGB) ?? color
+        let b = other.usingColorSpace(.sRGB) ?? other
+        let t = min(max(amount, 0), 1)
+        return NSColor(
+            srgbRed: a.redComponent + (b.redComponent - a.redComponent) * t,
+            green: a.greenComponent + (b.greenComponent - a.greenComponent) * t,
+            blue: a.blueComponent + (b.blueComponent - a.blueComponent) * t,
+            alpha: a.alphaComponent
+        )
+    }
+
+    private static func contrastRatio(foreground: NSColor, background: NSColor) -> CGFloat {
+        let l1 = relativeLuminance(foreground)
+        let l2 = relativeLuminance(background)
+        let lighter = max(l1, l2)
+        let darker = min(l1, l2)
+        return (lighter + 0.05) / (darker + 0.05)
+    }
+
+    private static func relativeLuminance(_ color: NSColor) -> CGFloat {
+        let srgb = color.usingColorSpace(.sRGB) ?? color
+        func linearize(_ c: CGFloat) -> CGFloat {
+            c <= 0.04045 ? c / 12.92 : pow((c + 0.055) / 1.055, 2.4)
+        }
+        let r = linearize(srgb.redComponent)
+        let g = linearize(srgb.greenComponent)
+        let b = linearize(srgb.blueComponent)
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
     }
 
     /// Syncs `NSApp.appearance` from stored preference (menu bar + AppKit chrome).

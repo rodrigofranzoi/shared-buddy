@@ -1,7 +1,7 @@
 import Foundation
 
 public enum BuddyLocale: String, CaseIterable, Sendable {
-    case en, nl, pt, es, fr, it, ar, zh, ru, ja
+    case en, de, nl, pt, es, fr, it, ar, zh, ru, ja
 
     public static let supported: [BuddyLocale] = Array(BuddyLocale.allCases)
 
@@ -10,6 +10,7 @@ public enum BuddyLocale: String, CaseIterable, Sendable {
     public var displayName: String {
         switch self {
         case .en: return "English"
+        case .de: return "Deutsch"
         case .nl: return "Nederlands"
         case .pt: return "Português"
         case .es: return "Español"
