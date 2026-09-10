@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import BuddyCore
 
 /// Design tokens for the *-buddy suite. Apps must use these instead of ad-hoc styling.
 /// Accent defaults come from ``BuddyBrand`` / ``BuddyAppearanceSettings`` (user-overridable).
@@ -38,6 +39,8 @@ public enum BuddyTheme {
         public static let textPrimary = Color(nsColor: .labelColor)
         public static let textSecondary = Color(nsColor: .secondaryLabelColor)
         public static let accent = Color.accentColor
+        /// “Copied” / success feedback — contrast-boosted for light and dark backgrounds.
+        public static let success = Color(nsColor: BuddyAppearanceSettings.successNSColor)
         public static let danger = Color(nsColor: .systemRed)
         public static let border = Color(nsColor: .separatorColor)
         public static let chipFill = Color(nsColor: .quaternaryLabelColor).opacity(0.25)

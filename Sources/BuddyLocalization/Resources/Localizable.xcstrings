@@ -5752,77 +5752,6 @@
       },
       "extractionState": "manual"
     },
-    "Copies made while these apps are frontmost are not saved to Clipboard Buddy history.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Copies made while these apps are frontmost are not saved to Clipboard Buddy history."
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kopieën gemaakt terwijl deze apps vooraan staan, worden niet in de geschiedenis van Clipboard Buddy opgeslagen."
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cópias feitas com estes apps em primeiro plano não são salvas no histórico do Clipboard Buddy."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Las copias hechas con estas apps en primer plano no se guardan en el historial de Clipboard Buddy."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les copies faites lorsque ces apps sont au premier plan ne sont pas enregistrées dans l’historique de Clipboard Buddy."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Le copie fatte con queste app in primo piano non vengono salvate nella cronologia di Clipboard Buddy."
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لا تُحفظ النُسخ أثناء كون هذه التطبيقات في الواجهة في سجل Clipboard Buddy."
-          }
-        },
-        "zh": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "这些应用位于前台时的复制不会保存到 Clipboard Buddy 历史记录。"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Копии, сделанные когда эти приложения на переднем плане, не сохраняются в истории Clipboard Buddy."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "これらのアプリが最前面のときのコピーは Clipboard Buddy の履歴に保存されません。"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kopien, während diese Apps im Vordergrund sind, werden nicht in der Clipboard-Buddy-Historie gespeichert."
-          }
-        }
-      },
-      "extractionState": "manual"
-    },
     "While paused, new clipboard or screenshot captures are not saved. Permanent pause survives relaunch until you resume.": {
       "localizations": {
         "en": {
@@ -11372,7 +11301,7 @@
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zwevende geschiedenis bij start openen"
+            "value": "Zwevende geschiedenis bij starten openen"
           }
         },
         "pt": {
@@ -11390,13 +11319,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ouvrir l’historique flottant au lancement"
+            "value": "Ouvrir l’historique flottant au démarrage"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apri cronologia fluttuante all’avvio"
+            "value": "Apri cronologia mobile all’avvio"
           }
         },
         "ar": {
@@ -11499,6 +11428,503 @@
           "stringUnit": {
             "state": "translated",
             "value": "起動"
+          }
+        }
+      }
+    },
+    "Copies made while these apps are frontmost are not saved to ClipLog Buddy history.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copies made while these apps are frontmost are not saved to ClipLog Buddy history."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopieën gemaakt terwijl deze apps vooraan staan, worden niet in de geschiedenis van ClipLog Buddy opgeslagen."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cópias feitas com estes apps em primeiro plano não são salvas no histórico do ClipLog Buddy."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las copias hechas con estas apps en primer plano no se guardan en el historial de ClipLog Buddy."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les copies faites lorsque ces apps sont au premier plan ne sont pas enregistrées dans l’historique de ClipLog Buddy."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le copie fatte con queste app in primo piano non vengono salvate nella cronologia di ClipLog Buddy."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا تُحفظ النُسخ أثناء كون هذه التطبيقات في الواجهة في سجل ClipLog Buddy."
+          }
+        },
+        "zh": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这些应用位于前台时的复制不会保存到 ClipLog Buddy 历史记录。"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Копии, сделанные когда эти приложения на переднем плане, не сохраняются в истории ClipLog Buddy."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "これらのアプリが最前面のときのコピーは ClipLog Buddy の履歴に保存されません。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopien, während diese Apps im Vordergrund sind, werden nicht in der ClipLog-Buddy-Historie gespeichert."
+          }
+        }
+      },
+      "extractionState": "manual"
+    },
+    "Open floating favorites on launch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open floating favorites on launch"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwebende Favoriten beim Start öffnen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zwevende favorieten bij starten openen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir favoritos flutuantes ao iniciar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir favoritos flotantes al iniciar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir les favoris flottants au démarrage"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apri preferiti mobili all’avvio"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح المفضلات العائمة عند التشغيل"
+          }
+        },
+        "zh": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "启动时打开浮动收藏"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открывать плавающие избранные при запуске"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "起動時にフローティングのお気に入りを開く"
+          }
+        }
+      }
+    },
+    "Floating History": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Floating History"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwebende Historie"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zwevende geschiedenis"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Histórico flutuante"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historial flotante"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historique flottant"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cronologia mobile"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سجل عائم"
+          }
+        },
+        "zh": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "浮动历史"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Плавающая история"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フローティング履歴"
+          }
+        }
+      }
+    },
+    "Floating Favorites": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Floating Favorites"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwebende Favoriten"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zwevende favorieten"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favoritos flutuantes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favoritos flotantes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favoris flottants"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preferiti mobili"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مفضلات عائمة"
+          }
+        },
+        "zh": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "浮动收藏"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Плавающие избранные"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フローティングのお気に入り"
+          }
+        }
+      }
+    },
+    "Star a history item to pin it here": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Star a history item to pin it here"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markieren Sie einen Historieneintrag mit einem Stern, um ihn hier anzuheften"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markeer een geschiedenisitem met een ster om het hier vast te zetten"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marque um item do histórico com uma estrela para o fixar aqui"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marca un elemento del historial con una estrella para fijarlo aquí"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marquez un élément de l’historique d’une étoile pour l’épingler ici"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Metti una stella a una voce della cronologia per fissarla qui"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ضع نجمة على عنصر في السجل لتثبيته هنا"
+          }
+        },
+        "zh": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "给历史记录项加星即可固定到这里"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отметьте элемент истории звёздочкой, чтобы закрепить его здесь"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "履歴項目に星を付けるとここに固定されます"
+          }
+        }
+      }
+    },
+    "Copy text, images, or files to build history": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy text, images, or files to build history"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopieren Sie Text, Bilder oder Dateien, um die Historie aufzubauen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopieer tekst, afbeeldingen of bestanden om geschiedenis op te bouwen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copie texto, imagens ou ficheiros para criar o histórico"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copia texto, imágenes o archivos para crear el historial"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiez du texte, des images ou des fichiers pour constituer l’historique"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copia testo, immagini o file per creare la cronologia"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انسخ نصوصًا أو صورًا أو ملفات لبناء السجل"
+          }
+        },
+        "zh": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "复制文本、图像或文件以建立历史记录"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Копируйте текст, изображения или файлы, чтобы заполнить историю"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "テキスト・画像・ファイルをコピーして履歴を作成"
+          }
+        }
+      }
+    },
+    "History or Favorites": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History or Favorites"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historie oder Favoriten"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschiedenis of favorieten"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Histórico ou favoritos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historial o favoritos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historique ou favoris"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cronologia o preferiti"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "السجل أو المفضلات"
+          }
+        },
+        "zh": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "历史或收藏"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "История или избранное"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "履歴またはお気に入り"
           }
         }
       }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate mock UI captures + framed App Store banners for Screenshot & Clipboard Buddy."""
+"""Generate mock UI captures + framed App Store banners for Screenshot & ClipLog Buddy."""
 
 from __future__ import annotations
 
@@ -66,6 +66,7 @@ SHOT_FEATURES = {
     "gallery": {
         "titles": {
             "en": "All your shots",
+            "de": "Alle Ihre Aufnahmen",
             "nl": "Al je shots",
             "pt": "Todas as capturas",
             "es": "Todas tus capturas",
@@ -78,6 +79,7 @@ SHOT_FEATURES = {
         },
         "descs": {
             "en": "Browse, search, and open captures in one clean gallery.",
+            "de": "Durchsuchen, suchen und öffnen Sie Aufnahmen in einer klaren Galerie.",
             "nl": "Blader, zoek en open captures in één overzichtelijke galerij.",
             "pt": "Navegue, pesquise e abra capturas numa galeria limpa.",
             "es": "Explora, busca y abre capturas en una galería clara.",
@@ -90,6 +92,7 @@ SHOT_FEATURES = {
         },
         "ui": {
             "en": {"nav": "Gallery", "hint": "New screenshots appear here automatically.", "rows": ["Login form", "Demo payslip", "Invoice PDF"]},
+        "de": {"nav": "Galerie", "hint": "Neue Screenshots erscheinen hier automatisch.", "rows": ["Anmeldeformular", "Demo-Gehaltsabrechnung", "Rechnungs-PDF"]},
             "nl": {"nav": "Galerij", "hint": "Nieuwe schermafbeeldingen verschijnen hier automatisch.", "rows": ["Inlogformulier", "Demo loonstrook", "Factuur-PDF"]},
             "pt": {"nav": "Galeria", "hint": "Novas capturas aparecem aqui automaticamente.", "rows": ["Formulário de login", "Recibo demo", "PDF da fatura"]},
             "es": {"nav": "Galería", "hint": "Las capturas nuevas aparecen aquí automáticamente.", "rows": ["Formulario de acceso", "Nómina demo", "PDF de factura"]},
@@ -104,6 +107,7 @@ SHOT_FEATURES = {
     "editor": {
         "titles": {
             "en": "Quick edit",
+            "de": "Schnell bearbeiten",
             "nl": "Snel bewerken",
             "pt": "Edição rápida",
             "es": "Edición rápida",
@@ -116,6 +120,7 @@ SHOT_FEATURES = {
         },
         "descs": {
             "en": "Draw, arrow, text, crop, blur, and black-box in one editor.",
+            "de": "Zeichnen, Pfeile, Text, Zuschneiden, Unschärfe und Schwärzen in einem Editor.",
             "nl": "Teken, pijl, tekst, bijsnijden, vervagen en zwartmaken in één editor.",
             "pt": "Desenhe, seta, texto, recorte, desfoque e caixa preta num só editor.",
             "es": "Dibuja, flecha, texto, recorte, desenfoque y caja negra en un editor.",
@@ -142,6 +147,7 @@ SHOT_FEATURES = {
     "redact": {
         "titles": {
             "en": "Hide secrets",
+            "de": "Geheimnisse schützen",
             "nl": "Verberg geheimen",
             "pt": "Oculte segredos",
             "es": "Oculta secretos",
@@ -154,6 +160,7 @@ SHOT_FEATURES = {
         },
         "descs": {
             "en": "Auto-detect passwords, IBANs, and cards — blur in one tap.",
+            "de": "Erkennt automatisch Passwörter, IBANs und Karten — Unschärfe mit einem Tipp.",
             "nl": "Detecteer wachtwoorden, IBANs en kaarten — vervagen met één tik.",
             "pt": "Deteta passwords, IBANs e cartões — desfoque com um toque.",
             "es": "Detecta contraseñas, IBAN y tarjetas — desenfoca con un toque.",
@@ -180,6 +187,7 @@ SHOT_FEATURES = {
     "smart": {
         "titles": {
             "en": "Smart tools",
+            "de": "Smart-Werkzeuge",
             "nl": "Slimme tools",
             "pt": "Ferramentas inteligentes",
             "es": "Herramientas inteligentes",
@@ -192,6 +200,7 @@ SHOT_FEATURES = {
         },
         "descs": {
             "en": "OCR copy text and pick hex colors straight from the shot.",
+            "de": "OCR-Text kopieren und Hex-Farben direkt aus dem Shot wählen.",
             "nl": "OCR tekst kopiëren en hex-kleuren kiezen direct uit de shot.",
             "pt": "Copie texto com OCR e escolha cores hex direto da captura.",
             "es": "Copia texto con OCR y elige colores hex desde la captura.",
@@ -218,6 +227,7 @@ SHOT_FEATURES = {
     "qr": {
         "titles": {
             "en": "Scan every QR",
+            "de": "Jeden QR scannen",
             "nl": "Scan elke QR",
             "pt": "Leia cada QR",
             "es": "Escanea cada QR",
@@ -230,6 +240,7 @@ SHOT_FEATURES = {
         },
         "descs": {
             "en": "List every QR in a shot — open links or copy payloads instantly.",
+            "de": "Jeden QR in einem Shot auflisten — Links öffnen oder Inhalte sofort kopieren.",
             "nl": "Lijst elke QR in een shot — open links of kopieer payloads direct.",
             "pt": "Liste cada QR na captura — abra links ou copie dados na hora.",
             "es": "Lista cada QR de la captura — abre enlaces o copia al instante.",
@@ -256,6 +267,7 @@ SHOT_FEATURES = {
     "menubar": {
         "titles": {
             "en": "Menu bar ready",
+            "de": "Menüleiste bereit",
             "nl": "Klaar in de menubalk",
             "pt": "Pronto na barra de menus",
             "es": "Listo en la barra de menús",
@@ -268,6 +280,7 @@ SHOT_FEATURES = {
         },
         "descs": {
             "en": "Grab recent shots from the menu bar without leaving your flow.",
+            "de": "Aktuelle Aufnahmen aus der Menüleiste holen, ohne Ihren Flow zu verlassen.",
             "nl": "Pak recente shots vanuit de menubalk zonder je flow te verlaten.",
             "pt": "Aceda a capturas recentes na barra de menus sem sair do fluxo.",
             "es": "Accede a capturas recientes desde la barra sin salir de tu flujo.",
@@ -297,6 +310,7 @@ CLIP_FEATURES = {
     "history": {
         "titles": {
             "en": "Never lose a copy",
+            "de": "Nie wieder eine Kopie verlieren",
             "nl": "Nooit meer kwijt",
             "pt": "Nunca perca uma cópia",
             "es": "Nunca pierdas una copia",
@@ -309,6 +323,7 @@ CLIP_FEATURES = {
         },
         "descs": {
             "en": "Search every text, image, and file you copied on your Mac.",
+            "de": "Durchsuchen Sie jeden Text, jedes Bild und jede Datei, die Sie auf dem Mac kopiert haben.",
             "nl": "Zoek elke tekst, afbeelding en elk bestand dat je kopieerde.",
             "pt": "Pesquise todo texto, imagem e ficheiro que copiou no Mac.",
             "es": "Busca cada texto, imagen y archivo que copiaste en tu Mac.",
@@ -321,6 +336,7 @@ CLIP_FEATURES = {
         },
         "ui": {
             "en": {"nav": "History", "search": "Search", "rows": [("https://docs.buddy.app", ["url"]), ("Meeting agenda draft", ["text"]), ("#10B981", ["color"])]},
+        "de": {"nav": "Historie", "search": "Suchen", "rows": [("https://docs.buddy.app", ["url"]), ("Entwurf der Meeting-Agenda", ["text"]), ("#10B981", ["color"])]},
             "nl": {"nav": "Geschiedenis", "search": "Zoeken", "rows": [("https://docs.buddy.app", ["url"]), ("Agenda vergadering", ["text"]), ("#10B981", ["color"])]},
             "pt": {"nav": "Histórico", "search": "Pesquisar", "rows": [("https://docs.buddy.app", ["url"]), ("Rascunho da agenda", ["text"]), ("#10B981", ["color"])]},
             "es": {"nav": "Historial", "search": "Buscar", "rows": [("https://docs.buddy.app", ["url"]), ("Borrador de agenda", ["text"]), ("#10B981", ["color"])]},
@@ -335,6 +351,7 @@ CLIP_FEATURES = {
     "tags": {
         "titles": {
             "en": "Smart tags",
+            "de": "Smarte Tags",
             "nl": "Slimme tags",
             "pt": "Tags inteligentes",
             "es": "Etiquetas inteligentes",
@@ -347,6 +364,7 @@ CLIP_FEATURES = {
         },
         "descs": {
             "en": "Passwords stay blurred until you unlock with Touch ID or password.",
+            "de": "Passwörter bleiben unscharf, bis Sie mit Touch ID oder Passwort entsperren.",
             "nl": "Wachtwoorden blijven wazig tot je ontgrendelt met Touch ID of wachtwoord.",
             "pt": "Passwords ficam desfocadas até desbloquear com Touch ID ou password.",
             "es": "Las contraseñas se desenfocan hasta desbloquear con Touch ID o contraseña.",
@@ -373,6 +391,7 @@ CLIP_FEATURES = {
     "favorites": {
         "titles": {
             "en": "One-click favorites",
+            "de": "Favoriten mit einem Klick",
             "nl": "Favorieten in één klik",
             "pt": "Favoritos com um clique",
             "es": "Favoritos en un clic",
@@ -385,6 +404,7 @@ CLIP_FEATURES = {
         },
         "descs": {
             "en": "Pin shortcuts to the menu bar for instant paste.",
+            "de": "Pinnen Sie Shortcuts in der Menüleiste für sofortiges Einfügen.",
             "nl": "Pin snelkoppelingen in de menubalk voor direct plakken.",
             "pt": "Fixe atalhos na barra de menus para colar na hora.",
             "es": "Fija atajos en la barra de menús para pegar al instante.",
@@ -411,6 +431,7 @@ CLIP_FEATURES = {
     "qr": {
         "titles": {
             "en": "Make a QR",
+            "de": "QR erstellen",
             "nl": "Maak een QR",
             "pt": "Crie um QR",
             "es": "Crea un QR",
@@ -423,6 +444,7 @@ CLIP_FEATURES = {
         },
         "descs": {
             "en": "Turn any history item into a scannable QR code image.",
+            "de": "Verwandeln Sie jeden Historieneintrag in einen scanbaren QR-Code.",
             "nl": "Maak van elk geschiedenisitem een scanbare QR-code.",
             "pt": "Transforme qualquer item do histórico num QR code escaneável.",
             "es": "Convierte cualquier elemento del historial en un código QR.",
@@ -449,6 +471,7 @@ CLIP_FEATURES = {
     "detail": {
         "titles": {
             "en": "Rich detail",
+            "de": "Reiches Detail",
             "nl": "Rijke details",
             "pt": "Detalhe completo",
             "es": "Detalle completo",
@@ -461,6 +484,7 @@ CLIP_FEATURES = {
         },
         "descs": {
             "en": "Preview text, images, and pasteboard flavors before you paste.",
+            "de": "Vorschau von Text, Bildern und Pasteboard-Flavors vor dem Einfügen.",
             "nl": "Bekijk tekst, afbeeldingen en klembordtypes vóór je plakt.",
             "pt": "Pré-visualize texto, imagens e formatos antes de colar.",
             "es": "Previsualiza texto, imágenes y formatos antes de pegar.",
@@ -487,6 +511,7 @@ CLIP_FEATURES = {
     "menubar": {
         "titles": {
             "en": "Always nearby",
+            "de": "Immer in der Nähe",
             "nl": "Altijd dichtbij",
             "pt": "Sempre por perto",
             "es": "Siempre a mano",
@@ -499,6 +524,7 @@ CLIP_FEATURES = {
         },
         "descs": {
             "en": "Favorites and recent clips live in the menu bar.",
+            "de": "Favoriten und aktuelle Clips leben in der Menüleiste.",
             "nl": "Favorieten en recente clips in de menubalk.",
             "pt": "Favoritos e clips recentes na barra de menus.",
             "es": "Favoritos y clips recientes en la barra de menús.",
@@ -1420,7 +1446,7 @@ Sensitive unlock should be locked so blurred rows appear in gallery + menu bar.
         encoding="utf-8",
     )
     clip_mock.write_text(
-        """# Clipboard Buddy — mock content for store shots
+        """# ClipLog Buddy — mock content for store shots
 
 Seed history with:
 

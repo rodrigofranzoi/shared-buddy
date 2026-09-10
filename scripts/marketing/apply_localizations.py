@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fill Screenshot Buddy + Clipboard Buddy String Catalogs for all supported locales."""
+"""Fill Screenshot Buddy + ClipLog Buddy String Catalogs for all supported locales."""
 
 from __future__ import annotations
 
@@ -1084,7 +1084,7 @@ def main() -> None:
     n1 = apply(shot, SCREENSHOT)
     n2 = apply(clip, CLIPBOARD)
     print(f"Screenshot Buddy: wrote {n1} localization units → {shot}")
-    print(f"Clipboard Buddy: wrote {n2} localization units → {clip}")
+    print(f"ClipLog Buddy: wrote {n2} localization units → {clip}")
 
 
 if __name__ == "__main__":

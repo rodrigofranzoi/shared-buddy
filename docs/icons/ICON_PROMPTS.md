@@ -1,6 +1,6 @@
 # Buddy Icon Concepts — Prompt Pack
 
-Shared mascot + per-app icon prompts for Screenshot Buddy, Clipboard Buddy, OTP Buddy, and Paint Buddy.
+Shared mascot + per-app icon prompts for Screenshot Buddy, ClipLog Buddy, OTP Buddy, and Paint Buddy.
 
 Concept previews live in this folder:
 
@@ -54,7 +54,7 @@ rounded corners, corner radius, squircle, iOS icon mask, realistic photo, scary 
 
 ---
 
-## Clipboard Buddy
+## ClipLog Buddy
 
 **Role:** Dog holding sheet papers with post-its + fake text lines  
 **Background:** Green gradient (mint → emerald → soft lime)

@@ -388,6 +388,10 @@ public enum BuddySettingsKey {
     public static let clipboardMenuBarRecentCount = "buddy.clipboard.menuBarRecentCount"
     /// How many favorites appear in the menu bar.
     public static let clipboardMenuBarFavoriteCount = "buddy.clipboard.menuBarFavoriteCount"
+    /// Open the always-on-top clipboard history panel when the app launches.
+    public static let clipboardFloatingHistoryOnLaunch = "buddy.clipboard.floatingHistoryOnLaunch"
+    /// Open the always-on-top clipboard favorites panel when the app launches.
+    public static let clipboardFloatingFavoritesOnLaunch = "buddy.clipboard.floatingFavoritesOnLaunch"
     /// JSON array of `{bundleIdentifier, displayName}` apps whose copies are not saved.
     public static let clipboardIgnoredApps = "buddy.clipboard.ignoredApps"
     /// Max screenshot gallery items to keep (newest first).

@@ -572,10 +572,22 @@ final class BuddyAppearanceContrastTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(ratio, 5.45)
     }
 
-    func testAlreadyBrightAccentsStayUnchanged() {
+    func testAlreadyBrightAccentsStayUnchangedOnDark() {
         let green = EditorRedactionSettings.nsColor(fromHex: BuddyBrand.clipboardBuddy.defaultAccentHex)
         let boosted = BuddyAppearanceSettings.contrastBoostedForDarkBackground(green)
         XCTAssertEqual(hex(green), hex(boosted))
+    }
+
+    func testClipboardGreenIsDarkenedForLightBackgrounds() {
+        let base = EditorRedactionSettings.nsColor(fromHex: BuddyBrand.clipboardBuddy.defaultAccentHex)
+        let boosted = BuddyAppearanceSettings.contrastBoostedForLightBackground(base)
+
+        let baseL = relativeLuminance(base)
+        let boostedL = relativeLuminance(boosted)
+        XCTAssertLessThan(boostedL, baseL)
+
+        let ratio = (1.0 + 0.05) / (boostedL + 0.05)
+        XCTAssertGreaterThanOrEqual(ratio, 5.45)
     }
 
     private func relativeLuminance(_ color: NSColor) -> CGFloat {

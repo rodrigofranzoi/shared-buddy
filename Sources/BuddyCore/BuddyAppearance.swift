@@ -21,7 +21,7 @@ public enum BuddyBrand: String, CaseIterable, Sendable {
 
     public var displayName: String {
         switch self {
-        case .clipboardBuddy: return "Clipboard Buddy"
+        case .clipboardBuddy: return "ClipLog Buddy"
         case .screenshotBuddy: return "Capture Buddy"
         case .otpBuddy: return "OTP Buddy"
         case .paintBuddy: return "Paint Buddy"
@@ -100,13 +100,28 @@ public enum BuddyAppearanceSettings {
         EditorRedactionSettings.nsColor(fromHex: accentHex(for: brand))
     }
 
-    /// Accent for UI tinting — lightens in dark appearance so purple/etc. stay readable on black.
+    /// Accent for UI tinting — darkens on light chrome / lightens on dark so accents stay readable.
     public static func accentNSColor(for brand: BuddyBrand) -> NSColor {
         let base = accentBaseNSColor(for: brand)
         return NSColor(name: nil, dynamicProvider: { appearance in
             let isDark = appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
-            guard isDark else { return base }
-            return contrastBoostedForDarkBackground(base)
+            if isDark {
+                return contrastBoostedForDarkBackground(base)
+            }
+            return contrastBoostedForLightBackground(base)
+        })
+    }
+
+    /// Success / “Copied” feedback green — contrast-safe on light and dark chrome.
+    public static var successNSColor: NSColor {
+        // Mid green; light/dark boost adjusts toward readable contrast.
+        let base = EditorRedactionSettings.nsColor(fromHex: "#16A34A")
+        return NSColor(name: nil, dynamicProvider: { appearance in
+            let isDark = appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+            if isDark {
+                return contrastBoostedForDarkBackground(base)
+            }
+            return contrastBoostedForLightBackground(base)
         })
     }
 
@@ -124,6 +139,29 @@ public enum BuddyAppearanceSettings {
             let mid = (low + high) / 2
             let candidate = blend(srgb, toward: .white, amount: mid)
             if contrastRatio(foreground: candidate, background: .black) >= minimumRatio {
+                best = candidate
+                high = mid
+            } else {
+                low = mid
+            }
+        }
+        return best
+    }
+
+    /// Mixes toward black until contrast vs white is clearly readable on light chrome (~5.5:1).
+    static func contrastBoostedForLightBackground(_ color: NSColor, minimumRatio: CGFloat = 5.5) -> NSColor {
+        let srgb = color.usingColorSpace(.sRGB) ?? color
+        if contrastRatio(foreground: srgb, background: .white) >= minimumRatio {
+            return srgb
+        }
+
+        var low: CGFloat = 0
+        var high: CGFloat = 1
+        var best = srgb
+        for _ in 0..<14 {
+            let mid = (low + high) / 2
+            let candidate = blend(srgb, toward: .black, amount: mid)
+            if contrastRatio(foreground: candidate, background: .white) >= minimumRatio {
                 best = candidate
                 high = mid
             } else {

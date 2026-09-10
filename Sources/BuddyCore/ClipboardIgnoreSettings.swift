@@ -3,7 +3,7 @@ import Foundation
 import AppKit
 #endif
 
-/// An app whose pasteboard copies should not enter Clipboard Buddy history.
+/// An app whose pasteboard copies should not enter ClipLog Buddy history.
 public struct IgnoredClipboardApp: Identifiable, Codable, Equatable, Sendable, Hashable {
     public var id: String { bundleIdentifier }
     public var bundleIdentifier: String
@@ -20,6 +20,16 @@ public enum ClipboardIgnoreSettings {
     public static let defaultMaxHistoryCount = 200
     public static let defaultMenuBarRecentCount = 10
     public static let defaultMenuBarFavoriteCount = 8
+
+    public static var floatingHistoryOnLaunch: Bool {
+        get { UserDefaults.standard.bool(forKey: BuddySettingsKey.clipboardFloatingHistoryOnLaunch) }
+        set { UserDefaults.standard.set(newValue, forKey: BuddySettingsKey.clipboardFloatingHistoryOnLaunch) }
+    }
+
+    public static var floatingFavoritesOnLaunch: Bool {
+        get { UserDefaults.standard.bool(forKey: BuddySettingsKey.clipboardFloatingFavoritesOnLaunch) }
+        set { UserDefaults.standard.set(newValue, forKey: BuddySettingsKey.clipboardFloatingFavoritesOnLaunch) }
+    }
 
     public static var ignoredApps: [IgnoredClipboardApp] {
         get {

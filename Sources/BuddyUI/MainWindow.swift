@@ -178,7 +178,12 @@ public struct BuddyMainWindowRegistrar: NSViewRepresentable {
     }
 }
 
-/// Menu-bar footer: open the main window + quit the app.
+public extension Notification.Name {
+    /// Close the menu-bar NSPopover (e.g. before opening Preferences from the pin).
+    static let buddyDismissMenuBarPopover = Notification.Name("buddy.dismissMenuBarPopover")
+}
+
+/// Menu-bar footer: open the main window, Preferences, + quit the app.
 public struct BuddyMenuBarAppControls: View {
     public let appName: String
     public var brand: BuddyBrand?
@@ -216,6 +221,8 @@ public struct BuddyMenuBarAppControls: View {
             .padding(.vertical, BuddyTheme.Spacing.sm)
             .accessibilityIdentifier("menu-bar-open-app")
 
+            BuddyMenuBarPreferencesButton()
+
             if let brand,
                let reviewURL = BuddyLegalURLs.writeReviewURL(for: brand.legalApp) {
                 Button {
@@ -250,5 +257,29 @@ public struct BuddyMenuBarAppControls: View {
             .padding(.bottom, BuddyTheme.Spacing.sm)
             .accessibilityIdentifier("menu-bar-quit-app")
         }
+    }
+}
+
+/// Preferences control for the menu-bar pin: dismisses the popover, then opens Settings.
+private struct BuddyMenuBarPreferencesButton: View {
+    var body: some View {
+        Button {
+            NotificationCenter.default.post(name: .buddyDismissMenuBarPopover, object: nil)
+            DispatchQueue.main.async {
+                buddyOpenAppSettings()
+            }
+        } label: {
+            Label {
+                Text("Preferences", bundle: BuddyL10n.bundle)
+            } icon: {
+                Image(systemName: "gearshape")
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .buttonStyle(.borderless)
+        .padding(.horizontal)
+        .padding(.vertical, BuddyTheme.Spacing.sm)
+        .accessibilityIdentifier("menu-bar-preferences")
+        .help(Text("Preferences", bundle: BuddyL10n.bundle))
     }
 }

@@ -6,7 +6,7 @@ import BuddyLocalization
 
 // MARK: - Clippings / history limits
 
-/// Clipboard Buddy: how many clippings to keep and show in the menu bar.
+/// ClipLog Buddy: how many clippings to keep and show in the menu bar.
 public struct ClipboardClippingsSettingsSection: View {
     @AppStorage(BuddySettingsKey.clipboardMaxHistoryCount) private var maxHistoryCount =
         ClipboardIgnoreSettings.defaultMaxHistoryCount
@@ -14,6 +14,8 @@ public struct ClipboardClippingsSettingsSection: View {
         ClipboardIgnoreSettings.defaultMenuBarRecentCount
     @AppStorage(BuddySettingsKey.clipboardMenuBarFavoriteCount) private var menuBarFavoriteCount =
         ClipboardIgnoreSettings.defaultMenuBarFavoriteCount
+    @AppStorage(BuddySettingsKey.clipboardFloatingHistoryOnLaunch) private var floatingHistoryOnLaunch = false
+    @AppStorage(BuddySettingsKey.clipboardFloatingFavoritesOnLaunch) private var floatingFavoritesOnLaunch = false
 
     private let onLimitsChanged: (() -> Void)?
 
@@ -38,6 +40,16 @@ public struct ClipboardClippingsSettingsSection: View {
                 Text("Show \(menuBarFavoriteCount) favorites in menu bar", bundle: BuddyL10n.bundle)
             }
             .accessibilityIdentifier("settings-clipboard-menu-favorites")
+
+            Toggle(isOn: $floatingHistoryOnLaunch) {
+                Text("Open floating history on launch", bundle: BuddyL10n.bundle)
+            }
+            .accessibilityIdentifier("settings-clipboard-floating-history-on-launch")
+
+            Toggle(isOn: $floatingFavoritesOnLaunch) {
+                Text("Open floating favorites on launch", bundle: BuddyL10n.bundle)
+            }
+            .accessibilityIdentifier("settings-clipboard-floating-favorites-on-launch")
         } header: {
             Text("Clippings", bundle: BuddyL10n.bundle)
         } footer: {
@@ -241,7 +253,7 @@ public struct ClipboardIgnoredAppsSettingsSection: View {
             Text("Ignored Apps", bundle: BuddyL10n.bundle)
         } footer: {
             Text(
-                "Copies made while these apps are frontmost are not saved to Clipboard Buddy history.",
+                "Copies made while these apps are frontmost are not saved to ClipLog Buddy history.",
                 bundle: BuddyL10n.bundle
             )
             .font(BuddyTheme.Typography.caption)

@@ -1,6 +1,6 @@
 # shared-buddy
 
-Swift package shared by Clipboard Buddy, Capture Buddy, and OTP Buddy.
+Swift package shared by ClipLog Buddy, Capture Buddy, and OTP Buddy.
 
 ## Modules
 

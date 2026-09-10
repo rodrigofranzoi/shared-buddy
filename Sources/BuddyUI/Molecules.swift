@@ -86,20 +86,28 @@ public struct MenuBarRow: View {
     public let openAction: (() -> Void)?
     public let copyAction: (() -> Void)?
     public let showsSeparator: Bool
+    /// Optional shortcut hint shown beside the row (e.g. `⌘1`).
+    public let shortcutHint: String?
     public let action: () -> Void
 
     @State private var rowJustCopied = false
     @State private var buttonJustCopied = false
 
+    private static let mediaSlotWidth: CGFloat = 28
+    private static let mediaSlotHeight: CGFloat = 22
+    private static let shortcutSlotWidth: CGFloat = 28
+    private static let trailingButtonWidth: CGFloat = 18
+
     public init(
         title: String,
-        subtitle: String,
+        subtitle: String = "",
         thumbnail: Image? = nil,
         thumbnailBlur: CGFloat = 0,
         colorSwatch: Color? = nil,
         openAction: (() -> Void)? = nil,
         copyAction: (() -> Void)? = nil,
         showsSeparator: Bool = true,
+        shortcutHint: String? = nil,
         action: @escaping () -> Void
     ) {
         self.title = title
@@ -110,11 +118,14 @@ public struct MenuBarRow: View {
         self.openAction = openAction
         self.copyAction = copyAction
         self.showsSeparator = showsSeparator
+        self.shortcutHint = shortcutHint
         self.action = action
     }
 
     public var body: some View {
         HStack(spacing: BuddyTheme.Spacing.sm) {
+            leadingIcon
+
             Button {
                 action()
                 // Color rows: flash “Copied” on the row itself (not the copy button).
@@ -126,58 +137,117 @@ public struct MenuBarRow: View {
                     }
                 }
             } label: {
-                HStack(spacing: BuddyTheme.Spacing.sm) {
-                    if let thumbnail {
-                        thumbnail
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 40, height: 30)
-                            .clipped()
-                            .cornerRadius(4)
-                            .blur(radius: thumbnailBlur)
-                            .accessibilityHidden(true)
-                    } else if let colorSwatch {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 4, style: .continuous)
-                                .fill(colorSwatch)
-                                .frame(width: 18, height: 18)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 4, style: .continuous)
-                                        .strokeBorder(Color.primary.opacity(0.15), lineWidth: 1)
-                                )
-                            if rowJustCopied {
-                                Image(systemName: "checkmark")
-                                    .font(.system(size: 9, weight: .bold))
-                                    .foregroundStyle(.white)
-                                    .shadow(radius: 1)
-                            }
-                        }
-                        .accessibilityHidden(true)
-                    }
-                    VStack(alignment: .leading, spacing: BuddyTheme.Spacing.xxs) {
-                        BuddyText(verbatim: title, style: .body)
-                            .lineLimit(1)
-                        BuddyText(verbatim: subtitle, style: .caption, secondary: true)
-                            .lineLimit(1)
-                    }
+                titleBlock
                     .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .contentShape(Rectangle())
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityElement(children: .combine)
-            .accessibilityLabel(Text(verbatim: "\(title), \(subtitle)"))
+            .accessibilityLabel(accessibilityTitle)
             .accessibilityValue(rowJustCopied ? Text("Copied", bundle: BuddyL10n.bundle) : Text(verbatim: ""))
 
-            if let openAction {
+            shortcutSlot
+            copySlot
+        }
+        .padding(.vertical, BuddyTheme.Spacing.sm)
+        .overlay(alignment: .bottom) {
+            if showsSeparator {
+                BuddyDivider()
+            }
+        }
+    }
+
+    private var accessibilityTitle: Text {
+        if subtitle.isEmpty {
+            return Text(verbatim: title)
+        }
+        return Text(verbatim: "\(title), \(subtitle)")
+    }
+
+    @ViewBuilder
+    private var leadingIcon: some View {
+        Group {
+            if let thumbnail {
+                thumbnail
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: Self.mediaSlotWidth, height: Self.mediaSlotHeight)
+                    .clipped()
+                    .cornerRadius(4)
+                    .blur(radius: thumbnailBlur)
+                    .accessibilityHidden(true)
+            } else if let colorSwatch {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 4, style: .continuous)
+                        .fill(colorSwatch)
+                        .frame(width: 18, height: 18)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                .strokeBorder(Color.primary.opacity(0.15), lineWidth: 1)
+                        )
+                    if rowJustCopied {
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 9, weight: .bold))
+                            .foregroundStyle(.white)
+                            .shadow(radius: 1)
+                    }
+                }
+                .accessibilityHidden(true)
+            } else if let openAction {
                 Button(action: openAction) {
-                    Image(systemName: "safari")
+                    Image(systemName: "link")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(BuddyTheme.BuddyColor.accent)
+                        .frame(width: 18, height: 18)
                 }
                 .buttonStyle(.borderless)
                 .accessibilityLabel(Text("Open link", bundle: BuddyL10n.bundle))
                 .help(Text("Open link", bundle: BuddyL10n.bundle))
+            } else {
+                Image(systemName: "text.alignleft")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(BuddyTheme.BuddyColor.textSecondary)
+                    .frame(width: 18, height: 18)
+                    .accessibilityHidden(true)
             }
+        }
+        .frame(width: Self.mediaSlotWidth, height: Self.mediaSlotHeight, alignment: .center)
+    }
 
+    @ViewBuilder
+    private var titleBlock: some View {
+        if subtitle.isEmpty {
+            BuddyText(verbatim: title, style: .body)
+                .lineLimit(1)
+        } else {
+            VStack(alignment: .leading, spacing: BuddyTheme.Spacing.xxs) {
+                BuddyText(verbatim: title, style: .body)
+                    .lineLimit(1)
+                BuddyText(verbatim: subtitle, style: .caption, secondary: true)
+                    .lineLimit(1)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var shortcutSlot: some View {
+        Group {
+            if let shortcutHint, !shortcutHint.isEmpty {
+                Text(verbatim: shortcutHint)
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(BuddyTheme.BuddyColor.textSecondary)
+                    .accessibilityHidden(true)
+            } else {
+                Color.clear
+                    .accessibilityHidden(true)
+            }
+        }
+        .frame(width: Self.shortcutSlotWidth, alignment: .trailing)
+    }
+
+    @ViewBuilder
+    private var copySlot: some View {
+        Group {
             if let copyAction {
                 Button {
                     copyAction()
@@ -188,19 +258,17 @@ public struct MenuBarRow: View {
                     }
                 } label: {
                     Image(systemName: buttonJustCopied ? "checkmark.circle.fill" : "doc.on.doc")
-                        .foregroundStyle(buttonJustCopied ? Color.green : Color.primary)
+                        .foregroundStyle(buttonJustCopied ? BuddyTheme.BuddyColor.success : Color.primary)
                 }
                 .buttonStyle(.borderless)
                 .accessibilityLabel(buttonJustCopied ? Text("Copied", bundle: BuddyL10n.bundle) : Text("Copy", bundle: BuddyL10n.bundle))
                 .help(buttonJustCopied ? Text("Copied", bundle: BuddyL10n.bundle) : Text("Copy to clipboard", bundle: BuddyL10n.bundle))
+            } else {
+                Color.clear
+                    .accessibilityHidden(true)
             }
         }
-        .padding(.vertical, BuddyTheme.Spacing.sm)
-        .overlay(alignment: .bottom) {
-            if showsSeparator {
-                BuddyDivider()
-            }
-        }
+        .frame(width: Self.trailingButtonWidth, height: Self.trailingButtonWidth)
     }
 }
 
@@ -611,6 +679,52 @@ public struct BuddyDeferredOpenSettingsButton: View {
     }
 }
 #endif
+
+/// ⌘1…⌘9 / ⌘0 copy the 1st…10th item in the focused list (0 → 10th).
+public struct BuddyDigitCopyShortcutsModifier: ViewModifier {
+    public let itemCount: Int
+    public let action: (Int) -> Void
+
+    public init(itemCount: Int, action: @escaping (Int) -> Void) {
+        self.itemCount = itemCount
+        self.action = action
+    }
+
+    public func body(content: Content) -> some View {
+        content.background(alignment: .topLeading) {
+            ForEach(0..<min(max(itemCount, 0), 10), id: \.self) { index in
+                Button {
+                    action(index)
+                } label: {
+                    Color.clear
+                        .frame(width: 1, height: 1)
+                }
+                .buttonStyle(.plain)
+                .keyboardShortcut(Self.keyEquivalent(for: index), modifiers: .command)
+                .accessibilityHidden(true)
+            }
+        }
+    }
+
+    /// Index 0 → ⌘1 … index 8 → ⌘9, index 9 → ⌘0.
+    public static func keyEquivalent(for index: Int) -> KeyEquivalent {
+        let digit = index >= 9 ? 0 : index + 1
+        return KeyEquivalent(Character(String(digit)))
+    }
+
+    /// Display hint for the same mapping (`⌘1` … `⌘0`).
+    public static func hint(for index: Int) -> String {
+        let digit = index >= 9 ? 0 : index + 1
+        return "⌘\(digit)"
+    }
+}
+
+public extension View {
+    /// Registers ⌘1…⌘9 / ⌘0 to invoke `action` with a 0-based index (max 10 items).
+    func buddyDigitCopyShortcuts(itemCount: Int, action: @escaping (Int) -> Void) -> some View {
+        modifier(BuddyDigitCopyShortcutsModifier(itemCount: itemCount, action: action))
+    }
+}
 
 // Back-compat font aliases used by apps
 public extension Font {
