@@ -106,6 +106,16 @@ public enum ClipboardIgnoreSettings {
         )
     }
 
+    public static var screenshotFloatingPanelOnLaunch: Bool {
+        get {
+            UserDefaults.standard.object(forKey: BuddySettingsKey.screenshotFloatingPanelOnLaunch) as? Bool
+                ?? false
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: BuddySettingsKey.screenshotFloatingPanelOnLaunch)
+        }
+    }
+
     private static func clamped(_ value: Int, min: Int, max: Int) -> Int {
         Swift.min(Swift.max(value, min), max)
     }

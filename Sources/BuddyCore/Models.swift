@@ -321,6 +321,10 @@ public struct ImageAnnotation: Identifiable, Codable, Sendable, Equatable {
     public var colorHex: String
     public var lineWidth: Double
     public var fontSize: Double
+    /// PostScript / display name. `"System"` uses the system font.
+    public var fontName: String
+    /// `left`, `center`, or `right`.
+    public var textAlignment: String
     public var fillEnabled: Bool
     public var fillOpacity: Double
 
@@ -335,6 +339,8 @@ public struct ImageAnnotation: Identifiable, Codable, Sendable, Equatable {
         colorHex: String = "#FF3B30",
         lineWidth: Double = 3,
         fontSize: Double = 18,
+        fontName: String = "System",
+        textAlignment: String = "left",
         fillEnabled: Bool = false,
         fillOpacity: Double = 0.2
     ) {
@@ -348,8 +354,28 @@ public struct ImageAnnotation: Identifiable, Codable, Sendable, Equatable {
         self.colorHex = colorHex
         self.lineWidth = lineWidth
         self.fontSize = fontSize
+        self.fontName = fontName
+        self.textAlignment = textAlignment
         self.fillEnabled = fillEnabled
         self.fillOpacity = fillOpacity
+    }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(UUID.self, forKey: .id)
+        kind = try c.decode(ImageAnnotationKind.self, forKey: .kind)
+        x = try c.decode(Double.self, forKey: .x)
+        y = try c.decode(Double.self, forKey: .y)
+        x2 = try c.decode(Double.self, forKey: .x2)
+        y2 = try c.decode(Double.self, forKey: .y2)
+        text = try c.decodeIfPresent(String.self, forKey: .text) ?? ""
+        colorHex = try c.decodeIfPresent(String.self, forKey: .colorHex) ?? "#FF3B30"
+        lineWidth = try c.decodeIfPresent(Double.self, forKey: .lineWidth) ?? 3
+        fontSize = try c.decodeIfPresent(Double.self, forKey: .fontSize) ?? 18
+        fontName = try c.decodeIfPresent(String.self, forKey: .fontName) ?? "System"
+        textAlignment = try c.decodeIfPresent(String.self, forKey: .textAlignment) ?? "left"
+        fillEnabled = try c.decodeIfPresent(Bool.self, forKey: .fillEnabled) ?? false
+        fillOpacity = try c.decodeIfPresent(Double.self, forKey: .fillOpacity) ?? 0.2
     }
 }
 
@@ -368,8 +394,14 @@ public enum BuddySettingsKey {
     public static let screenshotMaxHistoryCount = "buddy.screenshot.maxHistoryCount"
     /// How many recent screenshots appear in the menu bar.
     public static let screenshotMenuBarRecentCount = "buddy.screenshot.menuBarRecentCount"
+    /// Open the always-on-top screenshot history panel when the app launches.
+    public static let screenshotFloatingPanelOnLaunch = "buddy.screenshot.floatingPanelOnLaunch"
+    /// Security-scoped bookmark for the folder where macOS saves screenshots (usually Desktop).
+    public static let screenshotFolderBookmark = "buddy.screenshot.folderBookmark"
+    /// Set after the user is prompted once to grant screenshot-folder access.
+    public static let screenshotFolderAccessPrompted = "buddy.screenshot.folderAccessPrompted"
     public static let launchAtLogin = "buddy.launchAtLogin"
-    /// Marks that launch-at-login was configured (first install defaults to on).
+    /// Marks that the user answered the first-launch prompt or changed Settings (defaults stay off until then).
     public static let launchAtLoginConfigured = "buddy.launchAtLoginConfigured"
     /// Persisted timed pause end (`timeIntervalSince1970`). Absent / 0 = not paused.
     public static let pauseUntil = "buddy.pauseUntil"

@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import BuddyLocalization
 
 /// Suggested relative and harmony colors derived from a base color (HSB).
 public struct PaintColorSuggestion: Identifiable, Equatable {
@@ -11,13 +12,15 @@ public struct PaintColorSuggestion: Identifiable, Equatable {
         case muted
     }
 
-    public var id: String { "\(kind.rawValue)-\(hex)" }
+    /// Stable unique id (kind+hex alone can collide when lighter/darker steps clamp to the same color).
+    public let id: String
     public let kind: Kind
     public let label: String
     public let hex: String
     public let color: NSColor
 
-    public init(kind: Kind, label: String, color: NSColor) {
+    public init(id: String, kind: Kind, label: String, color: NSColor) {
+        self.id = id
         self.kind = kind
         self.label = label
         let converted = color.usingColorSpace(.sRGB) ?? color
@@ -36,7 +39,12 @@ public enum PaintColorSuggestions {
         var alpha: CGFloat = 0
         base.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
 
+        func L(_ key: String.LocalizationValue) -> String {
+            String(localized: key, bundle: BuddyL10n.bundle)
+        }
+
         func make(
+            index: Int,
             kind: PaintColorSuggestion.Kind,
             label: String,
             h: CGFloat,
@@ -49,18 +57,24 @@ public enum PaintColorSuggestions {
                 brightness: clamp01(b),
                 alpha: alpha
             )
-            return PaintColorSuggestion(kind: kind, label: label, color: c)
+            let hex = EditorRedactionSettings.hex(from: c.usingColorSpace(.sRGB) ?? c)
+            return PaintColorSuggestion(
+                id: "\(index)-\(kind.rawValue)-\(hex)",
+                kind: kind,
+                label: label,
+                color: c
+            )
         }
 
         var results: [PaintColorSuggestion] = [
-            make(kind: .darker, label: "Darker", h: hue, s: saturation, b: brightness * 0.8),
-            make(kind: .darker, label: "Much darker", h: hue, s: saturation, b: brightness * 0.6),
-            make(kind: .lighter, label: "Lighter", h: hue, s: saturation, b: min(1, brightness + 0.2)),
-            make(kind: .lighter, label: "Much lighter", h: hue, s: saturation, b: min(1, brightness + 0.4)),
-            make(kind: .complementary, label: "Complementary", h: hue + 0.5, s: saturation, b: brightness),
-            make(kind: .analogous, label: "Analogous −", h: hue - 30.0 / 360.0, s: saturation, b: brightness),
-            make(kind: .analogous, label: "Analogous +", h: hue + 30.0 / 360.0, s: saturation, b: brightness),
-            make(kind: .muted, label: "Muted", h: hue, s: saturation * 0.45, b: brightness)
+            make(index: 0, kind: .darker, label: L("Darker"), h: hue, s: saturation, b: brightness * 0.8),
+            make(index: 1, kind: .darker, label: L("Much darker"), h: hue, s: saturation, b: brightness * 0.6),
+            make(index: 2, kind: .lighter, label: L("Lighter"), h: hue, s: saturation, b: min(1, brightness + 0.2)),
+            make(index: 3, kind: .lighter, label: L("Much lighter"), h: hue, s: saturation, b: min(1, brightness + 0.4)),
+            make(index: 4, kind: .complementary, label: L("Complementary"), h: hue + 0.5, s: saturation, b: brightness),
+            make(index: 5, kind: .analogous, label: L("Analogous −"), h: hue - 30.0 / 360.0, s: saturation, b: brightness),
+            make(index: 6, kind: .analogous, label: L("Analogous +"), h: hue + 30.0 / 360.0, s: saturation, b: brightness),
+            make(index: 7, kind: .muted, label: L("Muted"), h: hue, s: saturation * 0.45, b: brightness)
         ]
 
         // Drop near-duplicates of the base hex (e.g. already very dark/light).

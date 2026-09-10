@@ -11,9 +11,10 @@ CONFIGURATION="${CONFIGURATION:-Debug}"
 build_app() {
   local dir="$1"
   local scheme="$2"
-  local name="$3"
-  echo "==> Building $name" >&2
-  local marketing_ents="${dir}/${name}/${name}-Marketing.entitlements"
+  local source_name="$3"
+  local product_name="${4:-$source_name}"
+  echo "==> Building $product_name (scheme $scheme)" >&2
+  local marketing_ents="${dir}/${source_name}/${source_name}-Marketing.entitlements"
   local ents_args=()
   if [[ -f "$marketing_ents" ]]; then
     ents_args=(CODE_SIGN_ENTITLEMENTS="$marketing_ents")
@@ -22,27 +23,36 @@ build_app() {
   (
     cd "$dir"
     xcodegen generate >/dev/null
-    xcodebuild \
-      -scheme "$scheme" \
-      -configuration "$CONFIGURATION" \
-      -derivedDataPath "$DERIVED/$scheme" \
-      -destination 'platform=macOS' \
-      "${ents_args[@]}" \
-      build
+    if ((${#ents_args[@]})); then
+      xcodebuild \
+        -scheme "$scheme" \
+        -configuration "$CONFIGURATION" \
+        -derivedDataPath "$DERIVED/$scheme" \
+        -destination 'platform=macOS' \
+        "${ents_args[@]}" \
+        build
+    else
+      xcodebuild \
+        -scheme "$scheme" \
+        -configuration "$CONFIGURATION" \
+        -derivedDataPath "$DERIVED/$scheme" \
+        -destination 'platform=macOS' \
+        build
+    fi
   ) >/tmp/buddy-build-"$scheme".log 2>&1 || {
-    echo "ERROR: build failed for $name — see /tmp/buddy-build-$scheme.log" >&2
+    echo "ERROR: build failed for $product_name — see /tmp/buddy-build-$scheme.log" >&2
     tail -40 "/tmp/buddy-build-$scheme.log" >&2 || true
     exit 1
   }
   local app
-  app="$(find "$DERIVED/$scheme/Build/Products/$CONFIGURATION" -maxdepth 2 -name "$name.app" | head -1)"
+  app="$(find "$DERIVED/$scheme/Build/Products/$CONFIGURATION" -maxdepth 2 -name "${product_name}.app" | head -1)"
   if [[ -z "$app" ]]; then
-    echo "ERROR: could not find $name.app — see /tmp/buddy-build-$scheme.log" >&2
+    echo "ERROR: could not find ${product_name}.app — see /tmp/buddy-build-$scheme.log" >&2
     exit 1
   fi
   # Reject stale apps from a previous successful build if this build failed earlier.
   touch "$app"  # Ensure Firebase plist is present for configure().
-  local plist_src="$dir/$name/Resources/GoogleService-Info.plist"
+  local plist_src="$dir/$source_name/Resources/GoogleService-Info.plist"
   if [[ -f "$plist_src" ]]; then
     cp "$plist_src" "$app/Contents/Resources/GoogleService-Info.plist"
   fi
@@ -87,7 +97,7 @@ main() {
   local paint_app=""
 
   if [[ "$only" == "all" || "$only" == "screenshot" ]]; then
-    shot_app="$(build_app "$ROOT/screenshot-buddy" ScreenshotBuddy ScreenshotBuddy)"
+    shot_app="$(build_app "$ROOT/screenshot-buddy" ScreenshotBuddy ScreenshotBuddy "Capture Buddy")"
   fi
   if [[ "$only" == "all" || "$only" == "clipboard" ]]; then
     clip_app="$(build_app "$ROOT/clipboard-buddy" ClipboardBuddy ClipboardBuddy)"

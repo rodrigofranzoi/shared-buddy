@@ -11,8 +11,9 @@ Registered via Firebase CLI as iOS-platform Apple apps (standard for macOS menu-
 | App | Bundle ID | App ID |
 |-----|-----------|--------|
 | Clipboard Buddy | `com.buddy.clipboard` | `1:304015834291:ios:19b1eb4b7dfa2a3f3844c6` |
-| Screenshot Buddy | `com.buddy.screenshot` | `1:304015834291:ios:6a8f7c0223aba8b13844c6` |
+| Capture Buddy | `com.buddy.screenshot` | `1:304015834291:ios:6a8f7c0223aba8b13844c6` |
 | OTP Buddy | `com.buddy.otp` | `1:304015834291:ios:3785c79c44a859a03844c6` |
+| Paint Buddy | `com.buddy.paint` | `1:304015834291:ios:07b94751c2e069953844c6` |
 
 Config files live at `{App}/Resources/GoogleService-Info.plist`.
 

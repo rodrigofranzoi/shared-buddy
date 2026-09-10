@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import math
+from functools import lru_cache
 from pathlib import Path
 from typing import Optional
 
@@ -15,6 +16,11 @@ try:
 except ImportError:  # pragma: no cover
     arabic_reshaper = None
     get_display = None
+
+try:
+    from fontTools.ttLib import TTFont
+except ImportError:  # pragma: no cover
+    TTFont = None
 
 ROOT = Path(__file__).resolve().parents[3]
 LANGS = ["en", "nl", "pt", "es", "fr", "it", "ar", "zh", "ru", "ja"]
@@ -566,7 +572,7 @@ PAINT_FEATURES = {
             "es": "Hex, RGB, RGBA y chips R/G/B/A — más sugerencias de colores afines.",
             "fr": "Hex, RGB, RGBA et puces R/G/B/A — plus des suggestions de teintes proches.",
             "it": "Hex, RGB, RGBA e chip R/G/B/A — più suggerimenti di colori affini.",
-            "ar": "Hex وRGB وRGBA ورقائق R/G/B/A — مع اقتراحات لألوان قريبة.",
+            "ar": "مع اقتراحات لألوان قريبة — Hex و RGB و RGBA ورقائق R/G/B/A.",
             "zh": "Hex、RGB、RGBA 与 R/G/B/A 芯片——还有相关配色建议。",
             "ru": "Hex, RGB, RGBA и чипы R/G/B/A — плюс подсказки родственных оттенков.",
             "ja": "Hex・RGB・RGBA・R/G/B/A チップ。関連色の提案も。",
@@ -731,6 +737,27 @@ def shape(text: str, lang: str) -> str:
     return shaped
 
 
+@lru_cache(maxsize=16)
+def _font_cmap(path: str, index: int = 0) -> frozenset[int]:
+    """Codepoints covered by a font file (empty if fontTools is unavailable)."""
+    if TTFont is None:
+        return frozenset()
+    try:
+        tt = TTFont(path, fontNumber=index)
+    except Exception:
+        return frozenset()
+    cmap: dict[int, object] = {}
+    for table in tt["cmap"].tables:
+        cmap.update(table.cmap)
+    return frozenset(cmap)
+
+
+def _load_font(path: str, size: int) -> ImageFont.FreeTypeFont:
+    if path.endswith(".ttc"):
+        return ImageFont.truetype(path, size=size, index=0)
+    return ImageFont.truetype(path, size=size)
+
+
 def font(size: int, lang: str, bold: bool = False) -> ImageFont.FreeTypeFont:
     candidates = []
     if lang == "ar":
@@ -740,12 +767,99 @@ def font(size: int, lang: str, bold: bool = False) -> ImageFont.FreeTypeFont:
     candidates.extend([FONT_LATIN, FONT_FALLBACK])
     for path in candidates:
         try:
-            if path.endswith(".ttc"):
-                return ImageFont.truetype(path, size=size, index=0)
-            return ImageFont.truetype(path, size=size)
+            return _load_font(path, size)
         except OSError:
             continue
     return ImageFont.load_default()
+
+
+def font_stack(size: int, lang: str) -> list[tuple[ImageFont.FreeTypeFont, frozenset[int]]]:
+    """Primary + fallback fonts for mixed-script banner copy (e.g. Arabic + QR/Hex)."""
+    paths: list[str] = []
+    if lang == "ar":
+        # SF Arabic has no Latin glyphs — fall back to SFNS / Arial Unicode for QR, Hex, etc.
+        paths.extend([FONT_AR, FONT_LATIN, FONT_FALLBACK])
+    elif lang in {"zh", "ja"}:
+        paths.extend([FONT_CJK, FONT_LATIN, FONT_FALLBACK])
+    else:
+        paths.extend([FONT_LATIN, FONT_FALLBACK])
+    stack: list[tuple[ImageFont.FreeTypeFont, frozenset[int]]] = []
+    for path in paths:
+        try:
+            stack.append((_load_font(path, size), _font_cmap(path, 0 if path.endswith(".ttc") else 0)))
+        except OSError:
+            continue
+    if not stack:
+        stack.append((ImageFont.load_default(), frozenset()))
+    return stack
+
+
+def _pick_font(
+    ch: str, stack: list[tuple[ImageFont.FreeTypeFont, frozenset[int]]]
+) -> ImageFont.FreeTypeFont:
+    if ch.isspace() or not stack:
+        return stack[0][0]
+    cp = ord(ch)
+    for i, (face, cmap) in enumerate(stack):
+        if cmap:
+            if cp in cmap:
+                return face
+            continue
+        # No cmap available: keep Arabic/CJK on the primary face; send Latin/punct to fallbacks.
+        if i == 0 and len(stack) > 1:
+            if ch.isascii() and (ch.isalnum() or ch in "#:/._%+-"):
+                continue
+            if ch in "—–…•":
+                continue
+            return face
+        return face
+    return stack[-1][0]
+
+
+def text_width(
+    draw: ImageDraw.ImageDraw,
+    text: str,
+    stack: list[tuple[ImageFont.FreeTypeFont, frozenset[int]]],
+) -> float:
+    """Measure text width across a mixed-script font stack."""
+    if len(stack) == 1:
+        return float(draw.textlength(text, font=stack[0][0]))
+    total = 0.0
+    i = 0
+    n = len(text)
+    while i < n:
+        face = _pick_font(text[i], stack)
+        j = i + 1
+        while j < n and _pick_font(text[j], stack) is face:
+            j += 1
+        total += float(draw.textlength(text[i:j], font=face))
+        i = j
+    return total
+
+
+def draw_text_stack(
+    draw: ImageDraw.ImageDraw,
+    xy: tuple[float, float],
+    text: str,
+    fill,
+    stack: list[tuple[ImageFont.FreeTypeFont, frozenset[int]]],
+) -> None:
+    """Draw text, switching fonts when a glyph is missing from the primary face."""
+    if len(stack) == 1:
+        draw.text(xy, text, fill=fill, font=stack[0][0])
+        return
+    x, y = xy
+    i = 0
+    n = len(text)
+    while i < n:
+        face = _pick_font(text[i], stack)
+        j = i + 1
+        while j < n and _pick_font(text[j], stack) is face:
+            j += 1
+        run = text[i:j]
+        draw.text((x, y), run, fill=fill, font=face)
+        x += float(draw.textlength(run, font=face))
+        i = j
 
 
 def gradient(size: tuple[int, int], colors: dict) -> Image.Image:
@@ -1136,8 +1250,8 @@ def compose_banner(
     d = ImageDraw.Draw(bg)
 
     rtl = lang == "ar"
-    title_f = font(58, lang)
-    desc_f = font(26, lang)
+    title_stack = font_stack(58, lang)
+    desc_stack = font_stack(26, lang)
     t = shape(title, lang)
     ds = shape(desc, lang)
 
@@ -1145,14 +1259,14 @@ def compose_banner(
     pad = 52
     text_bottom = 130
     if rtl:
-        tw = d.textlength(t, font=title_f)
-        d.text((BANNER_W - pad - tw, 36), t, fill=(255, 255, 255), font=title_f)
+        tw = text_width(d, t, title_stack)
+        draw_text_stack(d, (BANNER_W - pad - tw, 36), t, (255, 255, 255), title_stack)
         max_w = BANNER_W - pad * 2
         words = ds.split(" ")
         lines, cur = [], ""
         for w in words:
             trial = (cur + " " + w).strip() if cur else w
-            if d.textlength(trial, font=desc_f) <= max_w:
+            if text_width(d, trial, desc_stack) <= max_w:
                 cur = trial
             else:
                 if cur:
@@ -1162,18 +1276,18 @@ def compose_banner(
             lines.append(cur)
         y = 108
         for line in lines[:3]:
-            lw = d.textlength(line, font=desc_f)
-            d.text((BANNER_W - pad - lw, y), line, fill=(255, 255, 255), font=desc_f)
+            lw = text_width(d, line, desc_stack)
+            draw_text_stack(d, (BANNER_W - pad - lw, y), line, (255, 255, 255), desc_stack)
             y += 34
         text_bottom = y
     else:
-        d.text((pad, 36), t, fill=(255, 255, 255), font=title_f)
+        draw_text_stack(d, (pad, 36), t, (255, 255, 255), title_stack)
         max_w = BANNER_W - pad * 2
         words = ds.split(" ")
         lines, cur = [], ""
         for w in words:
             trial = (cur + " " + w).strip() if cur else w
-            if d.textlength(trial, font=desc_f) <= max_w:
+            if text_width(d, trial, desc_stack) <= max_w:
                 cur = trial
             else:
                 if cur:
@@ -1183,7 +1297,7 @@ def compose_banner(
             lines.append(cur)
         y = 108
         for line in lines[:3]:
-            d.text((pad, y), line, fill=(255, 255, 255), font=desc_f)
+            draw_text_stack(d, (pad, y), line, (255, 255, 255), desc_stack)
             y += 34
         text_bottom = y
 
@@ -1334,9 +1448,9 @@ Floating History / Favorites should use grid layout for marketing. Settings capt
     )
 
 
-def frame_existing(app: str, features: dict, colors: dict, out_root: Path):
+def frame_existing(app: str, features: dict, colors: dict, out_root: Path, langs: Optional[list[str]] = None):
     """Compose banners from real `raw/*.png` captures without regenerating mocks."""
-    for lang in LANGS:
+    for lang in langs or LANGS:
         raw_dir = out_root / lang / "raw"
         ban_dir = out_root / lang / "banners"
         ban_dir.mkdir(parents=True, exist_ok=True)
@@ -1362,8 +1476,15 @@ def frame_existing(app: str, features: dict, colors: dict, out_root: Path):
             print(f"framed {app}/{lang}/{fid}")
 
 
-def generate_app(app: str, features: dict, renderers: dict, colors: dict, out_root: Path):
-    for lang in LANGS:
+def generate_app(
+    app: str,
+    features: dict,
+    renderers: dict,
+    colors: dict,
+    out_root: Path,
+    langs: Optional[list[str]] = None,
+):
+    for lang in langs or LANGS:
         raw_dir = out_root / lang / "raw"
         ban_dir = out_root / lang / "banners"
         raw_dir.mkdir(parents=True, exist_ok=True)
@@ -1395,9 +1516,19 @@ def main():
     if "--app" in sys.argv:
         idx = sys.argv.index("--app")
         if idx + 1 < len(sys.argv):
-            apps = [sys.argv[idx + 1].strip().lower()]
+            apps = [a.strip().lower() for a in sys.argv[idx + 1].split(",") if a.strip()]
     if not apps:
         apps = ["screenshot", "clipboard", "paint"]
+
+    langs: Optional[list[str]] = None
+    if "--lang" in sys.argv:
+        idx = sys.argv.index("--lang")
+        if idx + 1 < len(sys.argv):
+            langs = [a.strip().lower() for a in sys.argv[idx + 1].split(",") if a.strip()]
+            unknown = [l for l in langs if l not in LANGS]
+            if unknown:
+                print(f"Unknown lang(s) {unknown}; expected one of {LANGS}")
+                return
 
     write_mock_content()
 
@@ -1431,7 +1562,7 @@ def main():
                 print(f"Unknown app {key}; expected screenshot|clipboard|paint")
                 continue
             name, features, colors, out_root, _ = targets[key]
-            frame_existing(name, features, colors, out_root)
+            frame_existing(name, features, colors, out_root, langs=langs)
     else:
         print("Generating PIL mock raws. Use --frame-only to frame real captures.")
         for key in apps:
@@ -1442,7 +1573,7 @@ def main():
             if not renderers:
                 print(f"SKIP mock generation for {name} (real captures only).")
                 continue
-            generate_app(name, features, renderers, colors, out_root)
+            generate_app(name, features, renderers, colors, out_root, langs=langs)
     print("Done.")
 
 

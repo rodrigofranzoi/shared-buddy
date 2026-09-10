@@ -49,7 +49,14 @@ public struct QRCodePayload: Identifiable, Sendable, Equatable, Hashable {
 }
 
 public enum ScreenshotSmartTools {
+    /// Shared CI context — allocating one per contrast pass is expensive on large captures.
+    private static let ciContext = CIContext(options: [.cacheIntermediates: false])
+
     /// Decode QR / barcodes in image data. Returns every payload found (text, links, etc.).
+    ///
+    /// Progressive: cheap passes first, then enhancement only when needed. Call from a
+    /// utility/background QoS — Vision’s `perform` waits on lower-QoS work and inverts
+    /// if the caller is user-interactive / user-initiated.
     public static func detectQRCodes(in imageData: Data) -> [QRCodePayload] {
         guard let base = cgImage(from: imageData) else { return [] }
 
@@ -64,47 +71,55 @@ public enum ScreenshotSmartTools {
             }
         }
 
-        // Passes ordered from cheapest → heavier enhancement for soft / framed / tiny screenshots.
-        let candidates: [CGImage] = {
-            var images: [CGImage] = [base]
-            if let contrast = contrastBoost(base) { images.append(contrast) }
-            if let cleaned = removeDecorativeFrame(base) {
-                images.append(cleaned)
-                images.append(padQuietZone(cleaned, relative: 0.2))
-            }
-            // Small captures need nearest-neighbor upscaling + quiet zone.
-            let maxSide = max(base.width, base.height)
-            if maxSide < 900 {
-                let factor = max(3, Int(ceil(900.0 / Double(maxSide))))
-                images.append(padQuietZone(upscale(base, factor: factor), relative: 0.15))
-                if let cleaned = removeDecorativeFrame(base) {
-                    images.append(padQuietZone(upscale(cleaned, factor: factor), relative: 0.2))
-                }
-                if let contrast = contrastBoost(base) {
-                    images.append(padQuietZone(upscale(contrast, factor: factor), relative: 0.15))
-                }
-            } else {
-                images.append(padQuietZone(base, relative: 0.08))
-            }
-            return images
-        }()
-
-        for image in candidates {
+        func scan(_ image: CGImage) -> Bool {
             ingest(visionPayloads(in: image))
-            if !ordered.isEmpty { break }
+            if !ordered.isEmpty { return true }
             ingest(ciDetectorPayloads(in: image))
-            if !ordered.isEmpty { break }
+            return !ordered.isEmpty
         }
 
-        // Last resort: still merge CI + Vision across candidates if nothing unbroken yet.
-        if ordered.isEmpty {
-            for image in candidates {
-                ingest(visionPayloads(in: image))
-                ingest(ciDetectorPayloads(in: image))
+        // Pass 1 — raw image (covers clean captures without preprocessing cost).
+        if scan(base) {
+            return makePayloads(ordered)
+        }
+
+        // Pass 2 — light enhancements.
+        if let contrast = contrastBoost(base), scan(contrast) {
+            return makePayloads(ordered)
+        }
+        if scan(padQuietZone(base, relative: 0.08)) {
+            return makePayloads(ordered)
+        }
+
+        // Pass 3 — framed / tiny screenshots (flood-fill + upscale are the heavy path).
+        let cleaned = removeDecorativeFrame(base)
+        if let cleaned, scan(cleaned) {
+            return makePayloads(ordered)
+        }
+        if let cleaned, scan(padQuietZone(cleaned, relative: 0.2)) {
+            return makePayloads(ordered)
+        }
+
+        let maxSide = max(base.width, base.height)
+        if maxSide < 900 {
+            let factor = max(3, Int(ceil(900.0 / Double(maxSide))))
+            if scan(padQuietZone(upscale(base, factor: factor), relative: 0.15)) {
+                return makePayloads(ordered)
+            }
+            if let cleaned, scan(padQuietZone(upscale(cleaned, factor: factor), relative: 0.2)) {
+                return makePayloads(ordered)
+            }
+            if let contrast = contrastBoost(base),
+               scan(padQuietZone(upscale(contrast, factor: factor), relative: 0.15)) {
+                return makePayloads(ordered)
             }
         }
 
-        return ordered.enumerated().map { index, content in
+        return makePayloads(ordered)
+    }
+
+    private static func makePayloads(_ ordered: [String]) -> [QRCodePayload] {
+        ordered.enumerated().map { index, content in
             QRCodePayload(id: index, content: content, kind: QRCodePayload.kind(for: content))
         }
     }
@@ -123,31 +138,23 @@ public enum ScreenshotSmartTools {
     // MARK: - Decoders
 
     private static func visionPayloads(in cgImage: CGImage) -> [String] {
-        let revisions = [
-            VNDetectBarcodesRequestRevision1,
-            VNDetectBarcodesRequestRevision2,
-            VNDetectBarcodesRequestRevision3,
-            VNDetectBarcodesRequest.currentRevision
-        ]
+        // One revision only — cycling 1…current was multiplying Vision work per candidate.
+        let request = VNDetectBarcodesRequest()
+        request.symbologies = [.qr]
+        request.preferBackgroundProcessing = true
+        let handler = VNImageRequestHandler(cgImage: cgImage, orientation: .up, options: [:])
+        do {
+            try handler.perform([request])
+        } catch {
+            return []
+        }
         var found: [String] = []
         var seen = Set<String>()
-        for revision in revisions where VNDetectBarcodesRequest.supportedRevisions.contains(revision) {
-            let request = VNDetectBarcodesRequest()
-            request.revision = revision
-            request.symbologies = [.qr]
-            let handler = VNImageRequestHandler(cgImage: cgImage, orientation: .up, options: [:])
-            do {
-                try handler.perform([request])
-            } catch {
-                continue
+        for value in (request.results ?? []).compactMap(\.payloadStringValue) {
+            let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !trimmed.isEmpty, seen.insert(trimmed).inserted {
+                found.append(trimmed)
             }
-            for value in (request.results ?? []).compactMap(\.payloadStringValue) {
-                let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
-                if !trimmed.isEmpty, seen.insert(trimmed).inserted {
-                    found.append(trimmed)
-                }
-            }
-            if !found.isEmpty { break }
         }
         return found
     }
@@ -155,8 +162,8 @@ public enum ScreenshotSmartTools {
     private static func ciDetectorPayloads(in cgImage: CGImage) -> [String] {
         let detector = CIDetector(
             ofType: CIDetectorTypeQRCode,
-            context: nil,
-            options: [CIDetectorAccuracy: CIDetectorAccuracyHigh]
+            context: ciContext,
+            options: [CIDetectorAccuracy: CIDetectorAccuracyLow]
         )
         let features = detector?.features(in: CIImage(cgImage: cgImage)) as? [CIQRCodeFeature] ?? []
         return features.compactMap(\.messageString)
@@ -244,7 +251,7 @@ public enum ScreenshotSmartTools {
                 kCIInputBrightnessKey: 0.02
             ]
         )
-        return CIContext().createCGImage(ci, from: ci.extent)
+        return ciContext.createCGImage(ci, from: ci.extent)
     }
 
     /// Removes a dark decorative ring (common in rounded “QR card” screenshots) by

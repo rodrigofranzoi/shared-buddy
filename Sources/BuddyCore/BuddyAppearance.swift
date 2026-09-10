@@ -22,7 +22,7 @@ public enum BuddyBrand: String, CaseIterable, Sendable {
     public var displayName: String {
         switch self {
         case .clipboardBuddy: return "Clipboard Buddy"
-        case .screenshotBuddy: return "Screenshot Buddy"
+        case .screenshotBuddy: return "Capture Buddy"
         case .otpBuddy: return "OTP Buddy"
         case .paintBuddy: return "Paint Buddy"
         }

@@ -50,7 +50,67 @@ public struct ClipboardClippingsSettingsSection: View {
     }
 }
 
-/// Screenshot Buddy: how many shots to keep and show in the menu bar.
+/// Capture Buddy: grant access to the folder where macOS saves screenshots (usually Desktop).
+public struct ScreenshotFolderAccessSettingsSection: View {
+    private let folderName: String?
+    private let needsAccess: Bool
+    private let onChooseFolder: () -> Void
+    private let onClearAccess: () -> Void
+
+    public init(
+        folderName: String?,
+        needsAccess: Bool,
+        onChooseFolder: @escaping () -> Void,
+        onClearAccess: @escaping () -> Void
+    ) {
+        self.folderName = folderName
+        self.needsAccess = needsAccess
+        self.onChooseFolder = onChooseFolder
+        self.onClearAccess = onClearAccess
+    }
+
+    public var body: some View {
+        Section {
+            if let folderName, !needsAccess {
+                LabeledContent {
+                    Text(folderName)
+                        .foregroundStyle(.secondary)
+                } label: {
+                    Text("Watching folder", bundle: BuddyL10n.bundle)
+                }
+                Button {
+                    onChooseFolder()
+                } label: {
+                    Text("Change Folder…", bundle: BuddyL10n.bundle)
+                }
+                .accessibilityIdentifier("settings-screenshot-change-folder")
+                Button(role: .destructive) {
+                    onClearAccess()
+                } label: {
+                    Text("Remove Folder Access", bundle: BuddyL10n.bundle)
+                }
+                .accessibilityIdentifier("settings-screenshot-clear-folder")
+            } else {
+                Button {
+                    onChooseFolder()
+                } label: {
+                    Text("Allow Screenshot Folder…", bundle: BuddyL10n.bundle)
+                }
+                .accessibilityIdentifier("settings-screenshot-allow-folder")
+            }
+        } header: {
+            Text("Disk Screenshots", bundle: BuddyL10n.bundle)
+        } footer: {
+            Text(
+                "⌘⇧3 and ⌘⇧4 save to disk (usually Desktop). Capture Buddy needs folder access to add those shots to history. Clipboard screenshots (⌃⌘⇧3 / 4) work without this.",
+                bundle: BuddyL10n.bundle
+            )
+            .font(BuddyTheme.Typography.caption)
+        }
+    }
+}
+
+/// Capture Buddy: how many shots to keep and show in the menu bar.
 public struct ScreenshotHistorySettingsSection: View {
     @AppStorage(BuddySettingsKey.screenshotMaxHistoryCount) private var maxHistoryCount = 100
     @AppStorage(BuddySettingsKey.screenshotMenuBarRecentCount) private var menuBarRecentCount = 8

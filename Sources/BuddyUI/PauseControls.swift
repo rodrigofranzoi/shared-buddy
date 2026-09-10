@@ -246,7 +246,7 @@ public struct BuddyPauseSettingsSection: View {
 
 /// Settings toggle that drives `SMAppService` launch-at-login.
 public struct BuddyLaunchAtLoginToggle: View {
-    @AppStorage(BuddySettingsKey.launchAtLogin) private var launchAtLogin = true
+    @AppStorage(BuddySettingsKey.launchAtLogin) private var launchAtLogin = false
     @State private var errorMessage: String?
 
     public init() {}

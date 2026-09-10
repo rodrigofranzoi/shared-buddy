@@ -18,7 +18,7 @@ Status: `planned` | `wip` | `done`
 | Permanent pause (survives relaunch) | done | `BuddySettingsKey.pausePermanently` |
 | Clipboard ignore-apps list | done | `ClipboardIgnoreSettings` |
 | History limit keys (clipboard + screenshot) | done | Max count + menu-bar counts |
-| Launch at login (SMAppService, default on first install) | done | `BuddyLaunchAtLogin` |
+| Launch at login (SMAppService, first-launch consent popup + Settings) | done | `BuddyLaunchAtLogin` |
 | Favorite shortcut model | done | Name + payload |
 | Clipboard item model | done | Text/image + tags |
 | Screenshot item model | done | Image + redactions |

@@ -35,6 +35,21 @@ public enum BuddyMainWindow {
         }
     }
 
+    /// Like `show()`, but retries briefly until the SwiftUI `WindowGroup` has created a window.
+    public static func showWhenReady(attempts: Int = 20, intervalNanoseconds: UInt64 = 50_000_000) {
+        presentInDock()
+        NSApp.activate(ignoringOtherApps: true)
+        if registered != nil || NSApp.windows.contains(where: isMainContentWindow) {
+            show()
+            return
+        }
+        guard attempts > 0 else { return }
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: intervalNanoseconds)
+            showWhenReady(attempts: attempts - 1, intervalNanoseconds: intervalNanoseconds)
+        }
+    }
+
     public static func hideOnLaunchIfNeeded() {
         installObserversIfNeeded()
         DispatchQueue.main.async {
@@ -43,6 +58,40 @@ public enum BuddyMainWindow {
                 window.orderOut(nil)
             }
             retreatToMenuBarIfNeeded()
+        }
+    }
+
+    /// First launch: show the main window (Dock + UI). Later launches: menu-bar pin only.
+    public static func prepareMenuBarLaunch(isFirstLaunch: Bool) {
+        if isFirstLaunch {
+            installObserversIfNeeded()
+            showWhenReady()
+        } else {
+            hideOnLaunchIfNeeded()
+        }
+    }
+
+    /// First open: main window + launch-at-login consent. Later opens: status-item pin only.
+    public static func presentFirstLaunchExperienceIfNeeded(appDisplayName: String) {
+        guard !BuddyMarketingCapture.isEnabled else { return }
+        let firstLaunch = BuddyLaunchAtLogin.needsConsentPrompt
+        if firstLaunch {
+            installObserversIfNeeded()
+            // Wait for WindowGroup registration, then show + consent (modal).
+            Task { @MainActor in
+                for _ in 0..<20 {
+                    if registered != nil || NSApp.windows.contains(where: isMainContentWindow) {
+                        break
+                    }
+                    try? await Task.sleep(nanoseconds: 50_000_000)
+                }
+                show()
+                // Yield so the window can paint before the blocking alert.
+                try? await Task.sleep(nanoseconds: 100_000_000)
+                _ = BuddyLaunchAtLogin.promptForConsentIfNeeded(appDisplayName: appDisplayName)
+            }
+        } else {
+            hideOnLaunchIfNeeded()
         }
     }
 

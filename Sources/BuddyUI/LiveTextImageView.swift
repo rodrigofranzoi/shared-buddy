@@ -147,7 +147,11 @@ public struct LiveTextImageView: NSViewRepresentable {
 
         public func textSelectionDidChange(_ overlayView: ImageAnalysisOverlayView) {
             if #available(macOS 14.0, *) {
-                selectedText.wrappedValue = overlayView.selectedText
+                let newText = overlayView.selectedText
+                guard selectedText.wrappedValue != newText else { return }
+                DispatchQueue.main.async { [selectedText] in
+                    selectedText.wrappedValue = newText
+                }
             }
         }
     }

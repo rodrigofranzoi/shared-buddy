@@ -451,7 +451,7 @@ public struct SensitivePrivacySettingsSection: View {
     }
 }
 
-/// Auto-blur detection types (General tab in Screenshot Buddy).
+/// Auto-blur detection types (General tab in Capture Buddy).
 public struct AutoBlurSettingsSection: View {
     @AppStorage(BuddySettingsKey.autoBlurContentTags) private var autoBlurRaw: String = ""
 
