@@ -15,7 +15,7 @@ Registered via Firebase CLI as iOS-platform Apple apps (standard for macOS menu-
 | OTP Buddy | `com.buddy.otp` | `1:304015834291:ios:3785c79c44a859a03844c6` |
 | Paint Buddy | `com.buddy.paint` | `1:304015834291:ios:07b94751c2e069953844c6` |
 
-Config files live at `{App}/Resources/GoogleService-Info.plist`.
+Config files live at `{App}/Resources/GoogleService-Info.plist` and are **gitignored** (the client `API_KEY` triggers GitHub secret scanning on public repos). Download each app’s plist from the Firebase console into that path locally; keep only `GoogleService-Info.plist.sample` (placeholders) in git.
 
 ## SDK
 
