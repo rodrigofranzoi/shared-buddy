@@ -95,15 +95,19 @@ main() {
   local shot_app=""
   local clip_app=""
   local paint_app=""
+  local otp_app=""
 
   if [[ "$only" == "all" || "$only" == "screenshot" ]]; then
     shot_app="$(build_app "$ROOT/screenshot-buddy" ScreenshotBuddy ScreenshotBuddy "Capture Buddy")"
   fi
   if [[ "$only" == "all" || "$only" == "clipboard" ]]; then
-    clip_app="$(build_app "$ROOT/clipboard-buddy" ClipboardBuddy ClipboardBuddy)"
+    clip_app="$(build_app "$ROOT/clipboard-buddy" ClipboardBuddy ClipboardBuddy "ClipLog Buddy")"
   fi
   if [[ "$only" == "all" || "$only" == "paint" ]]; then
     paint_app="$(build_app "$ROOT/paint-buddy" PaintBuddy PaintBuddy)"
+  fi
+  if [[ "$only" == "all" || "$only" == "otp" ]]; then
+    otp_app="$(build_app "$ROOT/otp-buddy" OTPBuddy OTPBuddy "OTP Buddy")"
   fi
 
   for lang in "${LANGS[@]}"; do
@@ -122,6 +126,11 @@ main() {
         "$ROOT/paint-buddy/docs/screenshots/$lang/raw" \
         "$lang"
     fi
+    if [[ -n "$otp_app" ]]; then
+      capture_locale "$otp_app" \
+        "$ROOT/otp-buddy/docs/screenshots/$lang/raw" \
+        "$lang"
+    fi
   done
 
   echo "==> Framing banners from real captures" >&2
@@ -131,6 +140,8 @@ main() {
     frame_banners --app screenshot
   elif [[ "$only" == "clipboard" ]]; then
     frame_banners --app clipboard
+  elif [[ "$only" == "otp" ]]; then
+    frame_banners --app otp
   else
     frame_banners
   fi

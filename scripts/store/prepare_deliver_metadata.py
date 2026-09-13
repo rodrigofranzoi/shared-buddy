@@ -29,12 +29,18 @@ LOCALE_MAP: dict[str, str] = {
     "ja": "ja",
 }
 
+# Extra ASC folders that reuse another short locale’s STORE copy + banners
+# (e.g. Brazilian Portuguese mirrors Portugal).
+MIRROR_LOCALES: dict[str, str] = {
+    "pt-BR": "pt",
+}
+
 # Preferred App Store screenshot order (feature IDs under docs/screenshots/*/banners/)
 SCREENSHOT_ORDER: dict[str, list[str]] = {
     "screenshot": ["gallery", "editor", "redact", "smart", "qr", "menubar"],
     "paint": ["palette", "menubar", "favorites", "history", "detail", "pick"],
     "clipboard": ["history", "tags", "favorites", "qr", "detail", "menubar"],
-    "otp": ["connect", "alert", "autocopy"],
+    "otp": ["connect", "inbox", "alert", "autocopy", "pause", "settings"],
 }
 
 APP_ALIASES: dict[str, str] = {
@@ -179,17 +185,13 @@ def sync_screenshots(root: Path, app: str, out_screenshots: Path) -> int:
         print(f"warn: no screenshots dir at {src_root}", file=sys.stderr)
         return 0
 
-    for short in sorted(p.name for p in src_root.iterdir() if p.is_dir()):
-        if short not in LOCALE_MAP:
-            continue
+    def copy_banners(short: str, asc: str) -> int:
         banners = src_root / short / "banners"
         if not banners.is_dir():
-            continue
-        asc = LOCALE_MAP[short]
+            return 0
         dest = out_screenshots / asc
         dest.mkdir(parents=True, exist_ok=True)
 
-        # Prefer known App Store order only (do not append extra banner PNGs like dropped shots).
         ordered: list[Path] = []
         if order:
             for feature_id in order:
@@ -199,11 +201,50 @@ def sync_screenshots(root: Path, app: str, out_screenshots: Path) -> int:
         else:
             ordered = sorted(banners.glob("*.png"))
 
+        n = 0
         for idx, path in enumerate(ordered, start=1):
             target = dest / f"{idx:02d}_{path.stem}.png"
             shutil.copy2(path, target)
-            count += 1
+            n += 1
+        return n
+
+    for short in sorted(p.name for p in src_root.iterdir() if p.is_dir()):
+        if short not in LOCALE_MAP:
+            continue
+        count += copy_banners(short, LOCALE_MAP[short])
+
+    for asc, source_short in MIRROR_LOCALES.items():
+        if source_short not in LOCALE_MAP:
+            print(f"warn: mirror {asc} → unknown source {source_short!r}", file=sys.stderr)
+            continue
+        count += copy_banners(source_short, asc)
+
     return count
+
+
+def write_locale_metadata(
+    loc_dir: Path,
+    fields: dict[str, str],
+    global_meta: dict[str, str],
+) -> None:
+    mapping = {
+        "name": "name.txt",
+        "subtitle": "subtitle.txt",
+        "keywords": "keywords.txt",
+        "promotional_text": "promotional_text.txt",
+        "description": "description.txt",
+    }
+    for key, filename in mapping.items():
+        value = fields.get(key, "").strip()
+        if value:
+            write_text(loc_dir / filename, value)
+    write_text(loc_dir / "release_notes.txt", global_meta["release_notes"])
+    if global_meta["privacy_url"]:
+        write_text(loc_dir / "privacy_url.txt", global_meta["privacy_url"])
+    if global_meta["support_url"]:
+        write_text(loc_dir / "support_url.txt", global_meta["support_url"])
+    if global_meta["marketing_url"]:
+        write_text(loc_dir / "marketing_url.txt", global_meta["marketing_url"])
 
 
 def prepare(root: Path, app: str, skip_screenshots: bool) -> None:
@@ -229,30 +270,22 @@ def prepare(root: Path, app: str, skip_screenshots: bool) -> None:
     if global_meta["review_notes"]:
         write_text(meta_root / "review_information" / "notes.txt", global_meta["review_notes"])
 
+    written = 0
     for short, fields in locales.items():
         asc = LOCALE_MAP.get(short)
         if not asc:
             print(f"warn: skip unknown locale {short!r}", file=sys.stderr)
             continue
-        loc_dir = meta_root / asc
-        mapping = {
-            "name": "name.txt",
-            "subtitle": "subtitle.txt",
-            "keywords": "keywords.txt",
-            "promotional_text": "promotional_text.txt",
-            "description": "description.txt",
-        }
-        for key, filename in mapping.items():
-            value = fields.get(key, "").strip()
-            if value:
-                write_text(loc_dir / filename, value)
-        write_text(loc_dir / "release_notes.txt", global_meta["release_notes"])
-        if global_meta["privacy_url"]:
-            write_text(loc_dir / "privacy_url.txt", global_meta["privacy_url"])
-        if global_meta["support_url"]:
-            write_text(loc_dir / "support_url.txt", global_meta["support_url"])
-        if global_meta["marketing_url"]:
-            write_text(loc_dir / "marketing_url.txt", global_meta["marketing_url"])
+        write_locale_metadata(meta_root / asc, fields, global_meta)
+        written += 1
+
+    for asc, source_short in MIRROR_LOCALES.items():
+        fields = locales.get(source_short)
+        if not fields:
+            print(f"warn: mirror {asc} skipped — no STORE section for {source_short!r}", file=sys.stderr)
+            continue
+        write_locale_metadata(meta_root / asc, fields, global_meta)
+        written += 1
 
     shot_count = 0
     if not skip_screenshots:
@@ -260,7 +293,7 @@ def prepare(root: Path, app: str, skip_screenshots: bool) -> None:
 
     print(
         f"Prepared deliver metadata for {app}: "
-        f"{len(locales)} locales → {meta_root.relative_to(root)}; "
+        f"{written} locales → {meta_root.relative_to(root)}; "
         f"{shot_count} screenshots"
         + ("" if global_meta["app_store_id"] else " (no App Store ID in STORE.md)")
     )

@@ -56,6 +56,15 @@ PAINT_COLORS = {
     "sidebar": (243, 238, 255),
     "chip": (221, 214, 254),
 }
+OTP_COLORS = {
+    "top": (59, 130, 246),
+    "mid": (96, 165, 250),
+    "bot": (191, 219, 254),
+    "accent": (37, 99, 235),
+    "ui_bg": (248, 250, 252),
+    "sidebar": (239, 246, 255),
+    "chip": (191, 219, 254),
+}
 
 FONT_LATIN = "/System/Library/Fonts/SFNS.ttf"
 FONT_AR = "/System/Library/Fonts/SFArabic.ttf"
@@ -751,6 +760,183 @@ PAINT_FEATURES = {
             "zh": "最近颜色一键即达——取色、历史、收藏与暂停。",
             "ru": "Недавние цвета в один клик — пипетка, История, Избранное и пауза.",
             "ja": "最近の色はワンクリック。ピック・履歴・お気に入り・一時停止。",
+        },
+        "ui": {},
+    },
+}
+
+OTP_FEATURES = {
+    "connect": {
+        "titles": {
+            "en": "Connect your inbox",
+            "de": "Posteingang verbinden",
+            "nl": "Koppel je inbox",
+            "pt": "Ligue a sua caixa",
+            "es": "Conecta tu bandeja",
+            "fr": "Connectez votre boîte",
+            "it": "Collega la posta",
+            "ar": "اربط صندوق الوارد",
+            "zh": "连接收件箱",
+            "ru": "Подключите почту",
+            "ja": "受信トレイを接続",
+        },
+        "descs": {
+            "en": "IMAP setup in a few steps — Gmail, iCloud, Outlook, and more.",
+            "de": "IMAP in wenigen Schritten — Gmail, iCloud, Outlook und mehr.",
+            "nl": "IMAP in een paar stappen — Gmail, iCloud, Outlook en meer.",
+            "pt": "IMAP em poucos passos — Gmail, iCloud, Outlook e mais.",
+            "es": "IMAP en pocos pasos — Gmail, iCloud, Outlook y más.",
+            "fr": "IMAP en quelques étapes — Gmail, iCloud, Outlook et plus.",
+            "it": "IMAP in pochi passi — Gmail, iCloud, Outlook e altro.",
+            "ar": "إعداد IMAP بخطوات بسيطة — Gmail و iCloud و Outlook وغيرها.",
+            "zh": "几步完成 IMAP 设置——支持 Gmail、iCloud、Outlook 等。",
+            "ru": "IMAP за несколько шагов — Gmail, iCloud, Outlook и другие.",
+            "ja": "数ステップで IMAP 設定。Gmail・iCloud・Outlook などに対応。",
+        },
+        "ui": {},
+    },
+    "inbox": {
+        "titles": {
+            "en": "Codes in one place",
+            "de": "Codes an einem Ort",
+            "nl": "Codes op één plek",
+            "pt": "Códigos num só sítio",
+            "es": "Códigos en un lugar",
+            "fr": "Codes au même endroit",
+            "it": "Codici in un posto",
+            "ar": "الرموز في مكان واحد",
+            "zh": "验证码集中一处",
+            "ru": "Коды в одном месте",
+            "ja": "コードを一か所に",
+        },
+        "descs": {
+            "en": "Browse recent OTPs across connected accounts — copy with one click.",
+            "de": "Aktuelle OTPs aller verbundenen Konten — mit einem Klick kopieren.",
+            "nl": "Bekijk recente OTPs van gekoppelde accounts — kopieer met één klik.",
+            "pt": "Veja OTPs recentes das contas ligadas — copie com um clique.",
+            "es": "Revisa OTPs recientes de cuentas conectadas — copia con un clic.",
+            "fr": "Parcourez les OTP récents de vos comptes — copie en un clic.",
+            "it": "Sfoglia gli OTP recenti degli account collegati — copia con un clic.",
+            "ar": "تصفح رموز OTP الحديثة عبر الحسابات — انسخ بنقرة واحدة.",
+            "zh": "浏览已连接账户的近期 OTP——一键复制。",
+            "ru": "Недавние OTP со всех аккаунтов — копирование в один клик.",
+            "ja": "接続アカウントの最近の OTP を一覧。ワンクリックでコピー。",
+        },
+        "ui": {},
+    },
+    "alert": {
+        "titles": {
+            "en": "Codes when you need them",
+            "de": "Codes wenn Sie sie brauchen",
+            "nl": "Codes wanneer je ze nodig hebt",
+            "pt": "Códigos quando precisa",
+            "es": "Códigos cuando los necesitas",
+            "fr": "Des codes au bon moment",
+            "it": "Codici quando servono",
+            "ar": "رموز عندما تحتاجها",
+            "zh": "需要时即现",
+            "ru": "Коды когда нужны",
+            "ja": "必要なときにコードを",
+        },
+        "descs": {
+            "en": "Menu bar alert with one-tap copy — stay in flow without hunting email.",
+            "de": "Menüleisten-Hinweis mit Ein-Tipp-Copy — ohne E-Mails zu durchsuchen.",
+            "nl": "Menubalkmelding met één-tik kopiëren — blijf in flow zonder mail te zoeken.",
+            "pt": "Alerta na barra de menus com cópia num toque — sem procurar no e-mail.",
+            "es": "Alerta en la barra de menús con copia al toque — sin buscar en el correo.",
+            "fr": "Alerte barre de menus avec copie en un geste — sans fouiller la boîte.",
+            "it": "Avviso nella barra menu con copia al tocco — senza cercare nella posta.",
+            "ar": "تنبيه في شريط القوائم ونسخ بنقرة — دون البحث في البريد.",
+            "zh": "菜单栏提醒，一键复制——不必翻找邮件。",
+            "ru": "Уведомление в меню с копированием в один тап — без поиска писем.",
+            "ja": "メニューバー通知からワンタップでコピー。メールを探さずに済みます。",
+        },
+        "ui": {},
+    },
+    "autocopy": {
+        "titles": {
+            "en": "Instant clipboard",
+            "de": "Sofort in die Zwischenablage",
+            "nl": "Direct op het klembord",
+            "pt": "Clipboard imediato",
+            "es": "Portapapeles al instante",
+            "fr": "Presse-papiers immédiat",
+            "it": "Appunti istantanei",
+            "ar": "الحافظة فوراً",
+            "zh": "即刻进剪贴板",
+            "ru": "Сразу в буфер",
+            "ja": "すぐにクリップボードへ",
+        },
+        "descs": {
+            "en": "Optional auto-copy when a code arrives — paste where you need it.",
+            "de": "Optionaler Auto-Copy bei neuen Codes — einfach einfügen.",
+            "nl": "Optioneel automatisch kopiëren bij nieuwe codes — plak waar nodig.",
+            "pt": "Cópia automática opcional quando chega um código — cole onde precisar.",
+            "es": "Copia automática opcional al llegar un código — pega donde haga falta.",
+            "fr": "Copie auto optionnelle à l’arrivée d’un code — collez où il faut.",
+            "it": "Copia automatica opzionale all’arrivo di un codice — incolla dove serve.",
+            "ar": "نسخ تلقائي اختياري عند وصول الرمز — الصقه حيث تحتاج.",
+            "zh": "可选自动复制新验证码——直接粘贴到需要处。",
+            "ru": "Опциональное автокопирование кода — вставьте куда нужно.",
+            "ja": "コード到着時の自動コピー（任意）。必要な場所へペースト。",
+        },
+        "ui": {},
+    },
+    "pause": {
+        "titles": {
+            "en": "Pause when you need quiet",
+            "de": "Pause wenn Sie Ruhe brauchen",
+            "nl": "Pauzeer wanneer je stilte wilt",
+            "pt": "Pause quando precisar de sossego",
+            "es": "Pausa cuando necesites silencio",
+            "fr": "Pause quand vous voulez du calme",
+            "it": "Pausa quando serve silenzio",
+            "ar": "إيقاف مؤقت عند الحاجة للهدوء",
+            "zh": "需要安静时暂停",
+            "ru": "Пауза когда нужна тишина",
+            "ja": "静かにしておきたいときに一時停止",
+        },
+        "descs": {
+            "en": "Stop watching until next session or for a timed window — resume anytime.",
+            "de": "Überwachung bis zur nächsten Sitzung oder zeitlich begrenzt stoppen.",
+            "nl": "Stop tot de volgende sessie of voor een timed venster — hervat wanneer je wilt.",
+            "pt": "Pare até à próxima sessão ou por um período — retome quando quiser.",
+            "es": "Detén hasta la próxima sesión o un tiempo — reanuda cuando quieras.",
+            "fr": "Arrêtez jusqu’à la prochaine session ou pour une durée — reprenez à tout moment.",
+            "it": "Ferma fino alla prossima sessione o per un intervallo — riprendi quando vuoi.",
+            "ar": "أوقف المراقبة حتى الجلسة التالية أو لمدة محددة — واستأنف في أي وقت.",
+            "zh": "暂停至下次会话或定时结束——随时恢复。",
+            "ru": "Остановка до следующей сессии или на время — возобновляйте когда угодно.",
+            "ja": "次回セッションまで、または時間指定で監視を停止。いつでも再開。",
+        },
+        "ui": {},
+    },
+    "settings": {
+        "titles": {
+            "en": "Preferences that fit you",
+            "de": "Einstellungen nach Maß",
+            "nl": "Voorkeuren die bij je passen",
+            "pt": "Preferências à sua medida",
+            "es": "Preferencias a tu medida",
+            "fr": "Préférences sur mesure",
+            "it": "Preferenze su misura",
+            "ar": "تفضيلات تناسبك",
+            "zh": "按需设置",
+            "ru": "Настройки под вас",
+            "ja": "あなたに合う設定",
+        },
+        "descs": {
+            "en": "Auto-copy, appearance, and launch-at-login — credentials stay in Keychain.",
+            "de": "Auto-Copy, Erscheinungsbild und Login-Start — Zugangsdaten im Schlüsselbund.",
+            "nl": "Auto-kopiëren, uiterlijk en starten bij login — gegevens in de Sleutelhanger.",
+            "pt": "Cópia automática, aparência e arranque no login — credenciais no Porta-chaves.",
+            "es": "Copia automática, apariencia y arranque al iniciar — credenciales en el Llavero.",
+            "fr": "Copie auto, apparence et ouverture au login — identifiants dans le Trousseau.",
+            "it": "Copia automatica, aspetto e avvio al login — credenziali nel Portachiavi.",
+            "ar": "نسخ تلقائي ومظهر وفتح عند تسجيل الدخول — بيانات الدخول في سلسلة المفاتيح.",
+            "zh": "自动复制、外观与登录时启动——凭据保存在钥匙串。",
+            "ru": "Автокопирование, оформление и запуск при входе — данные в Связке ключей.",
+            "ja": "自動コピー・外観・ログイン時起動。認証情報はキーチェーンに。",
         },
         "ui": {},
     },
@@ -1558,7 +1744,7 @@ def main():
         if idx + 1 < len(sys.argv):
             apps = [a.strip().lower() for a in sys.argv[idx + 1].split(",") if a.strip()]
     if not apps:
-        apps = ["screenshot", "clipboard", "paint"]
+        apps = ["screenshot", "clipboard", "paint", "otp"]
 
     langs: Optional[list[str]] = None
     if "--lang" in sys.argv:
@@ -1594,12 +1780,19 @@ def main():
             ROOT / "paint-buddy/docs/screenshots",
             None,
         ),
+        "otp": (
+            "otp-buddy",
+            OTP_FEATURES,
+            OTP_COLORS,
+            ROOT / "otp-buddy/docs/screenshots",
+            None,
+        ),
     }
 
     if frame_only:
         for key in apps:
             if key not in targets:
-                print(f"Unknown app {key}; expected screenshot|clipboard|paint")
+                print(f"Unknown app {key}; expected screenshot|clipboard|paint|otp")
                 continue
             name, features, colors, out_root, _ = targets[key]
             frame_existing(name, features, colors, out_root, langs=langs)
@@ -1607,7 +1800,7 @@ def main():
         print("Generating PIL mock raws. Use --frame-only to frame real captures.")
         for key in apps:
             if key not in targets:
-                print(f"Unknown app {key}; expected screenshot|clipboard|paint")
+                print(f"Unknown app {key}; expected screenshot|clipboard|paint|otp")
                 continue
             name, features, colors, out_root, renderers = targets[key]
             if not renderers:
