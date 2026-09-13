@@ -183,6 +183,22 @@ public extension Notification.Name {
     static let buddyDismissMenuBarPopover = Notification.Name("buddy.dismissMenuBarPopover")
 }
 
+/// Pin footer stack: Pause / Erase / app controls with standard 8pt section spacing.
+public struct BuddyMenuBarFooter<Content: View>: View {
+    private let content: Content
+
+    public init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+
+    public var body: some View {
+        VStack(alignment: .leading, spacing: BuddyTheme.Spacing.sm) {
+            content
+        }
+        .padding(.bottom, BuddyTheme.Spacing.sm)
+    }
+}
+
 /// Menu-bar footer: open the main window, Preferences, + quit the app.
 public struct BuddyMenuBarAppControls: View {
     public let appName: String
@@ -203,83 +219,88 @@ public struct BuddyMenuBarAppControls: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: BuddyTheme.Spacing.sm) {
             Divider()
-            Button {
-                onOpen?()
-                BuddyMainWindow.show()
-            } label: {
-                Label {
-                    Text("Open \(appName)", bundle: BuddyL10n.bundle)
-                } icon: {
-                    Image(systemName: "macwindow")
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .buttonStyle(.borderless)
-            .padding(.horizontal)
-            .padding(.vertical, BuddyTheme.Spacing.sm)
-            .accessibilityIdentifier("menu-bar-open-app")
 
-            BuddyMenuBarPreferencesButton()
-
-            if let brand,
-               let reviewURL = BuddyLegalURLs.writeReviewURL(for: brand.legalApp) {
+            VStack(alignment: .leading, spacing: BuddyTheme.Spacing.sm) {
                 Button {
-                    NSWorkspace.shared.open(reviewURL)
+                    onOpen?()
+                    BuddyMainWindow.show()
                 } label: {
-                    Label {
-                        Text("Rate \(appName)", bundle: BuddyL10n.bundle)
-                    } icon: {
-                        Image(systemName: "star")
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    menuLabel(
+                        Text("Open \(appName)", bundle: BuddyL10n.bundle),
+                        systemImage: "macwindow"
+                    )
                 }
                 .buttonStyle(.borderless)
                 .padding(.horizontal)
-                .padding(.vertical, BuddyTheme.Spacing.sm)
-                .accessibilityIdentifier("menu-bar-rate-app")
-            }
+                .accessibilityIdentifier("menu-bar-open-app")
 
-            Button {
-                onQuit?()
-                NSApp.terminate(nil)
-            } label: {
-                Label {
-                    Text("Quit \(appName)", bundle: BuddyL10n.bundle)
-                } icon: {
-                    Image(systemName: "power")
+                Button {
+                    NotificationCenter.default.post(name: .buddyDismissMenuBarPopover, object: nil)
+                    DispatchQueue.main.async {
+                        buddyOpenAppSettings()
+                    }
+                } label: {
+                    menuLabel(
+                        Text("Preferences", bundle: BuddyL10n.bundle),
+                        systemImage: "gearshape",
+                        shortcut: "⌘,"
+                    )
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .buttonStyle(.borderless)
+                .padding(.horizontal)
+                .accessibilityIdentifier("menu-bar-preferences")
+                .help(Text("Preferences", bundle: BuddyL10n.bundle))
+                .keyboardShortcut(",", modifiers: .command)
+
+                if let brand,
+                   let reviewURL = BuddyLegalURLs.writeReviewURL(for: brand.legalApp) {
+                    Button {
+                        NSWorkspace.shared.open(reviewURL)
+                    } label: {
+                        menuLabel(
+                            Text("Rate \(appName)", bundle: BuddyL10n.bundle),
+                            systemImage: "star"
+                        )
+                    }
+                    .buttonStyle(.borderless)
+                    .padding(.horizontal)
+                    .accessibilityIdentifier("menu-bar-rate-app")
+                }
+
+                Button {
+                    onQuit?()
+                    NSApp.terminate(nil)
+                } label: {
+                    menuLabel(
+                        Text("Quit \(appName)", bundle: BuddyL10n.bundle),
+                        systemImage: "power",
+                        shortcut: "⌘Q"
+                    )
+                }
+                .buttonStyle(.borderless)
+                .padding(.horizontal)
+                .accessibilityIdentifier("menu-bar-quit-app")
+                .keyboardShortcut("q", modifiers: .command)
             }
-            .buttonStyle(.borderless)
-            .padding(.horizontal)
-            .padding(.bottom, BuddyTheme.Spacing.sm)
-            .accessibilityIdentifier("menu-bar-quit-app")
         }
     }
-}
 
-/// Preferences control for the menu-bar pin: dismisses the popover, then opens Settings.
-private struct BuddyMenuBarPreferencesButton: View {
-    var body: some View {
-        Button {
-            NotificationCenter.default.post(name: .buddyDismissMenuBarPopover, object: nil)
-            DispatchQueue.main.async {
-                buddyOpenAppSettings()
-            }
-        } label: {
+    private func menuLabel(_ title: Text, systemImage: String, shortcut: String? = nil) -> some View {
+        HStack {
             Label {
-                Text("Preferences", bundle: BuddyL10n.bundle)
+                title
             } icon: {
-                Image(systemName: "gearshape")
+                Image(systemName: systemImage)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            Spacer(minLength: 0)
+            if let shortcut {
+                Text(verbatim: shortcut)
+                    .foregroundStyle(.secondary)
+                    .accessibilityHidden(true)
+            }
         }
-        .buttonStyle(.borderless)
-        .padding(.horizontal)
-        .padding(.vertical, BuddyTheme.Spacing.sm)
-        .accessibilityIdentifier("menu-bar-preferences")
-        .help(Text("Preferences", bundle: BuddyL10n.bundle))
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

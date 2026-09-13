@@ -24,9 +24,10 @@ public struct BuddyPauseControls: View {
                     VStack(alignment: .leading, spacing: BuddyTheme.Spacing.xxs) {
                         Text("Paused", bundle: BuddyL10n.bundle)
                             .font(BuddyTheme.Typography.label)
+                            .foregroundStyle(BuddyTheme.BuddyColor.textPrimary)
                         Text(pause.statusSummary)
                             .font(BuddyTheme.Typography.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(BuddyTheme.BuddyColor.textSecondary)
                     }
                     Spacer(minLength: 0)
                     Button {
@@ -37,7 +38,6 @@ public struct BuddyPauseControls: View {
                     .accessibilityIdentifier("pause-resume")
                 }
                 .padding(.horizontal)
-                .padding(.bottom, BuddyTheme.Spacing.sm)
             } else if showCustom {
                 customDurationForm
             } else {
@@ -74,15 +74,15 @@ public struct BuddyPauseControls: View {
                     .accessibilityIdentifier("pause-custom")
                 } label: {
                     Label {
-                        Text("Turn Off", bundle: BuddyL10n.bundle)
+                        Text("Pause", bundle: BuddyL10n.bundle)
                     } icon: {
                         Image(systemName: "pause.circle")
                     }
+                    .foregroundStyle(BuddyTheme.BuddyColor.textPrimary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .menuStyle(.borderlessButton)
                 .padding(.horizontal)
-                .padding(.bottom, BuddyTheme.Spacing.sm)
                 .accessibilityIdentifier("pause-menu")
             }
         }
@@ -111,7 +111,7 @@ public struct BuddyPauseControls: View {
                     pause.pause(for: total)
                     showCustom = false
                 } label: {
-                    Text("Turn Off", bundle: BuddyL10n.bundle)
+                    Text("Pause", bundle: BuddyL10n.bundle)
                 }
                 .keyboardShortcut(.defaultAction)
                 .disabled(customHours == 0 && customMinutes == 0)

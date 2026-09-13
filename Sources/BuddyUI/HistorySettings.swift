@@ -499,7 +499,6 @@ public struct BuddyClearHistoryButton: View {
                 }
                 .buttonStyle(.borderless)
                 .padding(.horizontal)
-                .padding(.vertical, BuddyTheme.Spacing.sm)
             case .toolbar:
                 Button(role: .destructive) {
                     confirm = true
