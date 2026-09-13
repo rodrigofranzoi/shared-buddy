@@ -236,23 +236,13 @@ public struct BuddyMenuBarAppControls: View {
                 .padding(.horizontal)
                 .accessibilityIdentifier("menu-bar-open-app")
 
-                Button {
-                    NotificationCenter.default.post(name: .buddyDismissMenuBarPopover, object: nil)
-                    DispatchQueue.main.async {
-                        buddyOpenAppSettings()
-                    }
-                } label: {
+                BuddyMenuBarPreferencesButton {
                     menuLabel(
                         Text("Preferences", bundle: BuddyL10n.bundle),
                         systemImage: "gearshape",
                         shortcut: "⌘,"
                     )
                 }
-                .buttonStyle(.borderless)
-                .padding(.horizontal)
-                .accessibilityIdentifier("menu-bar-preferences")
-                .help(Text("Preferences", bundle: BuddyL10n.bundle))
-                .keyboardShortcut(",", modifiers: .command)
 
                 if let brand,
                    let reviewURL = BuddyLegalURLs.writeReviewURL(for: brand.legalApp) {
@@ -302,5 +292,61 @@ public struct BuddyMenuBarAppControls: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+/// Preferences control for the menu-bar pin: dismisses the popover, leaves accessory mode,
+/// then opens Settings via `openSettings` (macOS 14+) with a sendAction fallback.
+private struct BuddyMenuBarPreferencesButton<Label: View>: View {
+    @ViewBuilder private let label: () -> Label
+
+    init(@ViewBuilder label: @escaping () -> Label) {
+        self.label = label
+    }
+
+    var body: some View {
+        Group {
+            if #available(macOS 14.0, *) {
+                BuddyMenuBarOpenSettingsButton(label: label)
+            } else {
+                Button {
+                    NotificationCenter.default.post(name: .buddyDismissMenuBarPopover, object: nil)
+                    DispatchQueue.main.async {
+                        buddyOpenAppSettings()
+                    }
+                } label: {
+                    label()
+                }
+            }
+        }
+        .buttonStyle(.borderless)
+        .padding(.horizontal)
+        .accessibilityIdentifier("menu-bar-preferences")
+        .help(Text("Preferences", bundle: BuddyL10n.bundle))
+        .keyboardShortcut(",", modifiers: .command)
+    }
+}
+
+@available(macOS 14.0, *)
+private struct BuddyMenuBarOpenSettingsButton<Label: View>: View {
+    @Environment(\.openSettings) private var openSettings
+    @ViewBuilder private let label: () -> Label
+
+    init(@ViewBuilder label: @escaping () -> Label) {
+        self.label = label
+    }
+
+    var body: some View {
+        Button {
+            NotificationCenter.default.post(name: .buddyDismissMenuBarPopover, object: nil)
+            DispatchQueue.main.async {
+                // Prefer SwiftUI `openSettings`; popover hosting often no-ops it, so always
+                // follow with the AppKit path (which also leaves accessory / LSUIElement mode).
+                openSettings()
+                buddyOpenAppSettings()
+            }
+        } label: {
+            label()
+        }
     }
 }

@@ -262,6 +262,44 @@ platform :mac do
     )
   end
 
+  desc "Sign, upload binary + metadata + screenshots; optionally submit for review"
+  lane :release do |options|
+    api_key = buddy_api_key
+    buddy_prepare! unless options[:skip_prepare]
+    build(clean: options[:clean]) unless options[:skip_build]
+
+    pkg = Dir[buddy_root.join("build/*.pkg").to_s].max_by { |f| File.mtime(f) }
+    UI.user_error!("No .pkg found in build/. Run build first.") unless pkg
+
+    submit = options[:submit] == true || options[:submit_for_review] == true
+
+    upload_to_app_store(
+      api_key: api_key,
+      app_identifier: buddy_env!("BUDDY_BUNDLE_ID"),
+      platform: "osx",
+      pkg: pkg,
+      skip_binary_upload: false,
+      skip_screenshots: options[:skip_screenshots] == true,
+      skip_metadata: options[:skip_metadata] == true,
+      force: true,
+      precheck_include_in_app_purchases: false,
+      run_precheck_before_submit: false,
+      submit_for_review: submit,
+      automatic_release: options[:automatic_release] == true,
+      overwrite_screenshots: options[:overwrite_screenshots] != false,
+      metadata_path: buddy_root.join("fastlane/metadata").to_s,
+      screenshots_path: buddy_root.join("fastlane/screenshots").to_s,
+      app_review_information: buddy_review_information,
+      submission_information: {
+        export_compliance_uses_encryption: false,
+        export_compliance_encryption_updated: false,
+        content_rights_contains_third_party_content: false,
+        content_rights_has_rights: true,
+        add_id_info_uses_idfa: false
+      }
+    )
+  end
+
   desc "Submit the current App Store Connect version for review (no rebuild/upload)"
   lane :submit do |options|
     api_key = buddy_api_key

@@ -78,24 +78,35 @@ public enum BuddyAppearanceSettings {
         }
     }
 
-    /// Resolved accent hex for the given brand (stored override or brand default).
+    /// Whether `hex` matches one of the offered theme swatches.
+    public static func isAccentPreset(_ hex: String) -> Bool {
+        guard let normalized = normalizeHex(hex) else { return false }
+        return accentPresets.contains {
+            $0.compare(normalized, options: .caseInsensitive) == .orderedSame
+        }
+    }
+
+    /// Resolved accent hex for the given brand (stored preset or brand default).
     public static func accentHex(for brand: BuddyBrand) -> String {
         let raw = UserDefaults.standard.string(forKey: BuddySettingsKey.appearanceAccentHex)?
             .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if raw.isEmpty { return brand.defaultAccentHex }
-        return raw.hasPrefix("#") ? raw.uppercased() : "#\(raw.uppercased())"
+        let normalized = raw.hasPrefix("#") ? raw.uppercased() : "#\(raw.uppercased())"
+        if isAccentPreset(normalized) { return normalized }
+        return brand.defaultAccentHex
     }
 
     public static func setAccentHex(_ hex: String, for brand: BuddyBrand) {
         let normalized = normalizeHex(hex) ?? brand.defaultAccentHex
-        UserDefaults.standard.set(normalized, forKey: BuddySettingsKey.appearanceAccentHex)
+        let resolved = isAccentPreset(normalized) ? normalized : brand.defaultAccentHex
+        UserDefaults.standard.set(resolved, forKey: BuddySettingsKey.appearanceAccentHex)
     }
 
     public static func resetAccent(for brand: BuddyBrand) {
         UserDefaults.standard.set(brand.defaultAccentHex, forKey: BuddySettingsKey.appearanceAccentHex)
     }
 
-    /// Stored accent as a fixed sRGB color (settings swatches / color picker).
+    /// Stored accent as a fixed sRGB color (settings swatches).
     public static func accentBaseNSColor(for brand: BuddyBrand) -> NSColor {
         EditorRedactionSettings.nsColor(fromHex: accentHex(for: brand))
     }

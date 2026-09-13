@@ -640,77 +640,6 @@
       },
       "extractionState": "manual"
     },
-    "Custom color": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Custom color"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aangepaste kleur"
-          }
-        },
-        "pt": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cor personalizada"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Color personalizado"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couleur personnalisée"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Colore personalizzato"
-          }
-        },
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لون مخصص"
-          }
-        },
-        "zh": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "自定义颜色"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Свой цвет"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "カスタムカラー"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Benutzerdefinierte Farbe"
-          }
-        }
-      },
-      "extractionState": "manual"
-    },
     "Legal": {
       "localizations": {
         "en": {
@@ -1568,67 +1497,67 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Turn Off"
+            "value": "Pause"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Uitschakelen"
+            "value": "Pauzeren"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Desativar"
+            "value": "Pausar"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Desactivar"
+            "value": "Pausar"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Désactiver"
+            "value": "Pause"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Disattiva"
+            "value": "Pausa"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "إيقاف"
+            "value": "إيقاف مؤقت"
           }
         },
         "zh": {
           "stringUnit": {
             "state": "translated",
-            "value": "关闭"
+            "value": "暂停"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Выключить"
+            "value": "Пауза"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "オフにする"
+            "value": "一時停止"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ausschalten"
+            "value": "Pausieren"
           }
         }
       },
@@ -11928,6 +11857,77 @@
           }
         }
       }
+    },
+    "Pause": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausieren"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pauzeren"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إيقاف مؤقت"
+          }
+        },
+        "zh": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂停"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пауза"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一時停止"
+          }
+        }
+      },
+      "extractionState": "manual"
     }
   },
   "version": "1.0"

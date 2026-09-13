@@ -11,7 +11,7 @@ Status: `planned` | `wip` | `done`
 | OTP extraction from email/text | done | Conservative scoring |
 | Keychain helper | done | Generic credential store |
 | Settings key constants | done | Shared UserDefaults keys |
-| Appearance (scheme + accent hex) | done | `BuddyAppearanceSettings`, `BuddyBrand` defaults |
+| Appearance (scheme + accent presets) | done | `BuddyAppearanceSettings`, `BuddyBrand` defaults |
 | Sensitive privacy settings + 10‑min unlock session | done | `SensitivePrivacySettings`, `SensitiveUnlockSession` |
 | Sensitive region OCR for screenshot redaction | done | `SensitiveRegionFinder` |
 | Pause / turn-off controller (session + timed + custom) | done | `BuddyPauseController` |

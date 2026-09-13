@@ -567,7 +567,12 @@ public struct AutoBlurSettingsSection: View {
 /// Opens the app's SwiftUI `Settings` scene.
 /// Prefer ``BuddyOpenSettingsButton`` / ``BuddyDeferredOpenSettingsButton`` — `showSettingsWindow:`
 /// is unreliable on macOS 14+.
+///
+/// Always leaves accessory / `LSUIElement` mode first; Settings will not present while the app
+/// is menu-bar-only.
+@MainActor
 public func buddyOpenAppSettings() {
+    BuddyMainWindow.presentInDock()
     NSApp.activate(ignoringOtherApps: true)
     if #available(macOS 13.0, *) {
         NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
@@ -669,6 +674,7 @@ public struct BuddyDeferredOpenSettingsButton: View {
         Button {
             beforeOpen()
             DispatchQueue.main.async {
+                BuddyMainWindow.presentInDock()
                 openSettings()
                 NSApp.activate(ignoringOtherApps: true)
             }

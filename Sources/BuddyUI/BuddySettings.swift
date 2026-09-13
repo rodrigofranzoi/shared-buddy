@@ -218,19 +218,6 @@ public struct BuddyAppearanceSettingsSection: View {
             }
             .padding(.vertical, BuddyTheme.Spacing.xxs)
 
-            ColorPicker(
-                selection: Binding(
-                    get: { Color(nsColor: BuddyAppearanceSettings.accentBaseNSColor(for: brand)) },
-                    set: { newColor in
-                        accentHexRaw = EditorRedactionSettings.hex(from: NSColor(newColor))
-                    }
-                ),
-                supportsOpacity: false
-            ) {
-                Text("Custom color", bundle: BuddyL10n.bundle)
-            }
-            .accessibilityIdentifier("settings-appearance-custom-color")
-
             if !isUsingBrandDefault {
                 Button {
                     accentHexRaw = brand.defaultAccentHex
@@ -246,7 +233,8 @@ public struct BuddyAppearanceSettingsSection: View {
                 .font(BuddyTheme.Typography.caption)
         }
         .onAppear {
-            if accentHexRaw.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            let trimmed = accentHexRaw.trimmingCharacters(in: .whitespacesAndNewlines)
+            if trimmed.isEmpty || !BuddyAppearanceSettings.isAccentPreset(trimmed) {
                 accentHexRaw = brand.defaultAccentHex
             }
             BuddyAppearanceSettings.applyAppKitAppearance()

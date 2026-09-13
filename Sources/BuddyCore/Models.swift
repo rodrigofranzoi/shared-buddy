@@ -439,7 +439,7 @@ public enum BuddySettingsKey {
     public static let editorToolsCollapsed = "buddy.screenshot.editorToolsCollapsed"
     /// Appearance mode: `system` | `light` | `dark`.
     public static let appearanceColorScheme = "buddy.appearance.colorScheme"
-    /// User accent color as `#RRGGBB`. Empty means use the app brand default.
+    /// Theme accent as `#RRGGBB` from the offered presets. Empty means use the app brand default.
     public static let appearanceAccentHex = "buddy.appearance.accentHex"
     /// Max Paint Buddy color history items (newest first).
     public static let paintMaxHistoryCount = "buddy.paint.maxHistoryCount"

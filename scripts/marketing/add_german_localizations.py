@@ -103,7 +103,6 @@ DE: dict[str, str] = {
     "Copies made while these apps are frontmost are not saved to ClipLog Buddy history.": "Kopien, während diese Apps im Vordergrund sind, werden nicht in der ClipLog-Buddy-Historie gespeichert.",
     "Copy as": "Kopieren als",
     "Copy to clipboard": "In die Zwischenablage kopieren",
-    "Custom color": "Benutzerdefinierte Farbe",
     "Custom duration": "Benutzerdefinierte Dauer",
     "Custom…": "Benutzerdefiniert…",
     "Dark": "Dunkel",
