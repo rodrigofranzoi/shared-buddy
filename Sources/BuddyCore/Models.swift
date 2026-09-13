@@ -381,6 +381,8 @@ public struct ImageAnnotation: Identifiable, Codable, Sendable, Equatable {
 
 public enum BuddySettingsKey {
     public static let autoCopyOTP = "buddy.otp.autoCopy"
+    /// When true (default), reconnect IMAP on launch if credentials exist.
+    public static let otpAutoReconnectOnLaunch = "buddy.otp.autoReconnectOnLaunch"
     public static let clipboardRetentionDays = "buddy.clipboard.retentionDays"
     /// Max clipboard history items to keep (newest first).
     public static let clipboardMaxHistoryCount = "buddy.clipboard.maxHistoryCount"

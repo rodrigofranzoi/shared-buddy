@@ -2,9 +2,18 @@ import Foundation
 import Security
 
 public enum BuddyKeychain {
-    public enum KeychainError: Error {
+    public enum KeychainError: LocalizedError {
         case unexpectedStatus(OSStatus)
         case noData
+
+        public var errorDescription: String? {
+            switch self {
+            case .noData:
+                return String(localized: "No saved password. Enter your app password and tap Save credentials.")
+            case .unexpectedStatus(let status):
+                return String(localized: "Keychain error \(status). Try Save credentials again.")
+            }
+        }
     }
 
     public static func set(_ value: String, account: String, service: String) throws {
@@ -13,20 +22,22 @@ public enum BuddyKeychain {
 
     public static func get(account: String, service: String) throws -> String {
         let data = try getData(account: account, service: service)
-        guard let value = String(data: data, encoding: .utf8) else { throw KeychainError.noData }
+        guard let value = String(data: data, encoding: .utf8), !value.isEmpty else {
+            throw KeychainError.noData
+        }
         return value
     }
 
     public static func setData(_ data: Data, account: String, service: String) throws {
-        let query: [String: Any] = [
+        delete(account: account, service: service)
+
+        var add: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
-            kSecAttrService as String: service
+            kSecAttrService as String: service,
+            kSecValueData as String: data,
+            kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlocked
         ]
-        SecItemDelete(query as CFDictionary)
-        var add = query
-        add[kSecValueData as String] = data
-        add[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
         let status = SecItemAdd(add as CFDictionary, nil)
         guard status == errSecSuccess else { throw KeychainError.unexpectedStatus(status) }
     }

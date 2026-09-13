@@ -254,6 +254,123 @@ final class OTPDetectorTests: XCTestCase {
         let match = OTPDetector.extract(from: BuddyFixtures.otpEmailWeak)
         XCTAssertNil(match)
     }
+
+    func testExtractsPinCodeLabeledInBody() {
+        let match = OTPDetector.extract(from: """
+        Subject: 812707 is your PIN code
+
+        Your PIN code: 812707
+
+        You received this one-time PIN code to verify your identity.
+        """)
+        XCTAssertEqual(match?.code, "812707")
+    }
+
+    func testExtractsCodeFromSubjectOnly() {
+        let match = OTPDetector.extract(from: "Subject: 812707 is your PIN code\n\n")
+        XCTAssertEqual(match?.code, "812707")
+    }
+
+    func testExtractsValidityMinutes() {
+        let match = OTPDetector.extract(from: """
+        Your PIN code: 812707
+        Your PIN code is valid for 15 minutes.
+        """)
+        XCTAssertEqual(match?.code, "812707")
+        XCTAssertEqual(match?.validitySeconds, 15 * 60)
+    }
+
+    func testExtractsExpiresInMinutes() {
+        let seconds = OTPDetector.extractValiditySeconds(from: "This one-time passcode expires in 10 minutes.")
+        XCTAssertEqual(seconds, 10 * 60)
+    }
+
+    func testIgnoresHTMLDoctypeAsOTP() {
+        let html = """
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+        <html><body>Hello</body></html>
+        """
+        XCTAssertNil(OTPDetector.extract(from: html))
+    }
+
+    func testIgnoresBareSixDigitsWithoutOTPContext() {
+        let match = OTPDetector.extract(from: """
+        Subject: Your receipt
+
+        Thanks for your purchase. Reference 492913 is confirmed.
+        """)
+        XCTAssertNil(match)
+    }
+
+    func testIgnoresDigitsInsideEncodingBase64Noise() {
+        let match = OTPDetector.extract(from: """
+        Subject: Newsletter
+
+        Content-Transfer-Encoding: base64
+
+        aGVsbG8g492913IHdvcmxkIGVuY29kaW5nIG1vcmUgZGlnaXRzIDM4NTcyMQ==
+        """)
+        XCTAssertNil(match)
+    }
+
+    func testIgnoresCodeSubstringInsideEncoding() {
+        let match = OTPDetector.extract(from: """
+        Content-Transfer-Encoding: quoted-printable
+        Next line has digits 492913 only.
+        """)
+        XCTAssertNil(match)
+    }
+
+    func testExtractsPortugueseMicrosoftSecurityCode() {
+        let match = OTPDetector.extract(from: """
+        Subject: Código de segurança da conta Microsoft pessoal
+
+        Use o código de segurança a seguir para sua conta Microsoft pessoal ro**4@hotmail.com.
+
+        Código de segurança: 315987
+
+        Insira este código apenas em um site oficial ou aplicativo.
+        """)
+        XCTAssertEqual(match?.code, "315987")
+    }
+
+    func testExtractsPortugueseLoginCodeFromSubjectAndBody() {
+        let match = OTPDetector.extract(from: """
+        Subject: Código de login: 184617
+
+        Código de login
+        Aqui está seu código de login:
+        184617
+        O código expira em breve.
+        """)
+        XCTAssertEqual(match?.code, "184617")
+    }
+
+    func testExtractsSpanishVerificationCode() {
+        let match = OTPDetector.extract(from: """
+        Tu código de verificación es: 774412
+        """)
+        XCTAssertEqual(match?.code, "774412")
+    }
+
+    func testExtractsFrenchSecurityCode() {
+        let match = OTPDetector.extract(from: """
+        Votre code de sécurité : 551902
+        """)
+        XCTAssertEqual(match?.code, "551902")
+    }
+
+    func testExtractsGermanBestaetigungscode() {
+        let match = OTPDetector.extract(from: """
+        Ihr Bestätigungscode: 903114
+        """)
+        XCTAssertEqual(match?.code, "903114")
+    }
+
+    func testExtractsPortugueseValidityMinutes() {
+        let seconds = OTPDetector.extractValiditySeconds(from: "Este código é válido por 10 minutos.")
+        XCTAssertEqual(seconds, 10 * 60)
+    }
 }
 
 final class LocaleTests: XCTestCase {
